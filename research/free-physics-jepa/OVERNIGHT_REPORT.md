@@ -81,21 +81,19 @@ Smoke only: **MML-direct ≤ LMOP on ID relative L2** (LMOP does not win). This 
 
 ## Remaining blockers
 
-- Confirmatory must finish for CJSJ evidence
-- Git init recommended for SHA logging
-- Collapse diagnostics can be strengthened (channel-wise)
+- Overnight confirmatory resume must finish remaining 8 finetunes + shuffled control
 
 ## Exact next command
 
 ```bash
 cd /Volumes/PRO-BLADE/Kyrlov-JEPA
-OMP_NUM_THREADS=4 MKL_NUM_THREADS=4 \
-PYTHONPATH=research/free-physics-jepa:research/free-physics-jepa/lmop_jepa \
-python3 research/free-physics-jepa/scripts/run_experiment.py --mode confirmatory
+./research/free-physics-jepa/scripts/overnight_confirmatory.sh
 ```
+
+See `OVERNIGHT.md` / `PUBLISH_CHECKLIST.md`.
 
 ## Claim gate
 
 **SMOKE VERIFIED** (pipeline integrity only).
 
-Not yet: CONFIRMATORY RESULTS AVAILABLE / CJSJ EVIDENCE READY.
+Not yet: CONFIRMATORY RESULTS AVAILABLE / CJSJ EVIDENCE READY — produced automatically at end of overnight run into `results/tables/claim_gate.json`.
