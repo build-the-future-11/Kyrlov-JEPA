@@ -1,9 +1,12 @@
 # Frozen machine-readable protocol
 program: lmop-jepa
 freeze_date: "2026-09-26"
+study: 2
+data_version: v2
 amendments:
   - amendments/PROTOCOL_AMENDMENT_0001_initial_freeze.md
   - amendments/PROTOCOL_AMENDMENT_0002_anticollapse.md
+  - amendments/PROTOCOL_AMENDMENT_0003_matched_block_jepa.md
 
 question: >
   Does joint-embedding latent pretraining on solver-free manufactured Darcy
@@ -44,11 +47,13 @@ ood_secondary_exploratory:
   a_max: 20.0
 
 manufactured:
-  primary_family: mixed
-  mixed_kmax: 8
+  primary_family: matched
+  mixed_kmax: 4
   low_kmax: 3
-  n_modes_range: [2, 6]
-  amplitude_range: [0.05, 0.5]
+  n_modes_range: [1, 3]
+  amplitude_range: [0.02, 0.2]
+  u_norm_range: [1.8, 3.4]
+  match_l2_norm: true
 
 data_sizes:
   smoke:
@@ -82,17 +87,27 @@ model:
 training:
   batch_size: 4
   num_workers: 0
-  pretrain_steps_smoke: 100
-  pretrain_steps_confirmatory: 2000
+  pretrain_steps_smoke: 200
+  pretrain_steps_confirmatory: 4000
   finetune_epochs_smoke: 20
   finetune_epochs_confirmatory: 60
+  freeze_epochs_smoke: 5
+  freeze_epochs_confirmatory: 10
   lr: 1.0e-3
   weight_decay: 1.0e-4
   ema_momentum: 0.996
-  mask_ratio: 0.4
+  mask_ratio: 0.3
+  mask_blocks_min: 1
+  mask_blocks_max: 3
+  lambda_var: 25.0
+  lambda_cov: 1.0
+  lambda_u: 0.1
+  var_gamma: 1.0
   device: auto
   dtype_train: float32
   dtype_physics: float64
+  normalize_inputs: true
+  shuffle_mode: u_vs_af
 
 metrics_primary: relative_l2
 metrics_secondary: [h1_error, energy_error, flux_error, pde_residual]

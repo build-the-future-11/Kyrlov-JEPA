@@ -1,4 +1,4 @@
-"""Shared FNO-2D backbone, downstream solver, LMOP-JEPA."""
+"""Shared FNO-2d backbone, downstream solver, LMOP-JEPA v2 (amendment 0003)."""
 
 from __future__ import annotations
 
@@ -50,6 +50,7 @@ class FNO2d(nn.Module):
         self.blocks = nn.ModuleList([FNOBlock(width, modes) for _ in range(n_layers)])
         self.proj = nn.Sequential(nn.Conv2d(width, width, 1), nn.GELU(), nn.Conv2d(width, out_channels, 1))
         self.width = width
+        self.in_channels = in_channels
 
     def encode(self, x: torch.Tensor) -> torch.Tensor:
         x = self.lift(x)
@@ -86,12 +87,23 @@ class DownstreamSolver(nn.Module):
     def forward(self, a: torch.Tensor, f: torch.Tensor) -> torch.Tensor:
         return self.backbone(torch.stack([a, f], dim=1)).squeeze(1)
 
+    def set_backbone_trainable(self, trainable: bool) -> None:
+        for p in self.backbone.lift.parameters():
+            p.requires_grad_(trainable)
+        for blk in self.backbone.blocks:
+            for p in blk.parameters():
+                p.requires_grad_(trainable)
+        # Always train projection head
+        for p in self.backbone.proj.parameters():
+            p.requires_grad_(True)
+
 
 class LMOPJEPA(nn.Module):
-    """Same-arch context/target encoders (3-channel). Target is EMA copy.
+    """Amendment 0003: same-encoder multi-block JEPA + VICReg + hybrid u head.
 
-    Context input: (a, f⊙(1-M), M)
-    Target input:  (u, u, 0)  — solution view, no forcing leak
+    Online encoder is identical to DownstreamSolver.backbone (2-channel FNO).
+    Context: normalized (a, f) with multi-block spatial zero-mask.
+    Target: EMA encoder on stacked (u_n, u_n); stop-grad; loss on masked sites.
     """
 
     def __init__(
@@ -100,60 +112,111 @@ class LMOPJEPA(nn.Module):
         modes: int = 12,
         n_layers: int = 4,
         ema_momentum: float = 0.996,
-        mask_ratio: float = 0.4,
-        var_loss_weight: float = 1.0,
+        mask_ratio: float = 0.3,
+        mask_blocks_min: int = 1,
+        mask_blocks_max: int = 3,
+        lambda_var: float = 25.0,
+        lambda_cov: float = 1.0,
+        lambda_u: float = 0.1,
+        var_gamma: float = 1.0,
     ) -> None:
         super().__init__()
         self.ema_momentum = ema_momentum
         self.mask_ratio = mask_ratio
-        self.var_loss_weight = var_loss_weight
+        self.mask_blocks_min = mask_blocks_min
+        self.mask_blocks_max = mask_blocks_max
+        self.lambda_var = lambda_var
+        self.lambda_cov = lambda_cov
+        self.lambda_u = lambda_u
+        self.var_gamma = var_gamma
         self.width = width
-        self.online = FNO2d(3, 1, width=width, modes=modes, n_layers=n_layers)
+        self.online = FNO2d(2, 1, width=width, modes=modes, n_layers=n_layers)
         self.target = freeze_module(copy.deepcopy(self.online))
         self.predictor = nn.Sequential(
             nn.Conv2d(width, width, 1),
             nn.GELU(),
             nn.Conv2d(width, width, 1),
+            nn.GELU(),
+            nn.Conv2d(width, width, 1),
         )
 
-    def random_mask(self, b: int, h: int, w: int, device: torch.device) -> torch.Tensor:
-        n = h * w
-        n_mask = max(1, int(round(n * self.mask_ratio)))
-        noise = torch.rand(b, n, device=device)
-        idx = torch.argsort(noise, dim=1)[:, :n_mask]
-        mask = torch.zeros(b, n, device=device)
-        mask.scatter_(1, idx, 1.0)
-        return mask.view(b, h, w)
+    def multi_block_mask(self, b: int, h: int, w: int, device: torch.device) -> torch.Tensor:
+        """Return (B,H,W) mask with 1 = target/masked site."""
+        masks = torch.zeros(b, h, w, device=device)
+        area = h * w
+        for bi in range(b):
+            n_blocks = int(torch.randint(self.mask_blocks_min, self.mask_blocks_max + 1, (1,)).item())
+            target_area = max(1, int(round(area * self.mask_ratio)))
+            per = max(1, target_area // n_blocks)
+            filled = 0
+            for _ in range(n_blocks):
+                bh = max(1, int(round((per ** 0.5) * float(torch.empty(1).uniform_(0.7, 1.3).item()))))
+                bw = max(1, int(round(per / bh)))
+                bh = min(bh, h)
+                bw = min(bw, w)
+                top = int(torch.randint(0, max(1, h - bh + 1), (1,)).item())
+                left = int(torch.randint(0, max(1, w - bw + 1), (1,)).item())
+                masks[bi, top : top + bh, left : left + bw] = 1.0
+                filled = int(masks[bi].sum().item())
+                if filled >= target_area:
+                    break
+            if masks[bi].sum() < 1:
+                masks[bi, h // 4 : 3 * h // 4, w // 4 : 3 * w // 4] = 1.0
+        return masks
 
     @staticmethod
     def _ln(z: torch.Tensor) -> torch.Tensor:
         return nn.functional.layer_norm(z.permute(0, 2, 3, 1), (z.shape[1],)).permute(0, 3, 1, 2)
 
+    def _vicreg(self, z: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor, float]:
+        # z: (B,C,H,W) -> pool to (B,C)
+        flat = z.reshape(z.shape[0], z.shape[1], -1).mean(-1)
+        std = torch.sqrt(flat.var(dim=0, unbiased=False) + 1e-4)
+        loss_var = torch.mean(torch.relu(self.var_gamma - std))
+        flat_c = flat - flat.mean(dim=0)
+        cov = (flat_c.T @ flat_c) / max(1, flat.shape[0] - 1)
+        off = cov - torch.diag(torch.diag(cov))
+        loss_cov = (off ** 2).sum() / flat.shape[1]
+        return loss_var, loss_cov, float(std.mean().item())
+
     def forward(self, a: torch.Tensor, f: torch.Tensor, u: torch.Tensor) -> tuple[torch.Tensor, dict]:
         b, h, w = a.shape
-        mask = self.random_mask(b, h, w, a.device)
-        x_c = torch.stack([a, f * (1.0 - mask), mask], dim=1)
-        zeros = torch.zeros_like(u)
-        x_t = torch.stack([u, u, zeros], dim=1)
-        z_c = self.online.encode(x_c)
+        mask = self.multi_block_mask(b, h, w, a.device)
+        x_full = torch.stack([a, f], dim=1)
+        x_ctx = x_full * (1.0 - mask.unsqueeze(1))
+        # Target view: normalized-solution stacked into 2 channels
+        u_rms = torch.sqrt(torch.mean(u * u, dim=(1, 2), keepdim=True) + 1e-8)
+        u_n = u / u_rms
+        x_tgt = torch.stack([u_n, u_n], dim=1)
+
+        z_c = self.online.encode(x_ctx)
         z_pred = self._ln(self.predictor(z_c))
         with torch.no_grad():
-            z_t = self._ln(self.target.encode(x_t))
-        loss_jepa = torch.mean((z_pred - z_t) ** 2)
-        # VICReg-style variance hinge (Amendment 0002)
-        flat = z_pred.reshape(b, z_pred.shape[1], -1).mean(-1)  # B, C
-        std = torch.sqrt(flat.var(dim=0, unbiased=False) + 1e-4)
-        loss_var = torch.mean(torch.relu(1.0 - std))
-        loss = loss_jepa + float(self.var_loss_weight) * loss_var
-        with torch.no_grad():
-            var = float(std.mean().item() ** 2)
-            norms = flat.norm(dim=1).mean().item()
+            z_t = self._ln(self.target.encode(x_tgt))
+
+        m = mask.unsqueeze(1)
+        denom = m.sum() * z_pred.shape[1] + 1e-8
+        loss_jepa = ((z_pred - z_t) ** 2 * m).sum() / denom
+
+        loss_var, loss_cov, latent_std = self._vicreg(z_pred)
+        # Hybrid u head on unmasked full encode (uses online proj)
+        u_hat = self.online(x_full).squeeze(1)
+        diff = (u_hat - u).reshape(b, -1)
+        loss_u = torch.mean(torch.sum(diff * diff, dim=1) / (torch.sum(u.reshape(b, -1) ** 2, dim=1) + 1e-8))
+
+        loss = (
+            loss_jepa
+            + float(self.lambda_var) * loss_var
+            + float(self.lambda_cov) * loss_cov
+            + float(self.lambda_u) * loss_u
+        )
         return loss, {
-            "latent_var": var,
-            "latent_std": float(std.mean().item()),
-            "latent_norm": float(norms),
+            "latent_std": latent_std,
             "loss_jepa": float(loss_jepa.item()),
             "loss_var": float(loss_var.item()),
+            "loss_cov": float(loss_cov.item()),
+            "loss_u": float(loss_u.item()),
+            "mask_frac": float(mask.mean().item()),
         }
 
     @torch.no_grad()
@@ -162,11 +225,4 @@ class LMOPJEPA(nn.Module):
 
     def transfer_to_downstream(self, dest: DownstreamSolver) -> None:
         with torch.no_grad():
-            # Copy spectral blocks; lift partially from online.lift (first 2 of 3 in-ch)
-            for d, s in zip(dest.backbone.blocks, self.online.blocks, strict=True):
-                d.load_state_dict(s.state_dict())
-            # Approximate lift: average first two input channels weights for (a,f)
-            w = self.online.lift.weight  # (width, 3, 1, 1)
-            dest.backbone.lift.weight.copy_(w[:, :2].contiguous())
-            if self.online.lift.bias is not None and dest.backbone.lift.bias is not None:
-                dest.backbone.lift.bias.copy_(self.online.lift.bias)
+            dest.backbone.load_state_dict(self.online.state_dict(), strict=True)

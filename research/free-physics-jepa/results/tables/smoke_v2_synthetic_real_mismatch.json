@@ -1,0 +1,20 @@
+{
+  "amendment": "0003_matched_block_jepa",
+  "genuine": {
+    "l2_norm_mean": 1.2935345293724692,
+    "l2_norm_std": 0.1418933422414739,
+    "spectrum_energy": 1734.0060664333434
+  },
+  "manufactured_low": {
+    "l2_norm_mean": 2.5042095156675215,
+    "l2_norm_std": 0.42759436854190086,
+    "spectrum_energy": 6608.795896185355
+  },
+  "manufactured_matched": {
+    "l2_norm_mean": 2.5611011185688506,
+    "l2_norm_std": 0.4514677226873127,
+    "spectrum_energy": 6925.375533223
+  },
+  "norm_ratio_mfg_over_genuine": 1.9799248187145917,
+  "note": "Study-2 matched MMS; ratio should be near 1."
+}

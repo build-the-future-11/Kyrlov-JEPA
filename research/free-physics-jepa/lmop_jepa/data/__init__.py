@@ -125,6 +125,8 @@ def generate_manufactured_dataset(
     a_min: float,
     a_max: float,
     roundtrip_tol: float = 1e-7,
+    match_l2_norm: bool = False,
+    u_norm_range: tuple[float, float] = (1.8, 3.4),
 ) -> dict[str, Any]:
     path.parent.mkdir(parents=True, exist_ok=True)
     with h5py.File(path, "w") as h5:
@@ -132,10 +134,12 @@ def generate_manufactured_dataset(
         h5.create_dataset("f", shape=(n, grid.n, grid.n), dtype="float32")
         h5.create_dataset("u", shape=(n, grid.n, grid.n), dtype="float32")
         h5.create_dataset("roundtrip_err", shape=(n,), dtype="float64")
+        h5.create_dataset("u_l2_norm", shape=(n,), dtype="float64")
         h5.create_dataset("seed", shape=(n,), dtype="int64")
         h5.create_dataset("field_id", shape=(n,), dtype=h5py.string_dtype())
         h5.attrs["family"] = family
         h5.attrs["kmax"] = kmax
+        h5.attrs["match_l2_norm"] = bool(match_l2_norm)
         ids = []
         for i in range(n):
             seed = base_seed + i
@@ -149,10 +153,15 @@ def generate_manufactured_dataset(
                 kx = int(rng.integers(1, kmax + 1))
                 ky = int(rng.integers(1, kmax + 1))
                 amp = float(rng.uniform(*amplitude_range))
-                # random sign
                 if rng.random() < 0.5:
                     amp = -amp
                 u += manufactured_sine_mode(grid, kx, ky, amp)
+            if match_l2_norm:
+                cur = float(np.linalg.norm(u.ravel()))
+                target = float(rng.uniform(u_norm_range[0], u_norm_range[1]))
+                if cur < 1e-30:
+                    raise RuntimeError(f"Degenerate manufactured u at i={i}")
+                u *= target / cur
             f = apply_operator(a, u, grid)
             rt = manufactured_round_trip(a, u, grid, rtol=roundtrip_tol)
             if not rt["ok"]:
@@ -162,6 +171,7 @@ def generate_manufactured_dataset(
             h5["f"][i] = f.astype(np.float32)
             h5["u"][i] = u.astype(np.float32)
             h5["roundtrip_err"][i] = rt["rel_roundtrip_error"]
+            h5["u_l2_norm"][i] = float(np.linalg.norm(u.ravel()))
             h5["seed"][i] = seed
             h5["field_id"][i] = fid
             ids.append(fid)
@@ -170,10 +180,13 @@ def generate_manufactured_dataset(
         "n": n,
         "family": family,
         "kmax": kmax,
+        "match_l2_norm": bool(match_l2_norm),
+        "u_norm_range": list(u_norm_range) if match_l2_norm else None,
         "grid": grid.to_dict(),
         "base_seed": base_seed,
         "field_ids": ids,
         "file_sha256": sha256_file(path),
+        "amendment": "0003_matched_block_jepa" if match_l2_norm else None,
     }
     write_json(meta, path.with_suffix(".meta.json"))
     return meta
@@ -189,10 +202,8 @@ def build_split_manifest(
     subset_sizes: list[int],
     subset_seed: int,
 ) -> dict[str, Any]:
-    # Index-based nested subsets over train pool indices
     train_idx = list(range(len(genuine_train_ids)))
     subsets = nested_subsets(train_idx, subset_sizes, subset_seed)
-    # Disjointness of field IDs
     assert_disjoint(
         list(range(len(genuine_train_ids))),
         list(range(len(genuine_train_ids), len(genuine_train_ids) + len(genuine_val_ids))),
