@@ -6,16 +6,18 @@ Everything for tomorrow’s writeup is wired. **You only need to start the overn
 
 ```bash
 cd /Volumes/PRO-BLADE/Kyrlov-JEPA
+./research/free-physics-jepa/scripts/overnight_confirmatory.sh
+```
+
+Detached:
+
+```bash
+cd /Volumes/PRO-BLADE/Kyrlov-JEPA
 nohup ./research/free-physics-jepa/scripts/overnight_confirmatory.sh \
   > research/free-physics-jepa/runs/nohup_overnight.out 2>&1 &
 ```
 
-Or in a dedicated terminal (logs to `runs/overnight_confirmatory.log`):
-
-```bash
-cd /Volumes/PRO-BLADE/Kyrlov-JEPA
-./research/free-physics-jepa/scripts/overnight_confirmatory.sh
-```
+Uses `spectral-krylov-jepa/.venv` automatically (has torch/h5py). Override with `FREE_PHYSICS_PYTHON=/path/to/python` if needed.
 
 ## What it does
 
