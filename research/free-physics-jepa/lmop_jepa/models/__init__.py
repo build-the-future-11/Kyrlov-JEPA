@@ -115,9 +115,9 @@ class LMOPJEPA(nn.Module):
         mask_ratio: float = 0.3,
         mask_blocks_min: int = 1,
         mask_blocks_max: int = 3,
-        lambda_var: float = 25.0,
+        lambda_var: float = 1.0,
         lambda_cov: float = 1.0,
-        lambda_u: float = 0.1,
+        lambda_u: float = 1.0,
         var_gamma: float = 1.0,
     ) -> None:
         super().__init__()

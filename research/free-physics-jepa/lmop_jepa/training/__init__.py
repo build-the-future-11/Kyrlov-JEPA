@@ -274,7 +274,7 @@ def train_lmop(
                 "mask_ratio": mask_ratio,
             },
             "normalize_inputs": normalize_inputs,
-            "amendment": "0003_matched_block_jepa",
+            "amendment": "0004_preserve_ssl",
         },
         ckpt,
     )
@@ -290,7 +290,10 @@ def train_lmop(
         "shuffle_mode": shuffle_mode if shuffle_physics else None,
         "normalize_inputs": normalize_inputs,
         "checkpoint": str(ckpt),
-        "amendment": "0003_matched_block_jepa",
+        "amendment": "0004_preserve_ssl",
+        "lambda_var": lambda_var,
+        "lambda_cov": lambda_cov,
+        "lambda_u": lambda_u,
     }
     (out_dir / "metrics.json").write_text(json.dumps(meta, indent=2))
     ds.close()
@@ -315,7 +318,16 @@ def finetune_genuine(
     seed: int,
     freeze_epochs: int = 0,
     normalize_inputs: bool = True,
+    adaptation: str = "full_ft",
+    backbone_lr_scale: float = 0.05,
 ) -> dict[str, Any]:
+    """Fine-tune with Study-3 adaptation modes.
+
+    adaptation:
+      - full_ft: freeze for freeze_epochs then unfreeze at full lr (Study-2)
+      - probe: freeze backbone for all epochs (head only)
+      - low_lr_ft: train head at lr, backbone at lr * backbone_lr_scale from epoch 0
+    """
     seed_all(seed)
     out_dir.mkdir(parents=True, exist_ok=True)
     train_ds = H5FieldDataset(train_path, indices=train_indices)
@@ -328,7 +340,14 @@ def finetune_genuine(
         if init_kind == "mml":
             model.load_state_dict(payload["model"])
         elif init_kind == "lmop":
-            lmop = LMOPJEPA(width=width, modes=modes, n_layers=n_layers)
+            cfg = payload.get("config", {})
+            lmop = LMOPJEPA(
+                width=width,
+                modes=modes,
+                n_layers=n_layers,
+                ema_momentum=float(cfg.get("ema", 0.996)),
+                mask_ratio=float(cfg.get("mask_ratio", 0.3)),
+            )
             lmop.load_state_dict(payload["model"], strict=True)
             lmop.transfer_to_downstream(model)
         else:
@@ -337,12 +356,41 @@ def finetune_genuine(
     best_path = out_dir / "checkpoint_best.pt"
     history = []
     t0 = time.time()
-    if freeze_epochs > 0:
+
+    def head_params():
+        return list(model.backbone.proj.parameters())
+
+    def backbone_params():
+        ps = list(model.backbone.lift.parameters())
+        for blk in model.backbone.blocks:
+            ps.extend(p for p in blk.parameters())
+        return ps
+
+    if adaptation == "probe":
         model.set_backbone_trainable(False)
-    opt = torch.optim.AdamW([p for p in model.parameters() if p.requires_grad], lr=lr, weight_decay=1e-4)
-    unfroze = freeze_epochs <= 0
+        opt = torch.optim.AdamW(head_params(), lr=lr, weight_decay=1e-4)
+        freeze_all = True
+    elif adaptation == "low_lr_ft":
+        model.set_backbone_trainable(True)
+        opt = torch.optim.AdamW(
+            [
+                {"params": backbone_params(), "lr": lr * float(backbone_lr_scale)},
+                {"params": head_params(), "lr": lr},
+            ],
+            weight_decay=1e-4,
+        )
+        freeze_all = False
+    else:  # full_ft (Study-2 style)
+        if freeze_epochs > 0:
+            model.set_backbone_trainable(False)
+            opt = torch.optim.AdamW(head_params(), lr=lr, weight_decay=1e-4)
+        else:
+            opt = torch.optim.AdamW(model.parameters(), lr=lr, weight_decay=1e-4)
+        freeze_all = False
+
+    unfroze = adaptation != "full_ft" or freeze_epochs <= 0
     for epoch in range(epochs):
-        if freeze_epochs > 0 and epoch >= freeze_epochs and not unfroze:
+        if adaptation == "full_ft" and freeze_epochs > 0 and epoch >= freeze_epochs and not unfroze:
             model.set_backbone_trainable(True)
             opt = torch.optim.AdamW(model.parameters(), lr=lr, weight_decay=1e-4)
             unfroze = True
@@ -365,11 +413,15 @@ def finetune_genuine(
                 if normalize_inputs:
                     a, f = normalize_af(a, f)
                 va.append(float(relative_mse(model(a, f), u).item()))
+        frozen_now = adaptation == "probe" or (
+            adaptation == "full_ft" and freeze_epochs > 0 and epoch < freeze_epochs
+        )
         row = {
             "epoch": epoch,
             "train": float(np.mean(tr)),
             "val": float(np.mean(va)),
-            "backbone_frozen": bool(freeze_epochs > 0 and epoch < freeze_epochs),
+            "backbone_frozen": bool(frozen_now),
+            "adaptation": adaptation,
         }
         history.append(row)
         if row["val"] < best:
@@ -379,6 +431,7 @@ def finetune_genuine(
                     "model": model.state_dict(),
                     "config": {"width": width, "modes": modes, "n_layers": n_layers},
                     "normalize_inputs": normalize_inputs,
+                    "adaptation": adaptation,
                 },
                 best_path,
             )
@@ -386,6 +439,8 @@ def finetune_genuine(
         "best_val": best,
         "epochs": epochs,
         "freeze_epochs": freeze_epochs,
+        "adaptation": adaptation,
+        "backbone_lr_scale": backbone_lr_scale if adaptation == "low_lr_ft" else None,
         "wall_seconds": time.time() - t0,
         "parameter_count": count_params(model),
         "init_kind": init_kind,
@@ -393,7 +448,7 @@ def finetune_genuine(
         "normalize_inputs": normalize_inputs,
         "history": history,
         "checkpoint": str(best_path),
-        "amendment": "0003_matched_block_jepa",
+        "amendment": "0004_preserve_ssl",
     }
     (out_dir / "metrics.json").write_text(json.dumps(meta, indent=2))
     train_ds.close()

@@ -1,12 +1,13 @@
 # Frozen machine-readable protocol
 program: lmop-jepa
 freeze_date: "2026-09-26"
-study: 2
+study: 3
 data_version: v2
 amendments:
   - amendments/PROTOCOL_AMENDMENT_0001_initial_freeze.md
   - amendments/PROTOCOL_AMENDMENT_0002_anticollapse.md
   - amendments/PROTOCOL_AMENDMENT_0003_matched_block_jepa.md
+  - amendments/PROTOCOL_AMENDMENT_0004_preserve_ssl.md
 
 question: >
   Does joint-embedding latent pretraining on solver-free manufactured Darcy
@@ -15,6 +16,9 @@ question: >
 
 decisive_comparison: [mml_direct, lmop_jepa]
 secondary_reference: [scratch]
+primary_adaptation_protocols: [zero_shot, probe]
+secondary_adaptation_protocols: [low_lr_ft]
+archive_adaptation_protocols: [full_ft_study2]
 
 physics:
   pde: darcy
@@ -95,13 +99,14 @@ training:
   freeze_epochs_confirmatory: 10
   lr: 1.0e-3
   weight_decay: 1.0e-4
+  backbone_lr_scale: 0.05
   ema_momentum: 0.996
   mask_ratio: 0.3
   mask_blocks_min: 1
   mask_blocks_max: 3
-  lambda_var: 25.0
+  lambda_var: 1.0
   lambda_cov: 1.0
-  lambda_u: 0.1
+  lambda_u: 1.0
   var_gamma: 1.0
   device: auto
   dtype_train: float32
