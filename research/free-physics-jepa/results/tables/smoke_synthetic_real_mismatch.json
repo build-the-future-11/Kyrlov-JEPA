@@ -1,0 +1,18 @@
+{
+  "genuine": {
+    "l2_norm_mean": 1.2935345293724692,
+    "l2_norm_std": 0.1418933422414739,
+    "spectrum_energy": 1734.0060664333434
+  },
+  "manufactured_low": {
+    "l2_norm_mean": 9.113764582986779,
+    "l2_norm_std": 2.7876283880002344,
+    "spectrum_energy": 93011.53474937753
+  },
+  "manufactured_mixed": {
+    "l2_norm_mean": 9.881011167035702,
+    "l2_norm_std": 3.1072894936170927,
+    "spectrum_energy": 109864.58079255288
+  },
+  "note": "Diagnostic only; not used to redesign manufactured corpus."
+}

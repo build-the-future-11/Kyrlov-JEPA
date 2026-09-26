@@ -1,0 +1,23 @@
+# Large / generated artifacts
+**/*.h5
+**/*.pt
+**/*.npz
+**/__pycache__/
+**/.pytest_cache/
+**/.venv/
+**/*.egg-info/
+.DS_Store
+
+# Logs
+research/free-physics-jepa/runs/**/*.log
+research/free-physics-jepa/runs/nohup_overnight.out
+research/free-physics-jepa/runs/confirmatory_console.log
+
+# Keep small metrics/json under runs via force-add if needed; default ignore bulky run trees
+research/free-physics-jepa/runs/**/checkpoint*.pt
+research/free-physics-jepa/runs/**/per_example.npz
+research/free-physics-jepa/data/**/*.h5
+
+# Python
+*.pyc
+.Python

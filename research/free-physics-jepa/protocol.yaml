@@ -1,0 +1,103 @@
+# Frozen machine-readable protocol
+program: lmop-jepa
+freeze_date: "2026-09-26"
+amendments:
+  - amendments/PROTOCOL_AMENDMENT_0001_initial_freeze.md
+  - amendments/PROTOCOL_AMENDMENT_0002_anticollapse.md
+
+question: >
+  Does joint-embedding latent pretraining on solver-free manufactured Darcy
+  examples transfer to genuine numerical Darcy solutions more efficiently than
+  direct manufactured-solution regression under small genuine-label budgets?
+
+decisive_comparison: [mml_direct, lmop_jepa]
+secondary_reference: [scratch]
+
+physics:
+  pde: darcy
+  domain: [0.0, 1.0]
+  bc: dirichlet_zero
+  operator: cell_centered_fd_harmonic_avg
+  forcing_genuine: constant_one
+  grid_confirmatory: 64
+  grid_smoke: 32
+
+permeability_id:
+  type: log_grf
+  length_scale: 0.20
+  variance: 1.0
+  a_min: 0.1
+  a_max: 10.0
+
+ood_primary:
+  name: correlation_length_shift
+  length_scale: 0.08
+  variance: 1.0
+  a_min: 0.1
+  a_max: 10.0
+
+ood_secondary_exploratory:
+  name: contrast_shift
+  length_scale: 0.20
+  variance: 2.25
+  a_min: 0.05
+  a_max: 20.0
+
+manufactured:
+  primary_family: mixed
+  mixed_kmax: 8
+  low_kmax: 3
+  n_modes_range: [2, 6]
+  amplitude_range: [0.05, 0.5]
+
+data_sizes:
+  smoke:
+    n_manufactured: 128
+    n_genuine_train_pool: 64
+    n_val: 16
+    n_test_id: 16
+    n_ood: 16
+    subsets: [16, 32]
+  confirmatory:
+    n_manufactured: 2000
+    n_genuine_train_pool: 250
+    n_val: 50
+    n_test_id: 50
+    n_ood: 50
+    subsets: [25, 100]
+    subsets_extension: [250]
+
+seeds: [11, 23, 47]
+split_seed: 20260926
+
+model:
+  backbone: fno2d
+  modes: 12
+  width: 32
+  n_layers: 4
+  smoke_modes: 8
+  smoke_width: 16
+  smoke_n_layers: 2
+
+training:
+  batch_size: 4
+  num_workers: 0
+  pretrain_steps_smoke: 100
+  pretrain_steps_confirmatory: 2000
+  finetune_epochs_smoke: 20
+  finetune_epochs_confirmatory: 60
+  lr: 1.0e-3
+  weight_decay: 1.0e-4
+  ema_momentum: 0.996
+  mask_ratio: 0.4
+  device: auto
+  dtype_train: float32
+  dtype_physics: float64
+
+metrics_primary: relative_l2
+metrics_secondary: [h1_error, energy_error, flux_error, pde_residual]
+
+bootstrap:
+  n_resamples: 2000
+  alpha: 0.05
+  seed: 0

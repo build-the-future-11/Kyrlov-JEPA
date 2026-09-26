@@ -1,0 +1,24 @@
+# Claim gate (auto-generated)
+
+**Verdict:** `INCOMPLETE_MATRIX`
+
+Only 6/36 eval rows; do not claim.
+
+- Matrix complete: False (6/36 rows)
+- Shuffled mechanism supported: False
+- Git SHA: `NONE`
+- Run: `research/free-physics-jepa/runs/confirmatory_20260926T150845Z`
+
+## Seed-aggregated relative L2
+
+| N | Dist | Scratch | MML | LMOP | Δ(LMOP−MML) | LMOP wins (CI) |
+|---|------|---------|-----|------|-------------|----------------|
+| 25 | id | 0.5000±0.0000 | 0.5000±0.0000 | 0.5000±0.0000 | 0.0000 | no |
+| 25 | ood | 0.5000±0.0000 | 0.5000±0.0000 | 0.5000±0.0000 | 0.0000 | no |
+| 100 | id | nan±0.0000 | nan±0.0000 | nan±0.0000 | nan | no |
+| 100 | ood | nan±0.0000 | nan±0.0000 | nan±0.0000 | nan | no |
+
+## Publication language
+
+Under this frozen protocol, evidence **incomplete matrix** the hypothesis that LMOP-JEPA transfers better than MML-direct at small genuine budgets.
+
