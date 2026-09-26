@@ -298,90 +298,44 @@ def main() -> int:
     data_ver = str(proto.get("data_version", "v2"))
     data_dir = PKG / "data" / f"{mode}_{data_ver}"
     data_dir.mkdir(parents=True, exist_ok=True)
-    skip_data = (data_dir / "manufactured_mixed.h5").exists() and (data_dir / "genuine_train.h5").exists()
     id_p = proto["permeability_id"]
     ood_p = proto["ood_primary"]
     mfg_p = proto["manufactured"]
     match_norm = bool(mfg_p.get("match_l2_norm", True))
     u_norm_range = tuple(mfg_p.get("u_norm_range", [1.8, 3.4]))
 
-    if skip_data:
-        log_status(f"- data: RESUME existing HDF5 under {data_dir.name}")
-        gen_train = load_meta(data_dir / "genuine_train.meta.json")
-        gen_val = load_meta(data_dir / "genuine_val.meta.json")
-        gen_test = load_meta(data_dir / "genuine_test_id.meta.json")
-        gen_ood = load_meta(data_dir / "genuine_ood.meta.json")
-        mfg = load_meta(data_dir / "manufactured_mixed.meta.json")
-        if not (data_dir / "manufactured_low.h5").exists():
-            generate_manufactured_dataset(
-                data_dir / "manufactured_low.h5",
-                grid=grid,
-                n=min(64, sizes["n_manufactured"]),
-                base_seed=600_000,
-                family="low",
-                kmax=int(mfg_p["low_kmax"]),
-                n_modes_range=tuple(mfg_p["n_modes_range"]),
-                amplitude_range=tuple(mfg_p["amplitude_range"]),
-                length_scale=id_p["length_scale"],
-                variance=id_p["variance"],
-                a_min=id_p["a_min"],
-                a_max=id_p["a_max"],
-                match_l2_norm=match_norm,
-                u_norm_range=u_norm_range,
-            )
-    else:
-        log_status(f"- data: GENERATE matched MMS under {data_dir.name}")
-        gen_train = generate_genuine_dataset(
-            data_dir / "genuine_train.h5",
+    def ensure_genuine(name: str, n: int, base_seed: int, family: str, length_scale: float, variance: float, a_min: float, a_max: float) -> dict:
+        h5 = data_dir / f"{name}.h5"
+        meta = data_dir / f"{name}.meta.json"
+        if h5.exists() and meta.exists():
+            return load_meta(meta)
+        return generate_genuine_dataset(
+            h5,
             grid=grid,
-            n=sizes["n_genuine_train_pool"],
-            base_seed=100_000,
-            length_scale=id_p["length_scale"],
-            variance=id_p["variance"],
-            a_min=id_p["a_min"],
-            a_max=id_p["a_max"],
-            family="id_train",
+            n=n,
+            base_seed=base_seed,
+            length_scale=length_scale,
+            variance=variance,
+            a_min=a_min,
+            a_max=a_max,
+            family=family,
         )
-        gen_val = generate_genuine_dataset(
-            data_dir / "genuine_val.h5",
+
+    def ensure_manufactured(name: str, n: int, base_seed: int, family: str, kmax: int) -> dict:
+        h5 = data_dir / f"{name}.h5"
+        meta = data_dir / f"{name}.meta.json"
+        if h5.exists() and meta.exists():
+            return load_meta(meta)
+        # Drop orphan h5 without meta (interrupted write)
+        if h5.exists() and not meta.exists():
+            h5.unlink()
+        return generate_manufactured_dataset(
+            h5,
             grid=grid,
-            n=sizes["n_val"],
-            base_seed=200_000,
-            length_scale=id_p["length_scale"],
-            variance=id_p["variance"],
-            a_min=id_p["a_min"],
-            a_max=id_p["a_max"],
-            family="id_val",
-        )
-        gen_test = generate_genuine_dataset(
-            data_dir / "genuine_test_id.h5",
-            grid=grid,
-            n=sizes["n_test_id"],
-            base_seed=300_000,
-            length_scale=id_p["length_scale"],
-            variance=id_p["variance"],
-            a_min=id_p["a_min"],
-            a_max=id_p["a_max"],
-            family="id_test",
-        )
-        gen_ood = generate_genuine_dataset(
-            data_dir / "genuine_ood.h5",
-            grid=grid,
-            n=sizes["n_ood"],
-            base_seed=400_000,
-            length_scale=ood_p["length_scale"],
-            variance=ood_p["variance"],
-            a_min=ood_p["a_min"],
-            a_max=ood_p["a_max"],
-            family="ood_corr",
-        )
-        mfg = generate_manufactured_dataset(
-            data_dir / "manufactured_mixed.h5",
-            grid=grid,
-            n=sizes["n_manufactured"],
-            base_seed=500_000,
-            family=str(mfg_p.get("primary_family", "matched")),
-            kmax=int(mfg_p["mixed_kmax"]),
+            n=n,
+            base_seed=base_seed,
+            family=family,
+            kmax=kmax,
             n_modes_range=tuple(mfg_p["n_modes_range"]),
             amplitude_range=tuple(mfg_p["amplitude_range"]),
             length_scale=id_p["length_scale"],
@@ -391,22 +345,63 @@ def main() -> int:
             match_l2_norm=match_norm,
             u_norm_range=u_norm_range,
         )
-        generate_manufactured_dataset(
-            data_dir / "manufactured_low.h5",
-            grid=grid,
-            n=min(64, sizes["n_manufactured"]),
-            base_seed=600_000,
-            family="low",
-            kmax=int(mfg_p["low_kmax"]),
-            n_modes_range=tuple(mfg_p["n_modes_range"]),
-            amplitude_range=tuple(mfg_p["amplitude_range"]),
-            length_scale=id_p["length_scale"],
-            variance=id_p["variance"],
-            a_min=id_p["a_min"],
-            a_max=id_p["a_max"],
-            match_l2_norm=match_norm,
-            u_norm_range=u_norm_range,
-        )
+
+    log_status(f"- data: ensure corpus under {data_dir.name}")
+    gen_train = ensure_genuine(
+        "genuine_train",
+        sizes["n_genuine_train_pool"],
+        100_000,
+        "id_train",
+        id_p["length_scale"],
+        id_p["variance"],
+        id_p["a_min"],
+        id_p["a_max"],
+    )
+    gen_val = ensure_genuine(
+        "genuine_val",
+        sizes["n_val"],
+        200_000,
+        "id_val",
+        id_p["length_scale"],
+        id_p["variance"],
+        id_p["a_min"],
+        id_p["a_max"],
+    )
+    gen_test = ensure_genuine(
+        "genuine_test_id",
+        sizes["n_test_id"],
+        300_000,
+        "id_test",
+        id_p["length_scale"],
+        id_p["variance"],
+        id_p["a_min"],
+        id_p["a_max"],
+    )
+    gen_ood = ensure_genuine(
+        "genuine_ood",
+        sizes["n_ood"],
+        400_000,
+        "ood_corr",
+        ood_p["length_scale"],
+        ood_p["variance"],
+        ood_p["a_min"],
+        ood_p["a_max"],
+    )
+    mfg = ensure_manufactured(
+        "manufactured_mixed",
+        sizes["n_manufactured"],
+        500_000,
+        str(mfg_p.get("primary_family", "matched")),
+        int(mfg_p["mixed_kmax"]),
+    )
+    ensure_manufactured(
+        "manufactured_low",
+        min(64, sizes["n_manufactured"]),
+        600_000,
+        "low",
+        int(mfg_p["low_kmax"]),
+    )
+    skip_data = True  # manifests may still be resumed below
 
     man_path = PKG / "manifests" / f"{mode}_{data_ver}_splits.json"
     if man_path.exists() and skip_data:
