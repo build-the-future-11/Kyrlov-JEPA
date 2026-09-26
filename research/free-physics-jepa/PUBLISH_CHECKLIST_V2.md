@@ -1,38 +1,34 @@
 # Study-2 publish checklist (amendment 0003)
 
-Study-1 is archived (negative/null). This checklist is for **winning or honestly reporting Study-2**.
+## Done
 
-## Already done
+- [x] Study-1 archived as negative/null (amendments 0001–0002)
+- [x] Amendment 0003 implemented (matched MMS, norm, same-encoder block-JEPA, fixed shuffle, freeze FT)
+- [x] Smoke v2 gate passed
+- [x] Confirmatory Study-2 complete: **36/36** rows (`confirmatory_v2.csv`)
+- [x] Norm ratio mfg/genuine = **0.978** (fixed)
+- [x] Shuffle mechanism supported = **True** (15.83 > 14.58)
+- [x] Claim gate written (`claim_gate_v2.md`)
+- [x] Figures: `confirmatory_v2_label_efficiency.png`, `confirmatory_v2_synthetic_real_norms.png`
+- [x] `paper/RESULTS_AUTO.md` regenerated
+- [x] Results pasted into `paper/DRAFT.md`
+- [x] Study-2 result note committed
 
-- [x] Autopsy of Study-1 failure modes
-- [x] `PROTOCOL_AMENDMENT_0003_matched_block_jepa.md` frozen
-- [x] Protocol.yaml Study-2 knobs (matched MMS, VICReg, freeze schedule, `u_vs_af`)
-- [x] Same-encoder multi-block LMOP + full transfer
-- [x] Input normalization + matched MMS generation (`data/*_v2/`)
-- [x] Fixed shuffle control
-- [x] Freeze-then-unfreeze fine-tune
-- [x] Smoke v2 gate passed (`smoke_s2_v2_*`, shuffle supported=True)
-- [x] Overnight entrypoint `scripts/overnight_confirmatory_v2.sh`
-- [x] Git SHA baseline (`0256cb6`)
+## Verdict (frozen)
 
-## Do now
+**`FALSIFIES_HYPOTHESIS`**
 
-- [ ] Run confirmatory Study-2 matrix (fresh `data/confirmatory_v2/`)
-- [ ] Confirm matrix complete: **36/36** eval rows in `results/tables/confirmatory_v2.csv`
-- [ ] Confirm shuffle gate written (`runs/.../shuffled_control.json`)
-- [ ] Read `results/tables/claim_gate_v2.md` verdict
-- [ ] Confirm figures: `figures/confirmatory_v2_label_efficiency.png`
-- [ ] Confirm `paper/RESULTS_AUTO.md` regenerated
-- [ ] Record git SHA + run id in overnight status
-- [ ] Commit confirmatory tables / claim gate (not huge `.pt` / `.h5`)
+MML beats LMOP on relative \(L_2\) in every cell (ID/OOD × N=25/100). No LMOP CI win. Hypothesis that LMOP transfers better than MML is **not supported**.
 
-## Morning / publish writeup
+## Remaining (author only — optional polish)
 
-- [ ] Paste `RESULTS_AUTO.md` into `paper/DRAFT.md` §Results
-- [ ] State Study-1 as negative archive; Study-2 as amended protocol
-- [ ] Use claim-gate language only (support / falsify / inconclusive)
-- [ ] Do **not** cite smoke or Krylov-JEPA as LMOP evidence
+- [ ] Abstract/intro prose polish in `paper/DRAFT.md`
+- [ ] Choose venue / format (arXiv note vs workshop)
+- [ ] Optional: plot Study-1 vs Study-2 side-by-side as ablation narrative
+- [ ] Do **not** run more seeds hoping for a win without a new amendment
 
-## Success criteria (unchanged)
+## Do not
 
-LMOP beats MML on relative \(L_2\) with non-overlapping seed CIs at \(N=25\) and/or \(N=100\`, **and** shuffled loss > correct loss.
+- Cite smoke as evidence
+- Cite Krylov-JEPA as LMOP support
+- Claim novelty of MMS / FNO / JEPA
