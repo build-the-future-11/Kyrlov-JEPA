@@ -59,15 +59,17 @@ def build_pretrain_model(
     img_size = int(cfg.get("img_size", 32))
     size = cfg.get("model_size", "default")
     ema = float(cfg.get("ema_momentum", 0.996))
+    overrides = dict(cfg.get("encoder_overrides", {}))
     if method == "field":
         return FieldJEPA(
             img_size=img_size,
             size=size,
             mask_ratio=float(cfg.get("mask_ratio", 0.4)),
             ema_momentum=ema,
+            **overrides,
         )
     if method == "operator":
-        return OperatorJEPA(img_size=img_size, size=size, ema_momentum=ema)
+        return OperatorJEPA(img_size=img_size, size=size, ema_momentum=ema, **overrides)
     if method == "krylov":
         return KrylovJEPA(
             img_size=img_size,
@@ -76,6 +78,8 @@ def build_pretrain_model(
             ema_momentum=ema,
             lambda_coeff=float(cfg.get("lambda_coeff", 0.0)),
             remove_v=bool(cfg.get("remove_v", False)),
+            normalize_latents=bool(cfg.get("normalize_latents", True)),
+            **overrides,
         )
     raise ValueError(f"Unknown method {method}")
 
@@ -89,6 +93,8 @@ def pretrain(
 ) -> dict[str, Any]:
     """Run a JEPA pretraining job and write artifacts under ``run_dir``."""
     cfg = dict(config or {})
+    if int(cfg.get("target_update_frequency", 1)) < 1:
+        raise ValueError("target_update_frequency must be positive")
     seed = int(cfg.get("seed", 0))
     seed_everything(seed)
     device = get_device(cfg.get("device", "auto"))
@@ -110,6 +116,9 @@ def pretrain(
         num_workers=int(cfg.get("num_workers", 0)),
         drop_last=True,
     )
+    if len(loader) == 0 or int(cfg.get("max_steps", 500)) < 1:
+        dataset.close()
+        raise ValueError("Pretraining needs a full batch and at least one step")
     grid = GridSpec(n_interior=int(cfg.get("img_size", dataset.ny)))
     model = build_pretrain_model(method, cfg).to(device)
     # Exclude EMA target params from optimizer (already requires_grad=False)
@@ -181,7 +190,8 @@ def pretrain(
             opt.step()
             if sched is not None:
                 sched.step()
-            model.update_target()
+            if (step + 1) % int(cfg.get("target_update_frequency", 1)) == 0:
+                model.update_target()
 
             losses.append(float(loss.item()))
             step += 1
@@ -196,6 +206,10 @@ def pretrain(
         "mean_loss": float(np.mean(losses)) if losses else float("nan"),
         "steps": step,
         "elapsed_sec": elapsed,
+        "loss_history": losses,
+        "n_params_total": sum(p.numel() for p in model.parameters()),
+        "n_params_trainable": sum(p.numel() for p in model.parameters() if p.requires_grad),
+        "encoder_parameters": sum(p.numel() for p in model.potential_encoder().parameters()),
     }
     save_checkpoint(
         run_path / "checkpoint_last.pt",

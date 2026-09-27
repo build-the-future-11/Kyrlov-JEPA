@@ -34,6 +34,7 @@ def test_end_to_end_smoke(tmp_path: Path):
         subset_sizes=[4],
         split_seed=0,
         manifest_name="e2e_test",
+        manifest_directory=tmp_path,
         id_base_seed=9000,
         ood_base_seed=9100,
     )

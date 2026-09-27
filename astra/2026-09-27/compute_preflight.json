@@ -1,0 +1,25 @@
+{
+  "observed_date": "2026-09-27",
+  "start_head": "22e202d79cb483ad280e522af35e48469fc6c8ed",
+  "sandbox_mps_available": false,
+  "initial_disk_free_internal": "9.2 GiB",
+  "initial_disk_free_project": "607 GiB",
+  "observed_concurrent_research_processes": [
+    {
+      "pid": 28717,
+      "task": "Adaptive-Theory-Geometry misspecification",
+      "cpu_percent": 67.3
+    },
+    {
+      "pid": 28875,
+      "task": "A-PEN validation benchmark",
+      "cpu_percent": 73.6
+    },
+    {
+      "pid": 29306,
+      "task": "resolution-risk robustness analysis",
+      "cpu_percent": 70.4
+    }
+  ],
+  "decision": "No additional heavy multi-hour campaign; bounded sequential CPU verification only. Snapshot is historical, not a live monitor."
+}

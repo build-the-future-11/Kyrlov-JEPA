@@ -1,0 +1,453 @@
+{
+  "complete": false,
+  "rows": [
+    {
+      "fidelity": 0.7613788879501991,
+      "metrics": "eval_scratch_n4_s11/test_ID/metrics.json",
+      "n_labels": 4,
+      "seed": 11,
+      "split": "test_ID",
+      "variant": "scratch"
+    },
+    {
+      "fidelity": 0.7826482139755868,
+      "metrics": "eval_scratch_n4_s11/test_OOD_narrow/metrics.json",
+      "n_labels": 4,
+      "seed": 11,
+      "split": "test_OOD_narrow",
+      "variant": "scratch"
+    },
+    {
+      "fidelity": 0.7495870830587934,
+      "metrics": "eval_scratch_n4_s11/test_OOD_strong/metrics.json",
+      "n_labels": 4,
+      "seed": 11,
+      "split": "test_OOD_strong",
+      "variant": "scratch"
+    },
+    {
+      "fidelity": 0.6665538343168482,
+      "metrics": "eval_scratch_n4_s11/test_OOD_double/metrics.json",
+      "n_labels": 4,
+      "seed": 11,
+      "split": "test_OOD_double",
+      "variant": "scratch"
+    },
+    {
+      "fidelity": 0.741412065229598,
+      "metrics": "eval_field_n4_s11/test_ID/metrics.json",
+      "n_labels": 4,
+      "seed": 11,
+      "split": "test_ID",
+      "variant": "field"
+    },
+    {
+      "fidelity": 0.764340536971412,
+      "metrics": "eval_field_n4_s11/test_OOD_narrow/metrics.json",
+      "n_labels": 4,
+      "seed": 11,
+      "split": "test_OOD_narrow",
+      "variant": "field"
+    },
+    {
+      "fidelity": 0.7011985454280427,
+      "metrics": "eval_field_n4_s11/test_OOD_strong/metrics.json",
+      "n_labels": 4,
+      "seed": 11,
+      "split": "test_OOD_strong",
+      "variant": "field"
+    },
+    {
+      "fidelity": 0.6478678960602919,
+      "metrics": "eval_field_n4_s11/test_OOD_double/metrics.json",
+      "n_labels": 4,
+      "seed": 11,
+      "split": "test_OOD_double",
+      "variant": "field"
+    },
+    {
+      "fidelity": 0.7401764373066491,
+      "metrics": "eval_operator_n4_s11/test_ID/metrics.json",
+      "n_labels": 4,
+      "seed": 11,
+      "split": "test_ID",
+      "variant": "operator"
+    },
+    {
+      "fidelity": 0.7625910529377713,
+      "metrics": "eval_operator_n4_s11/test_OOD_narrow/metrics.json",
+      "n_labels": 4,
+      "seed": 11,
+      "split": "test_OOD_narrow",
+      "variant": "operator"
+    },
+    {
+      "fidelity": 0.6946964121162322,
+      "metrics": "eval_operator_n4_s11/test_OOD_strong/metrics.json",
+      "n_labels": 4,
+      "seed": 11,
+      "split": "test_OOD_strong",
+      "variant": "operator"
+    },
+    {
+      "fidelity": 0.64424351999653,
+      "metrics": "eval_operator_n4_s11/test_OOD_double/metrics.json",
+      "n_labels": 4,
+      "seed": 11,
+      "split": "test_OOD_double",
+      "variant": "operator"
+    },
+    {
+      "fidelity": 0.7400791830221358,
+      "metrics": "eval_k1_n4_s11/test_ID/metrics.json",
+      "n_labels": 4,
+      "seed": 11,
+      "split": "test_ID",
+      "variant": "k1"
+    },
+    {
+      "fidelity": 0.7662551282228802,
+      "metrics": "eval_k1_n4_s11/test_OOD_narrow/metrics.json",
+      "n_labels": 4,
+      "seed": 11,
+      "split": "test_OOD_narrow",
+      "variant": "k1"
+    },
+    {
+      "fidelity": 0.7049546977766461,
+      "metrics": "eval_k1_n4_s11/test_OOD_strong/metrics.json",
+      "n_labels": 4,
+      "seed": 11,
+      "split": "test_OOD_strong",
+      "variant": "k1"
+    },
+    {
+      "fidelity": 0.6486699097242292,
+      "metrics": "eval_k1_n4_s11/test_OOD_double/metrics.json",
+      "n_labels": 4,
+      "seed": 11,
+      "split": "test_OOD_double",
+      "variant": "k1"
+    },
+    {
+      "fidelity": 0.741004007807614,
+      "metrics": "eval_k2_n4_s11/test_ID/metrics.json",
+      "n_labels": 4,
+      "seed": 11,
+      "split": "test_ID",
+      "variant": "k2"
+    },
+    {
+      "fidelity": 0.7657638489293053,
+      "metrics": "eval_k2_n4_s11/test_OOD_narrow/metrics.json",
+      "n_labels": 4,
+      "seed": 11,
+      "split": "test_OOD_narrow",
+      "variant": "k2"
+    },
+    {
+      "fidelity": 0.705350504590377,
+      "metrics": "eval_k2_n4_s11/test_OOD_strong/metrics.json",
+      "n_labels": 4,
+      "seed": 11,
+      "split": "test_OOD_strong",
+      "variant": "k2"
+    },
+    {
+      "fidelity": 0.6485408110991164,
+      "metrics": "eval_k2_n4_s11/test_OOD_double/metrics.json",
+      "n_labels": 4,
+      "seed": 11,
+      "split": "test_OOD_double",
+      "variant": "k2"
+    },
+    {
+      "fidelity": 0.7434326122779795,
+      "metrics": "eval_k3_n4_s11/test_ID/metrics.json",
+      "n_labels": 4,
+      "seed": 11,
+      "split": "test_ID",
+      "variant": "k3"
+    },
+    {
+      "fidelity": 0.7665342319578003,
+      "metrics": "eval_k3_n4_s11/test_OOD_narrow/metrics.json",
+      "n_labels": 4,
+      "seed": 11,
+      "split": "test_OOD_narrow",
+      "variant": "k3"
+    },
+    {
+      "fidelity": 0.704994258906221,
+      "metrics": "eval_k3_n4_s11/test_OOD_strong/metrics.json",
+      "n_labels": 4,
+      "seed": 11,
+      "split": "test_OOD_strong",
+      "variant": "k3"
+    },
+    {
+      "fidelity": 0.6462699519397965,
+      "metrics": "eval_k3_n4_s11/test_OOD_double/metrics.json",
+      "n_labels": 4,
+      "seed": 11,
+      "split": "test_OOD_double",
+      "variant": "k3"
+    },
+    {
+      "fidelity": 0.7413759027278539,
+      "metrics": "eval_shuffle_n4_s11/test_ID/metrics.json",
+      "n_labels": 4,
+      "seed": 11,
+      "split": "test_ID",
+      "variant": "shuffle"
+    },
+    {
+      "fidelity": 0.7661263594878907,
+      "metrics": "eval_shuffle_n4_s11/test_OOD_narrow/metrics.json",
+      "n_labels": 4,
+      "seed": 11,
+      "split": "test_OOD_narrow",
+      "variant": "shuffle"
+    },
+    {
+      "fidelity": 0.7067843277576307,
+      "metrics": "eval_shuffle_n4_s11/test_OOD_strong/metrics.json",
+      "n_labels": 4,
+      "seed": 11,
+      "split": "test_OOD_strong",
+      "variant": "shuffle"
+    },
+    {
+      "fidelity": 0.6491462854777501,
+      "metrics": "eval_shuffle_n4_s11/test_OOD_double/metrics.json",
+      "n_labels": 4,
+      "seed": 11,
+      "split": "test_OOD_double",
+      "variant": "shuffle"
+    },
+    {
+      "fidelity": 0.7421837654782848,
+      "metrics": "eval_remove_v_n4_s11/test_ID/metrics.json",
+      "n_labels": 4,
+      "seed": 11,
+      "split": "test_ID",
+      "variant": "remove_v"
+    },
+    {
+      "fidelity": 0.7637508583545749,
+      "metrics": "eval_remove_v_n4_s11/test_OOD_narrow/metrics.json",
+      "n_labels": 4,
+      "seed": 11,
+      "split": "test_OOD_narrow",
+      "variant": "remove_v"
+    },
+    {
+      "fidelity": 0.6992645343845576,
+      "metrics": "eval_remove_v_n4_s11/test_OOD_strong/metrics.json",
+      "n_labels": 4,
+      "seed": 11,
+      "split": "test_OOD_strong",
+      "variant": "remove_v"
+    },
+    {
+      "fidelity": 0.6467879474181355,
+      "metrics": "eval_remove_v_n4_s11/test_OOD_double/metrics.json",
+      "n_labels": 4,
+      "seed": 11,
+      "split": "test_OOD_double",
+      "variant": "remove_v"
+    },
+    {
+      "fidelity": 0.7410186435747504,
+      "metrics": "eval_coeff_n4_s11/test_ID/metrics.json",
+      "n_labels": 4,
+      "seed": 11,
+      "split": "test_ID",
+      "variant": "coeff"
+    },
+    {
+      "fidelity": 0.7657668187591764,
+      "metrics": "eval_coeff_n4_s11/test_OOD_narrow/metrics.json",
+      "n_labels": 4,
+      "seed": 11,
+      "split": "test_OOD_narrow",
+      "variant": "coeff"
+    },
+    {
+      "fidelity": 0.7052145898327278,
+      "metrics": "eval_coeff_n4_s11/test_OOD_strong/metrics.json",
+      "n_labels": 4,
+      "seed": 11,
+      "split": "test_OOD_strong",
+      "variant": "coeff"
+    },
+    {
+      "fidelity": 0.648506067859177,
+      "metrics": "eval_coeff_n4_s11/test_OOD_double/metrics.json",
+      "n_labels": 4,
+      "seed": 11,
+      "split": "test_OOD_double",
+      "variant": "coeff"
+    },
+    {
+      "fidelity": 0.7410045751831442,
+      "metrics": "eval_ema4_n4_s11/test_ID/metrics.json",
+      "n_labels": 4,
+      "seed": 11,
+      "split": "test_ID",
+      "variant": "ema4"
+    },
+    {
+      "fidelity": 0.7657654407643312,
+      "metrics": "eval_ema4_n4_s11/test_OOD_narrow/metrics.json",
+      "n_labels": 4,
+      "seed": 11,
+      "split": "test_OOD_narrow",
+      "variant": "ema4"
+    },
+    {
+      "fidelity": 0.7053496527722698,
+      "metrics": "eval_ema4_n4_s11/test_OOD_strong/metrics.json",
+      "n_labels": 4,
+      "seed": 11,
+      "split": "test_OOD_strong",
+      "variant": "ema4"
+    },
+    {
+      "fidelity": 0.6485416282720115,
+      "metrics": "eval_ema4_n4_s11/test_OOD_double/metrics.json",
+      "n_labels": 4,
+      "seed": 11,
+      "split": "test_OOD_double",
+      "variant": "ema4"
+    },
+    {
+      "fidelity": 0.7410120455396811,
+      "metrics": "eval_powers_n4_s11/test_ID/metrics.json",
+      "n_labels": 4,
+      "seed": 11,
+      "split": "test_ID",
+      "variant": "powers"
+    },
+    {
+      "fidelity": 0.7656691119579271,
+      "metrics": "eval_powers_n4_s11/test_OOD_narrow/metrics.json",
+      "n_labels": 4,
+      "seed": 11,
+      "split": "test_OOD_narrow",
+      "variant": "powers"
+    },
+    {
+      "fidelity": 0.7059342796774316,
+      "metrics": "eval_powers_n4_s11/test_OOD_strong/metrics.json",
+      "n_labels": 4,
+      "seed": 11,
+      "split": "test_OOD_strong",
+      "variant": "powers"
+    },
+    {
+      "fidelity": 0.6489451940522966,
+      "metrics": "eval_powers_n4_s11/test_OOD_double/metrics.json",
+      "n_labels": 4,
+      "seed": 11,
+      "split": "test_OOD_double",
+      "variant": "powers"
+    },
+    {
+      "fidelity": 0.7407479118826279,
+      "metrics": "eval_no_latent_norm_n4_s11/test_ID/metrics.json",
+      "n_labels": 4,
+      "seed": 11,
+      "split": "test_ID",
+      "variant": "no_latent_norm"
+    },
+    {
+      "fidelity": 0.7648711686177436,
+      "metrics": "eval_no_latent_norm_n4_s11/test_OOD_narrow/metrics.json",
+      "n_labels": 4,
+      "seed": 11,
+      "split": "test_OOD_narrow",
+      "variant": "no_latent_norm"
+    },
+    {
+      "fidelity": 0.7013434199547677,
+      "metrics": "eval_no_latent_norm_n4_s11/test_OOD_strong/metrics.json",
+      "n_labels": 4,
+      "seed": 11,
+      "split": "test_OOD_strong",
+      "variant": "no_latent_norm"
+    },
+    {
+      "fidelity": 0.6471979560018672,
+      "metrics": "eval_no_latent_norm_n4_s11/test_OOD_double/metrics.json",
+      "n_labels": 4,
+      "seed": 11,
+      "split": "test_OOD_double",
+      "variant": "no_latent_norm"
+    },
+    {
+      "fidelity": 0.741486051465593,
+      "metrics": "eval_half_steps_n4_s11/test_ID/metrics.json",
+      "n_labels": 4,
+      "seed": 11,
+      "split": "test_ID",
+      "variant": "half_steps"
+    },
+    {
+      "fidelity": 0.7646587206890925,
+      "metrics": "eval_half_steps_n4_s11/test_OOD_narrow/metrics.json",
+      "n_labels": 4,
+      "seed": 11,
+      "split": "test_OOD_narrow",
+      "variant": "half_steps"
+    },
+    {
+      "fidelity": 0.7018145763381605,
+      "metrics": "eval_half_steps_n4_s11/test_OOD_strong/metrics.json",
+      "n_labels": 4,
+      "seed": 11,
+      "split": "test_OOD_strong",
+      "variant": "half_steps"
+    },
+    {
+      "fidelity": 0.6477612706836215,
+      "metrics": "eval_half_steps_n4_s11/test_OOD_double/metrics.json",
+      "n_labels": 4,
+      "seed": 11,
+      "split": "test_OOD_double",
+      "variant": "half_steps"
+    },
+    {
+      "fidelity": 0.4330843832205784,
+      "metrics": "eval_half_dimension_n4_s11/test_ID/metrics.json",
+      "n_labels": 4,
+      "seed": 11,
+      "split": "test_ID",
+      "variant": "half_dimension"
+    },
+    {
+      "fidelity": 0.5470643633502532,
+      "metrics": "eval_half_dimension_n4_s11/test_OOD_narrow/metrics.json",
+      "n_labels": 4,
+      "seed": 11,
+      "split": "test_OOD_narrow",
+      "variant": "half_dimension"
+    },
+    {
+      "fidelity": 0.4582000340494685,
+      "metrics": "eval_half_dimension_n4_s11/test_OOD_strong/metrics.json",
+      "n_labels": 4,
+      "seed": 11,
+      "split": "test_OOD_strong",
+      "variant": "half_dimension"
+    },
+    {
+      "fidelity": 0.518934532037093,
+      "metrics": "eval_half_dimension_n4_s11/test_OOD_double/metrics.json",
+      "n_labels": 4,
+      "seed": 11,
+      "split": "test_OOD_double",
+      "variant": "half_dimension"
+    }
+  ]
+}

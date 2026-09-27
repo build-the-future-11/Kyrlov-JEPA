@@ -1,0 +1,79 @@
+{
+  "data_path": "/Volumes/PRO-BLADE/Kyrlov-JEPA/spectral-krylov-jepa/experiments/raw/astra_controls_verification_20260927/labeled.h5",
+  "family_by_index": [
+    "id_gaussian_mixture",
+    "id_gaussian_mixture",
+    "id_gaussian_mixture",
+    "id_gaussian_mixture",
+    "id_gaussian_mixture",
+    "id_gaussian_mixture",
+    "id_gaussian_mixture",
+    "id_gaussian_mixture",
+    "id_gaussian_mixture",
+    "id_gaussian_mixture",
+    "ood_narrow",
+    "ood_narrow",
+    "ood_strong",
+    "ood_strong",
+    "ood_double",
+    "ood_double"
+  ],
+  "grid": {
+    "n_interior": 8,
+    "x_max": 1.0,
+    "x_min": 0.0,
+    "y_max": 1.0,
+    "y_min": 0.0
+  },
+  "id_base_seed": 70000,
+  "layout": {
+    "n_ood_each": 2,
+    "n_test_id": 2,
+    "n_train": 6,
+    "n_val": 2,
+    "subset_sizes": [
+      4
+    ]
+  },
+  "n_total": 16,
+  "ood_base_seed": 80000,
+  "seed": 2026,
+  "splits": {
+    "test_ID": [
+      7,
+      4
+    ],
+    "test_OOD_double": [
+      14,
+      15
+    ],
+    "test_OOD_narrow": [
+      10,
+      11
+    ],
+    "test_OOD_strong": [
+      12,
+      13
+    ],
+    "train_pool": [
+      1,
+      9,
+      0,
+      6,
+      8,
+      3
+    ],
+    "validation": [
+      5,
+      2
+    ]
+  },
+  "subsets": {
+    "n4": [
+      0,
+      3,
+      6,
+      9
+    ]
+  }
+}

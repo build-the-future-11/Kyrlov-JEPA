@@ -1,0 +1,96 @@
+{
+  "bootstrap_fidelity": {
+    "alpha": 0.05,
+    "ci_high": 0.7695434803016831,
+    "ci_low": 0.7124645353135449,
+    "estimate": 0.741004007807614,
+    "n": 2,
+    "n_resamples": 50,
+    "statistic": "mean"
+  },
+  "n": 2,
+  "per_example": [
+    {
+      "fidelity": 0.7124645353135449,
+      "index": 7,
+      "infidelity": 0.2875354646864551,
+      "rayleigh_energy": 48.2621863237464,
+      "rel_energy_error": 0.14820581681194028,
+      "rel_rayleigh_energy_error": 4.093610220094652,
+      "residual_rayleigh": 78.14138716263199,
+      "residual_rel": 87.87163895564878,
+      "residual_true_e": 87.2382873393985,
+      "sign_aligned_rel_l2": 0.5584333787260568
+    },
+    {
+      "fidelity": 0.7695434803016831,
+      "index": 4,
+      "infidelity": 0.23045651969831693,
+      "rayleigh_energy": 40.95395371246664,
+      "rel_energy_error": 0.09878559990298523,
+      "rel_rayleigh_energy_error": 3.607492677055058,
+      "residual_rayleigh": 68.50571888421614,
+      "residual_rel": 76.0151636530985,
+      "residual_true_e": 75.63876877509819,
+      "sign_aligned_rel_l2": 0.495507257765608
+    }
+  ],
+  "split": "test_ID",
+  "summary": {
+    "fidelity_mean": 0.741004007807614,
+    "fidelity_std": 0.028539472494069074,
+    "fidelity_values": [
+      0.7124645353135449,
+      0.7695434803016831
+    ],
+    "infidelity_mean": 0.258995992192386,
+    "infidelity_std": 0.028539472494069074,
+    "infidelity_values": [
+      0.2875354646864551,
+      0.23045651969831693
+    ],
+    "n": 2,
+    "rayleigh_energy_mean": 44.60807001810652,
+    "rayleigh_energy_std": 3.654116305639878,
+    "rayleigh_energy_values": [
+      48.2621863237464,
+      40.95395371246664
+    ],
+    "rel_energy_error_mean": 0.12349570835746276,
+    "rel_energy_error_std": 0.024710108454477527,
+    "rel_energy_error_values": [
+      0.14820581681194028,
+      0.09878559990298523
+    ],
+    "rel_rayleigh_energy_error_mean": 3.850551448574855,
+    "rel_rayleigh_energy_error_std": 0.24305877151979693,
+    "rel_rayleigh_energy_error_values": [
+      4.093610220094652,
+      3.607492677055058
+    ],
+    "residual_rayleigh_mean": 73.32355302342407,
+    "residual_rayleigh_std": 4.817834139207925,
+    "residual_rayleigh_values": [
+      78.14138716263199,
+      68.50571888421614
+    ],
+    "residual_rel_mean": 81.94340130437364,
+    "residual_rel_std": 5.92823765127514,
+    "residual_rel_values": [
+      87.87163895564878,
+      76.0151636530985
+    ],
+    "residual_true_e_mean": 81.43852805724833,
+    "residual_true_e_std": 5.799759282150156,
+    "residual_true_e_values": [
+      87.2382873393985,
+      75.63876877509819
+    ],
+    "sign_aligned_rel_l2_mean": 0.5269703182458324,
+    "sign_aligned_rel_l2_std": 0.0314630604802244,
+    "sign_aligned_rel_l2_values": [
+      0.5584333787260568,
+      0.495507257765608
+    ]
+  }
+}

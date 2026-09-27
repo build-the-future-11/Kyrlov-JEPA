@@ -65,6 +65,7 @@ def generate_labeled_dataset(
     ood_base_seed: int = 30_000,
     residual_tol: float = 1e-5,
     manifest_name: str = "labeled_splits",
+    manifest_directory: Path | None = None,
 ) -> dict[str, Any]:
     """Generate labeled ID + OOD datasets and freeze split manifests."""
     logger = setup_logger("generate_labeled")
@@ -140,7 +141,7 @@ def generate_labeled_dataset(
     manifest["grid"] = grid.to_dict()
     manifest["id_base_seed"] = id_base_seed
     manifest["ood_base_seed"] = ood_base_seed
-    manifest_path = save_dataset_manifest(manifest_name, manifest)
+    manifest_path = save_dataset_manifest(manifest_name, manifest, directory=manifest_directory)
     write_json(manifest, Path(output_path).with_suffix(".manifest.json"))
     logger.info("Wrote labeled dataset to %s; manifest %s", output_path, manifest_path)
     return manifest

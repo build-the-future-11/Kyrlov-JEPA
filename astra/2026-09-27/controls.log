@@ -1,0 +1,216 @@
+2026-09-27 10:13:01,744 | INFO | generate_unlabeled | Generating 8 unlabeled potentials (family=id_gaussian_mixture, grid=8, depth=3, starts=1)
+unlabeled potentials:   0%|          | 0/8 [00:00<?, ?it/s]unlabeled potentials: 100%|██████████| 8/8 [00:00<00:00, 1248.07it/s]
+lanczos:   0%|          | 0/8 [00:00<?, ?it/s]lanczos: 100%|██████████| 8/8 [00:00<00:00, 698.00it/s]
+2026-09-27 10:13:01,818 | INFO | generate_unlabeled | Wrote unlabeled dataset to /Volumes/PRO-BLADE/Kyrlov-JEPA/spectral-krylov-jepa/experiments/raw/astra_controls_verification_20260927/unlabeled.h5
+labeled:id_gaussian_mixture:   0%|          | 0/10 [00:00<?, ?it/s]labeled:id_gaussian_mixture: 100%|██████████| 10/10 [00:00<00:00, 207.46it/s]
+labeled:ood_narrow:   0%|          | 0/2 [00:00<?, ?it/s]labeled:ood_narrow: 100%|██████████| 2/2 [00:00<00:00, 563.37it/s]
+labeled:ood_strong:   0%|          | 0/2 [00:00<?, ?it/s]labeled:ood_strong: 100%|██████████| 2/2 [00:00<00:00, 425.80it/s]
+labeled:ood_double:   0%|          | 0/2 [00:00<?, ?it/s]labeled:ood_double: 100%|██████████| 2/2 [00:00<00:00, 516.09it/s]
+2026-09-27 10:13:01,908 | INFO | generate_labeled | Wrote labeled dataset to /Volumes/PRO-BLADE/Kyrlov-JEPA/spectral-krylov-jepa/experiments/raw/astra_controls_verification_20260927/labeled.h5; manifest /Volumes/PRO-BLADE/Kyrlov-JEPA/spectral-krylov-jepa/experiments/raw/astra_controls_verification_20260927/splits.json
+2026-09-27 10:13:03,982 | INFO | finetune | Train stats: {'energy_mean': 7.720218896865845, 'energy_std': 1.6219287454634577, 'v_center': -1.4488328092708878, 'v_scale': 1.8399998287262598}
+2026-09-27 10:13:04,228 | INFO | finetune | epoch=0 train_loss=1.5179 val_fid=0.5296 val_Eerr=0.1362 score=0.5385
+2026-09-27 10:13:04,270 | INFO | finetune | epoch=1 train_loss=1.1833 val_fid=0.6693 val_Eerr=0.1309 score=0.3962
+2026-09-27 10:13:04,305 | INFO | finetune | Finetune complete: {'loss': 0.7570279836654663, 'fidelity_mean': 0.6692578792572021, 'fidelity_std': 0.06189107894897461, 'rel_energy_error_mean': 0.1309075579047203, 'selection_score': 0.396195899695158}
+eval:test_ID:   0%|          | 0/2 [00:00<?, ?it/s]eval:test_ID: 100%|██████████| 2/2 [00:00<00:00, 152.36it/s]
+2026-09-27 10:13:04,347 | INFO | evaluate | Wrote evaluation to /Volumes/PRO-BLADE/Kyrlov-JEPA/spectral-krylov-jepa/experiments/raw/astra_controls_verification_20260927/eval_scratch_n4_s11/test_ID
+eval:test_OOD_narrow:   0%|          | 0/2 [00:00<?, ?it/s]eval:test_OOD_narrow: 100%|██████████| 2/2 [00:00<00:00, 221.34it/s]
+2026-09-27 10:13:04,387 | INFO | evaluate | Wrote evaluation to /Volumes/PRO-BLADE/Kyrlov-JEPA/spectral-krylov-jepa/experiments/raw/astra_controls_verification_20260927/eval_scratch_n4_s11/test_OOD_narrow
+eval:test_OOD_strong:   0%|          | 0/2 [00:00<?, ?it/s]eval:test_OOD_strong: 100%|██████████| 2/2 [00:00<00:00, 228.92it/s]
+2026-09-27 10:13:04,414 | INFO | evaluate | Wrote evaluation to /Volumes/PRO-BLADE/Kyrlov-JEPA/spectral-krylov-jepa/experiments/raw/astra_controls_verification_20260927/eval_scratch_n4_s11/test_OOD_strong
+eval:test_OOD_double:   0%|          | 0/2 [00:00<?, ?it/s]eval:test_OOD_double: 100%|██████████| 2/2 [00:00<00:00, 197.39it/s]
+2026-09-27 10:13:04,446 | INFO | evaluate | Wrote evaluation to /Volumes/PRO-BLADE/Kyrlov-JEPA/spectral-krylov-jepa/experiments/raw/astra_controls_verification_20260927/eval_scratch_n4_s11/test_OOD_double
+pretrain:field:   0%|          | 0/4 [00:00<?, ?it/s]pretrain:field: 100%|██████████| 4/4 [00:00<00:00, 68.42it/s]
+2026-09-27 10:13:04,585 | INFO | pretrain | Pretrain complete: {'final_loss': 1.436273217201233, 'mean_loss': 1.668869823217392, 'steps': 4, 'elapsed_sec': 0.059916019439697266, 'loss_history': [1.7959699630737305, 1.791733741760254, 1.6515023708343506, 1.436273217201233], 'n_params_total': 212800, 'n_params_trainable': 144128, 'encoder_parameters': 68672}
+2026-09-27 10:13:04,599 | INFO | finetune | Train stats: {'energy_mean': 7.720218896865845, 'energy_std': 1.6219287454634577, 'v_center': -1.4488328092708878, 'v_scale': 1.8399998287262598}
+2026-09-27 10:13:04,605 | INFO | finetune | Loaded pretrained encoder from /Volumes/PRO-BLADE/Kyrlov-JEPA/spectral-krylov-jepa/experiments/raw/astra_controls_verification_20260927/pre_field_s11/encoder.pt
+2026-09-27 10:13:04,677 | INFO | finetune | epoch=0 train_loss=1.5237 val_fid=0.5083 val_Eerr=0.1379 score=0.5607
+2026-09-27 10:13:04,719 | INFO | finetune | epoch=1 train_loss=1.3106 val_fid=0.6444 val_Eerr=0.1317 score=0.4215
+2026-09-27 10:13:04,764 | INFO | finetune | Finetune complete: {'loss': 0.7703556418418884, 'fidelity_mean': 0.6443555355072021, 'fidelity_std': 0.07603985071182251, 'rel_energy_error_mean': 0.13173746690154076, 'selection_score': 0.42151319794356823}
+eval:test_ID:   0%|          | 0/2 [00:00<?, ?it/s]eval:test_ID: 100%|██████████| 2/2 [00:00<00:00, 192.74it/s]
+2026-09-27 10:13:04,796 | INFO | evaluate | Wrote evaluation to /Volumes/PRO-BLADE/Kyrlov-JEPA/spectral-krylov-jepa/experiments/raw/astra_controls_verification_20260927/eval_field_n4_s11/test_ID
+eval:test_OOD_narrow:   0%|          | 0/2 [00:00<?, ?it/s]eval:test_OOD_narrow: 100%|██████████| 2/2 [00:00<00:00, 180.02it/s]
+2026-09-27 10:13:04,827 | INFO | evaluate | Wrote evaluation to /Volumes/PRO-BLADE/Kyrlov-JEPA/spectral-krylov-jepa/experiments/raw/astra_controls_verification_20260927/eval_field_n4_s11/test_OOD_narrow
+eval:test_OOD_strong:   0%|          | 0/2 [00:00<?, ?it/s]eval:test_OOD_strong: 100%|██████████| 2/2 [00:00<00:00, 184.89it/s]
+2026-09-27 10:13:05,064 | INFO | evaluate | Wrote evaluation to /Volumes/PRO-BLADE/Kyrlov-JEPA/spectral-krylov-jepa/experiments/raw/astra_controls_verification_20260927/eval_field_n4_s11/test_OOD_strong
+eval:test_OOD_double:   0%|          | 0/2 [00:00<?, ?it/s]eval:test_OOD_double: 100%|██████████| 2/2 [00:00<00:00, 133.07it/s]
+2026-09-27 10:13:05,104 | INFO | evaluate | Wrote evaluation to /Volumes/PRO-BLADE/Kyrlov-JEPA/spectral-krylov-jepa/experiments/raw/astra_controls_verification_20260927/eval_field_n4_s11/test_OOD_double
+pretrain:operator:   0%|          | 0/4 [00:00<?, ?it/s]pretrain:operator: 100%|██████████| 4/4 [00:00<00:00, 51.59it/s]
+2026-09-27 10:13:05,271 | INFO | pretrain | Pretrain complete: {'final_loss': 1.3574012517929077, 'mean_loss': 1.8789467513561249, 'steps': 4, 'elapsed_sec': 0.07877397537231445, 'loss_history': [2.250636339187622, 2.2677559852600098, 1.63999342918396, 1.3574012517929077], 'n_params_total': 348608, 'n_params_trainable': 279936, 'encoder_parameters': 68672}
+2026-09-27 10:13:05,287 | INFO | finetune | Train stats: {'energy_mean': 7.720218896865845, 'energy_std': 1.6219287454634577, 'v_center': -1.4488328092708878, 'v_scale': 1.8399998287262598}
+2026-09-27 10:13:05,294 | INFO | finetune | Loaded pretrained encoder from /Volumes/PRO-BLADE/Kyrlov-JEPA/spectral-krylov-jepa/experiments/raw/astra_controls_verification_20260927/pre_operator_s11/encoder.pt
+2026-09-27 10:13:05,360 | INFO | finetune | epoch=0 train_loss=1.4899 val_fid=0.5097 val_Eerr=0.1384 score=0.5595
+2026-09-27 10:13:05,399 | INFO | finetune | epoch=1 train_loss=1.2824 val_fid=0.6446 val_Eerr=0.1333 score=0.4220
+2026-09-27 10:13:05,430 | INFO | finetune | Finetune complete: {'loss': 0.7794933319091797, 'fidelity_mean': 0.644639641046524, 'fidelity_std': 0.07403191924095154, 'rel_energy_error_mean': 0.13331181183457375, 'selection_score': 0.4220162648707628}
+eval:test_ID:   0%|          | 0/2 [00:00<?, ?it/s]eval:test_ID: 100%|██████████| 2/2 [00:00<00:00, 169.69it/s]
+2026-09-27 10:13:05,463 | INFO | evaluate | Wrote evaluation to /Volumes/PRO-BLADE/Kyrlov-JEPA/spectral-krylov-jepa/experiments/raw/astra_controls_verification_20260927/eval_operator_n4_s11/test_ID
+eval:test_OOD_narrow:   0%|          | 0/2 [00:00<?, ?it/s]eval:test_OOD_narrow: 100%|██████████| 2/2 [00:00<00:00, 192.75it/s]
+2026-09-27 10:13:05,494 | INFO | evaluate | Wrote evaluation to /Volumes/PRO-BLADE/Kyrlov-JEPA/spectral-krylov-jepa/experiments/raw/astra_controls_verification_20260927/eval_operator_n4_s11/test_OOD_narrow
+eval:test_OOD_strong:   0%|          | 0/2 [00:00<?, ?it/s]eval:test_OOD_strong: 100%|██████████| 2/2 [00:00<00:00, 262.15it/s]
+2026-09-27 10:13:05,521 | INFO | evaluate | Wrote evaluation to /Volumes/PRO-BLADE/Kyrlov-JEPA/spectral-krylov-jepa/experiments/raw/astra_controls_verification_20260927/eval_operator_n4_s11/test_OOD_strong
+eval:test_OOD_double:   0%|          | 0/2 [00:00<?, ?it/s]eval:test_OOD_double: 100%|██████████| 2/2 [00:00<00:00, 192.98it/s]
+2026-09-27 10:13:05,553 | INFO | evaluate | Wrote evaluation to /Volumes/PRO-BLADE/Kyrlov-JEPA/spectral-krylov-jepa/experiments/raw/astra_controls_verification_20260927/eval_operator_n4_s11/test_OOD_double
+pretrain:krylov:   0%|          | 0/4 [00:00<?, ?it/s]pretrain:krylov: 100%|██████████| 4/4 [00:00<00:00, 46.55it/s]
+2026-09-27 10:13:05,735 | INFO | pretrain | Pretrain complete: {'final_loss': 1.27035653591156, 'mean_loss': 1.723450392484665, 'steps': 4, 'elapsed_sec': 0.0870978832244873, 'loss_history': [2.074401378631592, 1.9576196670532227, 1.5914239883422852, 1.27035653591156], 'n_params_total': 352962, 'n_params_trainable': 284290, 'encoder_parameters': 68672}
+2026-09-27 10:13:05,751 | INFO | finetune | Train stats: {'energy_mean': 7.720218896865845, 'energy_std': 1.6219287454634577, 'v_center': -1.4488328092708878, 'v_scale': 1.8399998287262598}
+2026-09-27 10:13:05,757 | INFO | finetune | Loaded pretrained encoder from /Volumes/PRO-BLADE/Kyrlov-JEPA/spectral-krylov-jepa/experiments/raw/astra_controls_verification_20260927/pre_k1_s11/encoder.pt
+2026-09-27 10:13:05,827 | INFO | finetune | epoch=0 train_loss=1.5319 val_fid=0.5114 val_Eerr=0.1400 score=0.5586
+2026-09-27 10:13:05,870 | INFO | finetune | epoch=1 train_loss=1.3140 val_fid=0.6457 val_Eerr=0.1344 score=0.4215
+2026-09-27 10:13:05,913 | INFO | finetune | Finetune complete: {'loss': 0.7846827507019043, 'fidelity_mean': 0.6456740498542786, 'fidelity_std': 0.07139116525650024, 'rel_energy_error_mean': 0.13443292677402496, 'selection_score': 0.4215424135327339}
+eval:test_ID:   0%|          | 0/2 [00:00<?, ?it/s]eval:test_ID: 100%|██████████| 2/2 [00:00<00:00, 107.43it/s]
+2026-09-27 10:13:05,967 | INFO | evaluate | Wrote evaluation to /Volumes/PRO-BLADE/Kyrlov-JEPA/spectral-krylov-jepa/experiments/raw/astra_controls_verification_20260927/eval_k1_n4_s11/test_ID
+eval:test_OOD_narrow:   0%|          | 0/2 [00:00<?, ?it/s]eval:test_OOD_narrow: 100%|██████████| 2/2 [00:00<00:00, 222.62it/s]
+2026-09-27 10:13:05,998 | INFO | evaluate | Wrote evaluation to /Volumes/PRO-BLADE/Kyrlov-JEPA/spectral-krylov-jepa/experiments/raw/astra_controls_verification_20260927/eval_k1_n4_s11/test_OOD_narrow
+eval:test_OOD_strong:   0%|          | 0/2 [00:00<?, ?it/s]eval:test_OOD_strong: 100%|██████████| 2/2 [00:00<00:00, 132.10it/s]
+2026-09-27 10:13:06,033 | INFO | evaluate | Wrote evaluation to /Volumes/PRO-BLADE/Kyrlov-JEPA/spectral-krylov-jepa/experiments/raw/astra_controls_verification_20260927/eval_k1_n4_s11/test_OOD_strong
+eval:test_OOD_double:   0%|          | 0/2 [00:00<?, ?it/s]eval:test_OOD_double: 100%|██████████| 2/2 [00:00<00:00, 164.21it/s]
+2026-09-27 10:13:06,067 | INFO | evaluate | Wrote evaluation to /Volumes/PRO-BLADE/Kyrlov-JEPA/spectral-krylov-jepa/experiments/raw/astra_controls_verification_20260927/eval_k1_n4_s11/test_OOD_double
+pretrain:krylov:   0%|          | 0/4 [00:00<?, ?it/s]pretrain:krylov: 100%|██████████| 4/4 [00:00<00:00, 42.48it/s]
+2026-09-27 10:13:06,277 | INFO | pretrain | Pretrain complete: {'final_loss': 1.7235023975372314, 'mean_loss': 2.236611306667328, 'steps': 4, 'elapsed_sec': 0.09529280662536621, 'loss_history': [2.6164917945861816, 2.55029296875, 2.0561580657958984, 1.7235023975372314], 'n_params_total': 353090, 'n_params_trainable': 284418, 'encoder_parameters': 68672}
+2026-09-27 10:13:06,294 | INFO | finetune | Train stats: {'energy_mean': 7.720218896865845, 'energy_std': 1.6219287454634577, 'v_center': -1.4488328092708878, 'v_scale': 1.8399998287262598}
+2026-09-27 10:13:06,304 | INFO | finetune | Loaded pretrained encoder from /Volumes/PRO-BLADE/Kyrlov-JEPA/spectral-krylov-jepa/experiments/raw/astra_controls_verification_20260927/pre_k2_s11/encoder.pt
+2026-09-27 10:13:06,373 | INFO | finetune | epoch=0 train_loss=1.5458 val_fid=0.5067 val_Eerr=0.1402 score=0.5634
+2026-09-27 10:13:06,413 | INFO | finetune | epoch=1 train_loss=1.3338 val_fid=0.6419 val_Eerr=0.1349 score=0.4256
+2026-09-27 10:13:06,451 | INFO | finetune | Finetune complete: {'loss': 0.7920030355453491, 'fidelity_mean': 0.6418539583683014, 'fidelity_std': 0.07938066124916077, 'rel_energy_error_mean': 0.13494035974144936, 'selection_score': 0.4256162215024233}
+eval:test_ID:   0%|          | 0/2 [00:00<?, ?it/s]eval:test_ID: 100%|██████████| 2/2 [00:00<00:00, 200.18it/s]
+2026-09-27 10:13:06,486 | INFO | evaluate | Wrote evaluation to /Volumes/PRO-BLADE/Kyrlov-JEPA/spectral-krylov-jepa/experiments/raw/astra_controls_verification_20260927/eval_k2_n4_s11/test_ID
+eval:test_OOD_narrow:   0%|          | 0/2 [00:00<?, ?it/s]eval:test_OOD_narrow: 100%|██████████| 2/2 [00:00<00:00, 190.53it/s]
+2026-09-27 10:13:06,518 | INFO | evaluate | Wrote evaluation to /Volumes/PRO-BLADE/Kyrlov-JEPA/spectral-krylov-jepa/experiments/raw/astra_controls_verification_20260927/eval_k2_n4_s11/test_OOD_narrow
+eval:test_OOD_strong:   0%|          | 0/2 [00:00<?, ?it/s]eval:test_OOD_strong: 100%|██████████| 2/2 [00:00<00:00, 188.04it/s]
+2026-09-27 10:13:06,551 | INFO | evaluate | Wrote evaluation to /Volumes/PRO-BLADE/Kyrlov-JEPA/spectral-krylov-jepa/experiments/raw/astra_controls_verification_20260927/eval_k2_n4_s11/test_OOD_strong
+eval:test_OOD_double:   0%|          | 0/2 [00:00<?, ?it/s]eval:test_OOD_double: 100%|██████████| 2/2 [00:00<00:00, 188.27it/s]
+2026-09-27 10:13:06,580 | INFO | evaluate | Wrote evaluation to /Volumes/PRO-BLADE/Kyrlov-JEPA/spectral-krylov-jepa/experiments/raw/astra_controls_verification_20260927/eval_k2_n4_s11/test_OOD_double
+pretrain:krylov:   0%|          | 0/4 [00:00<?, ?it/s]pretrain:krylov: 100%|██████████| 4/4 [00:00<00:00, 46.49it/s]
+2026-09-27 10:13:06,755 | INFO | pretrain | Pretrain complete: {'final_loss': 1.2355742454528809, 'mean_loss': 1.5300275683403015, 'steps': 4, 'elapsed_sec': 0.08756804466247559, 'loss_history': [1.7998721599578857, 1.6443392038345337, 1.4403246641159058, 1.2355742454528809], 'n_params_total': 353218, 'n_params_trainable': 284546, 'encoder_parameters': 68672}
+2026-09-27 10:13:06,769 | INFO | finetune | Train stats: {'energy_mean': 7.720218896865845, 'energy_std': 1.6219287454634577, 'v_center': -1.4488328092708878, 'v_scale': 1.8399998287262598}
+2026-09-27 10:13:06,777 | INFO | finetune | Loaded pretrained encoder from /Volumes/PRO-BLADE/Kyrlov-JEPA/spectral-krylov-jepa/experiments/raw/astra_controls_verification_20260927/pre_k3_s11/encoder.pt
+2026-09-27 10:13:06,847 | INFO | finetune | epoch=0 train_loss=1.5417 val_fid=0.5147 val_Eerr=0.1405 score=0.5556
+2026-09-27 10:13:06,881 | INFO | finetune | epoch=1 train_loss=1.3179 val_fid=0.6452 val_Eerr=0.1345 score=0.4220
+2026-09-27 10:13:06,913 | INFO | finetune | Finetune complete: {'loss': 0.7858585119247437, 'fidelity_mean': 0.6452198326587677, 'fidelity_std': 0.07350602746009827, 'rel_energy_error_mean': 0.13452187553048134, 'selection_score': 0.42204110510647297}
+eval:test_ID:   0%|          | 0/2 [00:00<?, ?it/s]eval:test_ID: 100%|██████████| 2/2 [00:00<00:00, 282.32it/s]
+2026-09-27 10:13:06,944 | INFO | evaluate | Wrote evaluation to /Volumes/PRO-BLADE/Kyrlov-JEPA/spectral-krylov-jepa/experiments/raw/astra_controls_verification_20260927/eval_k3_n4_s11/test_ID
+eval:test_OOD_narrow:   0%|          | 0/2 [00:00<?, ?it/s]eval:test_OOD_narrow: 100%|██████████| 2/2 [00:00<00:00, 282.25it/s]
+2026-09-27 10:13:06,970 | INFO | evaluate | Wrote evaluation to /Volumes/PRO-BLADE/Kyrlov-JEPA/spectral-krylov-jepa/experiments/raw/astra_controls_verification_20260927/eval_k3_n4_s11/test_OOD_narrow
+eval:test_OOD_strong:   0%|          | 0/2 [00:00<?, ?it/s]eval:test_OOD_strong: 100%|██████████| 2/2 [00:00<00:00, 202.49it/s]
+2026-09-27 10:13:07,001 | INFO | evaluate | Wrote evaluation to /Volumes/PRO-BLADE/Kyrlov-JEPA/spectral-krylov-jepa/experiments/raw/astra_controls_verification_20260927/eval_k3_n4_s11/test_OOD_strong
+eval:test_OOD_double:   0%|          | 0/2 [00:00<?, ?it/s]eval:test_OOD_double: 100%|██████████| 2/2 [00:00<00:00, 214.50it/s]
+2026-09-27 10:13:07,030 | INFO | evaluate | Wrote evaluation to /Volumes/PRO-BLADE/Kyrlov-JEPA/spectral-krylov-jepa/experiments/raw/astra_controls_verification_20260927/eval_k3_n4_s11/test_OOD_double
+pretrain:krylov:   0%|          | 0/4 [00:00<?, ?it/s]pretrain:krylov: 100%|██████████| 4/4 [00:00<00:00, 44.46it/s]
+2026-09-27 10:13:07,216 | INFO | pretrain | Pretrain complete: {'final_loss': 1.7561378479003906, 'mean_loss': 2.223450183868408, 'steps': 4, 'elapsed_sec': 0.09094476699829102, 'loss_history': [2.64743971824646, 2.4725492000579834, 2.017673969268799, 1.7561378479003906], 'n_params_total': 353090, 'n_params_trainable': 284418, 'encoder_parameters': 68672}
+2026-09-27 10:13:07,233 | INFO | finetune | Train stats: {'energy_mean': 7.720218896865845, 'energy_std': 1.6219287454634577, 'v_center': -1.4488328092708878, 'v_scale': 1.8399998287262598}
+2026-09-27 10:13:07,239 | INFO | finetune | Loaded pretrained encoder from /Volumes/PRO-BLADE/Kyrlov-JEPA/spectral-krylov-jepa/experiments/raw/astra_controls_verification_20260927/pre_shuffle_s11/encoder.pt
+2026-09-27 10:13:07,299 | INFO | finetune | epoch=0 train_loss=1.5449 val_fid=0.5075 val_Eerr=0.1404 score=0.5627
+2026-09-27 10:13:07,340 | INFO | finetune | epoch=1 train_loss=1.3323 val_fid=0.6426 val_Eerr=0.1352 score=0.4250
+2026-09-27 10:13:07,382 | INFO | finetune | Finetune complete: {'loss': 0.7929421663284302, 'fidelity_mean': 0.6425853669643402, 'fidelity_std': 0.07831409573554993, 'rel_energy_error_mean': 0.1352154165506363, 'selection_score': 0.42502234131097794}
+eval:test_ID:   0%|          | 0/2 [00:00<?, ?it/s]eval:test_ID: 100%|██████████| 2/2 [00:00<00:00, 153.72it/s]
+2026-09-27 10:13:07,426 | INFO | evaluate | Wrote evaluation to /Volumes/PRO-BLADE/Kyrlov-JEPA/spectral-krylov-jepa/experiments/raw/astra_controls_verification_20260927/eval_shuffle_n4_s11/test_ID
+eval:test_OOD_narrow:   0%|          | 0/2 [00:00<?, ?it/s]eval:test_OOD_narrow: 100%|██████████| 2/2 [00:00<00:00, 213.86it/s]
+2026-09-27 10:13:07,457 | INFO | evaluate | Wrote evaluation to /Volumes/PRO-BLADE/Kyrlov-JEPA/spectral-krylov-jepa/experiments/raw/astra_controls_verification_20260927/eval_shuffle_n4_s11/test_OOD_narrow
+eval:test_OOD_strong:   0%|          | 0/2 [00:00<?, ?it/s]eval:test_OOD_strong: 100%|██████████| 2/2 [00:00<00:00, 252.62it/s]
+2026-09-27 10:13:07,485 | INFO | evaluate | Wrote evaluation to /Volumes/PRO-BLADE/Kyrlov-JEPA/spectral-krylov-jepa/experiments/raw/astra_controls_verification_20260927/eval_shuffle_n4_s11/test_OOD_strong
+eval:test_OOD_double:   0%|          | 0/2 [00:00<?, ?it/s]eval:test_OOD_double: 100%|██████████| 2/2 [00:00<00:00, 185.91it/s]
+2026-09-27 10:13:07,514 | INFO | evaluate | Wrote evaluation to /Volumes/PRO-BLADE/Kyrlov-JEPA/spectral-krylov-jepa/experiments/raw/astra_controls_verification_20260927/eval_shuffle_n4_s11/test_OOD_double
+pretrain:krylov:   0%|          | 0/4 [00:00<?, ?it/s]pretrain:krylov: 100%|██████████| 4/4 [00:00<00:00, 60.84it/s]
+2026-09-27 10:13:07,658 | INFO | pretrain | Pretrain complete: {'final_loss': 1.805214762687683, 'mean_loss': 2.3425974547863007, 'steps': 4, 'elapsed_sec': 0.06657886505126953, 'loss_history': [2.7201035022735596, 2.6932520866394043, 2.1518194675445557, 1.805214762687683], 'n_params_total': 353090, 'n_params_trainable': 284418, 'encoder_parameters': 68672}
+2026-09-27 10:13:07,672 | INFO | finetune | Train stats: {'energy_mean': 7.720218896865845, 'energy_std': 1.6219287454634577, 'v_center': -1.4488328092708878, 'v_scale': 1.8399998287262598}
+2026-09-27 10:13:07,679 | INFO | finetune | Loaded pretrained encoder from /Volumes/PRO-BLADE/Kyrlov-JEPA/spectral-krylov-jepa/experiments/raw/astra_controls_verification_20260927/pre_remove_v_s11/encoder.pt
+2026-09-27 10:13:07,734 | INFO | finetune | epoch=0 train_loss=1.5185 val_fid=0.5141 val_Eerr=0.1391 score=0.5554
+2026-09-27 10:13:07,773 | INFO | finetune | epoch=1 train_loss=1.3056 val_fid=0.6466 val_Eerr=0.1334 score=0.4202
+2026-09-27 10:13:07,809 | INFO | finetune | Finetune complete: {'loss': 0.778083324432373, 'fidelity_mean': 0.64655601978302, 'fidelity_std': 0.07416528463363647, 'rel_energy_error_mean': 0.1334473378956318, 'selection_score': 0.4201676491647959}
+eval:test_ID:   0%|          | 0/2 [00:00<?, ?it/s]eval:test_ID: 100%|██████████| 2/2 [00:00<00:00, 268.53it/s]
+2026-09-27 10:13:07,835 | INFO | evaluate | Wrote evaluation to /Volumes/PRO-BLADE/Kyrlov-JEPA/spectral-krylov-jepa/experiments/raw/astra_controls_verification_20260927/eval_remove_v_n4_s11/test_ID
+eval:test_OOD_narrow:   0%|          | 0/2 [00:00<?, ?it/s]eval:test_OOD_narrow: 100%|██████████| 2/2 [00:00<00:00, 213.77it/s]
+2026-09-27 10:13:07,865 | INFO | evaluate | Wrote evaluation to /Volumes/PRO-BLADE/Kyrlov-JEPA/spectral-krylov-jepa/experiments/raw/astra_controls_verification_20260927/eval_remove_v_n4_s11/test_OOD_narrow
+eval:test_OOD_strong:   0%|          | 0/2 [00:00<?, ?it/s]eval:test_OOD_strong: 100%|██████████| 2/2 [00:00<00:00, 220.22it/s]
+2026-09-27 10:13:07,893 | INFO | evaluate | Wrote evaluation to /Volumes/PRO-BLADE/Kyrlov-JEPA/spectral-krylov-jepa/experiments/raw/astra_controls_verification_20260927/eval_remove_v_n4_s11/test_OOD_strong
+eval:test_OOD_double:   0%|          | 0/2 [00:00<?, ?it/s]eval:test_OOD_double: 100%|██████████| 2/2 [00:00<00:00, 247.50it/s]
+2026-09-27 10:13:07,921 | INFO | evaluate | Wrote evaluation to /Volumes/PRO-BLADE/Kyrlov-JEPA/spectral-krylov-jepa/experiments/raw/astra_controls_verification_20260927/eval_remove_v_n4_s11/test_OOD_double
+pretrain:krylov:   0%|          | 0/4 [00:00<?, ?it/s]pretrain:krylov: 100%|██████████| 4/4 [00:00<00:00, 51.67it/s]
+2026-09-27 10:13:08,082 | INFO | pretrain | Pretrain complete: {'final_loss': 3.298997402191162, 'mean_loss': 3.8427169919013977, 'steps': 4, 'elapsed_sec': 0.07836413383483887, 'loss_history': [3.9884228706359863, 4.422764778137207, 3.6606829166412354, 3.298997402191162], 'n_params_total': 353090, 'n_params_trainable': 284418, 'encoder_parameters': 68672}
+2026-09-27 10:13:08,095 | INFO | finetune | Train stats: {'energy_mean': 7.720218896865845, 'energy_std': 1.6219287454634577, 'v_center': -1.4488328092708878, 'v_scale': 1.8399998287262598}
+2026-09-27 10:13:08,101 | INFO | finetune | Loaded pretrained encoder from /Volumes/PRO-BLADE/Kyrlov-JEPA/spectral-krylov-jepa/experiments/raw/astra_controls_verification_20260927/pre_coeff_s11/encoder.pt
+2026-09-27 10:13:08,157 | INFO | finetune | epoch=0 train_loss=1.5459 val_fid=0.5066 val_Eerr=0.1402 score=0.5634
+2026-09-27 10:13:08,195 | INFO | finetune | epoch=1 train_loss=1.3340 val_fid=0.6418 val_Eerr=0.1349 score=0.4257
+2026-09-27 10:13:08,225 | INFO | finetune | Finetune complete: {'loss': 0.7919546365737915, 'fidelity_mean': 0.6418073177337646, 'fidelity_std': 0.07945150136947632, 'rel_energy_error_mean': 0.13492296636104584, 'selection_score': 0.42565416544675827}
+eval:test_ID:   0%|          | 0/2 [00:00<?, ?it/s]eval:test_ID: 100%|██████████| 2/2 [00:00<00:00, 281.73it/s]
+2026-09-27 10:13:08,252 | INFO | evaluate | Wrote evaluation to /Volumes/PRO-BLADE/Kyrlov-JEPA/spectral-krylov-jepa/experiments/raw/astra_controls_verification_20260927/eval_coeff_n4_s11/test_ID
+eval:test_OOD_narrow:   0%|          | 0/2 [00:00<?, ?it/s]eval:test_OOD_narrow: 100%|██████████| 2/2 [00:00<00:00, 207.21it/s]
+2026-09-27 10:13:08,284 | INFO | evaluate | Wrote evaluation to /Volumes/PRO-BLADE/Kyrlov-JEPA/spectral-krylov-jepa/experiments/raw/astra_controls_verification_20260927/eval_coeff_n4_s11/test_OOD_narrow
+eval:test_OOD_strong:   0%|          | 0/2 [00:00<?, ?it/s]eval:test_OOD_strong: 100%|██████████| 2/2 [00:00<00:00, 209.84it/s]
+2026-09-27 10:13:08,313 | INFO | evaluate | Wrote evaluation to /Volumes/PRO-BLADE/Kyrlov-JEPA/spectral-krylov-jepa/experiments/raw/astra_controls_verification_20260927/eval_coeff_n4_s11/test_OOD_strong
+eval:test_OOD_double:   0%|          | 0/2 [00:00<?, ?it/s]eval:test_OOD_double: 100%|██████████| 2/2 [00:00<00:00, 210.12it/s]
+2026-09-27 10:13:08,343 | INFO | evaluate | Wrote evaluation to /Volumes/PRO-BLADE/Kyrlov-JEPA/spectral-krylov-jepa/experiments/raw/astra_controls_verification_20260927/eval_coeff_n4_s11/test_OOD_double
+pretrain:krylov:   0%|          | 0/4 [00:00<?, ?it/s]pretrain:krylov: 100%|██████████| 4/4 [00:00<00:00, 55.10it/s]
+2026-09-27 10:13:08,491 | INFO | pretrain | Pretrain complete: {'final_loss': 1.7245936393737793, 'mean_loss': 2.2369894981384277, 'steps': 4, 'elapsed_sec': 0.07346606254577637, 'loss_history': [2.6164917945861816, 2.5502963066101074, 2.0565762519836426, 1.7245936393737793], 'n_params_total': 353090, 'n_params_trainable': 284418, 'encoder_parameters': 68672}
+2026-09-27 10:13:08,504 | INFO | finetune | Train stats: {'energy_mean': 7.720218896865845, 'energy_std': 1.6219287454634577, 'v_center': -1.4488328092708878, 'v_scale': 1.8399998287262598}
+2026-09-27 10:13:08,510 | INFO | finetune | Loaded pretrained encoder from /Volumes/PRO-BLADE/Kyrlov-JEPA/spectral-krylov-jepa/experiments/raw/astra_controls_verification_20260927/pre_ema4_s11/encoder.pt
+2026-09-27 10:13:08,563 | INFO | finetune | epoch=0 train_loss=1.5458 val_fid=0.5067 val_Eerr=0.1402 score=0.5634
+2026-09-27 10:13:08,596 | INFO | finetune | epoch=1 train_loss=1.3338 val_fid=0.6419 val_Eerr=0.1349 score=0.4256
+2026-09-27 10:13:08,624 | INFO | finetune | Finetune complete: {'loss': 0.7919981479644775, 'fidelity_mean': 0.6418544948101044, 'fidelity_std': 0.07938119769096375, 'rel_energy_error_mean': 0.13493965193629265, 'selection_score': 0.42561533115804195}
+eval:test_ID:   0%|          | 0/2 [00:00<?, ?it/s]eval:test_ID: 100%|██████████| 2/2 [00:00<00:00, 255.76it/s]
+2026-09-27 10:13:08,649 | INFO | evaluate | Wrote evaluation to /Volumes/PRO-BLADE/Kyrlov-JEPA/spectral-krylov-jepa/experiments/raw/astra_controls_verification_20260927/eval_ema4_n4_s11/test_ID
+eval:test_OOD_narrow:   0%|          | 0/2 [00:00<?, ?it/s]eval:test_OOD_narrow: 100%|██████████| 2/2 [00:00<00:00, 251.41it/s]
+2026-09-27 10:13:08,672 | INFO | evaluate | Wrote evaluation to /Volumes/PRO-BLADE/Kyrlov-JEPA/spectral-krylov-jepa/experiments/raw/astra_controls_verification_20260927/eval_ema4_n4_s11/test_OOD_narrow
+eval:test_OOD_strong:   0%|          | 0/2 [00:00<?, ?it/s]eval:test_OOD_strong: 100%|██████████| 2/2 [00:00<00:00, 242.02it/s]
+2026-09-27 10:13:08,698 | INFO | evaluate | Wrote evaluation to /Volumes/PRO-BLADE/Kyrlov-JEPA/spectral-krylov-jepa/experiments/raw/astra_controls_verification_20260927/eval_ema4_n4_s11/test_OOD_strong
+eval:test_OOD_double:   0%|          | 0/2 [00:00<?, ?it/s]eval:test_OOD_double: 100%|██████████| 2/2 [00:00<00:00, 254.32it/s]
+2026-09-27 10:13:08,721 | INFO | evaluate | Wrote evaluation to /Volumes/PRO-BLADE/Kyrlov-JEPA/spectral-krylov-jepa/experiments/raw/astra_controls_verification_20260927/eval_ema4_n4_s11/test_OOD_double
+pretrain:krylov:   0%|          | 0/4 [00:00<?, ?it/s]pretrain:krylov: 100%|██████████| 4/4 [00:00<00:00, 54.69it/s]
+2026-09-27 10:13:08,872 | INFO | pretrain | Pretrain complete: {'final_loss': 1.8094863891601562, 'mean_loss': 2.251470923423767, 'steps': 4, 'elapsed_sec': 0.0739288330078125, 'loss_history': [2.6268134117126465, 2.53102445602417, 2.0385594367980957, 1.8094863891601562], 'n_params_total': 353090, 'n_params_trainable': 284418, 'encoder_parameters': 68672}
+2026-09-27 10:13:08,882 | INFO | finetune | Train stats: {'energy_mean': 7.720218896865845, 'energy_std': 1.6219287454634577, 'v_center': -1.4488328092708878, 'v_scale': 1.8399998287262598}
+2026-09-27 10:13:08,888 | INFO | finetune | Loaded pretrained encoder from /Volumes/PRO-BLADE/Kyrlov-JEPA/spectral-krylov-jepa/experiments/raw/astra_controls_verification_20260927/pre_powers_s11/encoder.pt
+2026-09-27 10:13:08,940 | INFO | finetune | epoch=0 train_loss=1.5466 val_fid=0.5066 val_Eerr=0.1403 score=0.5635
+2026-09-27 10:13:08,973 | INFO | finetune | epoch=1 train_loss=1.3333 val_fid=0.6419 val_Eerr=0.1351 score=0.4257
+2026-09-27 10:13:09,001 | INFO | finetune | Finetune complete: {'loss': 0.7928245067596436, 'fidelity_mean': 0.6418657898902893, 'fidelity_std': 0.07904905080795288, 'rel_energy_error_mean': 0.13505380600690842, 'selection_score': 0.4256611131131649}
+eval:test_ID:   0%|          | 0/2 [00:00<?, ?it/s]eval:test_ID: 100%|██████████| 2/2 [00:00<00:00, 247.98it/s]
+2026-09-27 10:13:09,030 | INFO | evaluate | Wrote evaluation to /Volumes/PRO-BLADE/Kyrlov-JEPA/spectral-krylov-jepa/experiments/raw/astra_controls_verification_20260927/eval_powers_n4_s11/test_ID
+eval:test_OOD_narrow:   0%|          | 0/2 [00:00<?, ?it/s]eval:test_OOD_narrow: 100%|██████████| 2/2 [00:00<00:00, 281.05it/s]
+2026-09-27 10:13:09,055 | INFO | evaluate | Wrote evaluation to /Volumes/PRO-BLADE/Kyrlov-JEPA/spectral-krylov-jepa/experiments/raw/astra_controls_verification_20260927/eval_powers_n4_s11/test_OOD_narrow
+eval:test_OOD_strong:   0%|          | 0/2 [00:00<?, ?it/s]eval:test_OOD_strong: 100%|██████████| 2/2 [00:00<00:00, 221.04it/s]
+2026-09-27 10:13:09,084 | INFO | evaluate | Wrote evaluation to /Volumes/PRO-BLADE/Kyrlov-JEPA/spectral-krylov-jepa/experiments/raw/astra_controls_verification_20260927/eval_powers_n4_s11/test_OOD_strong
+eval:test_OOD_double:   0%|          | 0/2 [00:00<?, ?it/s]eval:test_OOD_double: 100%|██████████| 2/2 [00:00<00:00, 259.16it/s]
+2026-09-27 10:13:09,109 | INFO | evaluate | Wrote evaluation to /Volumes/PRO-BLADE/Kyrlov-JEPA/spectral-krylov-jepa/experiments/raw/astra_controls_verification_20260927/eval_powers_n4_s11/test_OOD_double
+pretrain:krylov:   0%|          | 0/4 [00:00<?, ?it/s]pretrain:krylov: 100%|██████████| 4/4 [00:00<00:00, 56.61it/s]
+2026-09-27 10:13:09,251 | INFO | pretrain | Pretrain complete: {'final_loss': 0.9781622290611267, 'mean_loss': 1.1186070293188095, 'steps': 4, 'elapsed_sec': 0.07159185409545898, 'loss_history': [1.22618567943573, 1.2059810161590576, 1.0640991926193237, 0.9781622290611267], 'n_params_total': 353090, 'n_params_trainable': 284418, 'encoder_parameters': 68672}
+2026-09-27 10:13:09,264 | INFO | finetune | Train stats: {'energy_mean': 7.720218896865845, 'energy_std': 1.6219287454634577, 'v_center': -1.4488328092708878, 'v_scale': 1.8399998287262598}
+2026-09-27 10:13:09,269 | INFO | finetune | Loaded pretrained encoder from /Volumes/PRO-BLADE/Kyrlov-JEPA/spectral-krylov-jepa/experiments/raw/astra_controls_verification_20260927/pre_no_latent_norm_s11/encoder.pt
+2026-09-27 10:13:09,318 | INFO | finetune | epoch=0 train_loss=1.5297 val_fid=0.5053 val_Eerr=0.1399 score=0.5646
+2026-09-27 10:13:09,352 | INFO | finetune | epoch=1 train_loss=1.3191 val_fid=0.6403 val_Eerr=0.1349 score=0.4271
+2026-09-27 10:13:09,387 | INFO | finetune | Finetune complete: {'loss': 0.7933564782142639, 'fidelity_mean': 0.64031583070755, 'fidelity_std': 0.07978546619415283, 'rel_energy_error_mean': 0.13487077876925468, 'selection_score': 0.4271195586770773}
+eval:test_ID:   0%|          | 0/2 [00:00<?, ?it/s]eval:test_ID: 100%|██████████| 2/2 [00:00<00:00, 183.97it/s]
+2026-09-27 10:13:09,417 | INFO | evaluate | Wrote evaluation to /Volumes/PRO-BLADE/Kyrlov-JEPA/spectral-krylov-jepa/experiments/raw/astra_controls_verification_20260927/eval_no_latent_norm_n4_s11/test_ID
+eval:test_OOD_narrow:   0%|          | 0/2 [00:00<?, ?it/s]eval:test_OOD_narrow: 100%|██████████| 2/2 [00:00<00:00, 199.96it/s]
+2026-09-27 10:13:09,445 | INFO | evaluate | Wrote evaluation to /Volumes/PRO-BLADE/Kyrlov-JEPA/spectral-krylov-jepa/experiments/raw/astra_controls_verification_20260927/eval_no_latent_norm_n4_s11/test_OOD_narrow
+eval:test_OOD_strong:   0%|          | 0/2 [00:00<?, ?it/s]eval:test_OOD_strong: 100%|██████████| 2/2 [00:00<00:00, 202.90it/s]
+2026-09-27 10:13:09,474 | INFO | evaluate | Wrote evaluation to /Volumes/PRO-BLADE/Kyrlov-JEPA/spectral-krylov-jepa/experiments/raw/astra_controls_verification_20260927/eval_no_latent_norm_n4_s11/test_OOD_strong
+eval:test_OOD_double:   0%|          | 0/2 [00:00<?, ?it/s]eval:test_OOD_double: 100%|██████████| 2/2 [00:00<00:00, 215.35it/s]
+2026-09-27 10:13:09,501 | INFO | evaluate | Wrote evaluation to /Volumes/PRO-BLADE/Kyrlov-JEPA/spectral-krylov-jepa/experiments/raw/astra_controls_verification_20260927/eval_no_latent_norm_n4_s11/test_OOD_double
+pretrain:krylov:   0%|          | 0/2 [00:00<?, ?it/s]pretrain:krylov: 100%|██████████| 2/2 [00:00<00:00, 46.40it/s]
+2026-09-27 10:13:09,620 | INFO | pretrain | Pretrain complete: {'final_loss': 2.55029296875, 'mean_loss': 2.583392381668091, 'steps': 2, 'elapsed_sec': 0.04403185844421387, 'loss_history': [2.6164917945861816, 2.55029296875], 'n_params_total': 353090, 'n_params_trainable': 284418, 'encoder_parameters': 68672}
+2026-09-27 10:13:09,634 | INFO | finetune | Train stats: {'energy_mean': 7.720218896865845, 'energy_std': 1.6219287454634577, 'v_center': -1.4488328092708878, 'v_scale': 1.8399998287262598}
+2026-09-27 10:13:09,639 | INFO | finetune | Loaded pretrained encoder from /Volumes/PRO-BLADE/Kyrlov-JEPA/spectral-krylov-jepa/experiments/raw/astra_controls_verification_20260927/pre_half_steps_s11/encoder.pt
+2026-09-27 10:13:09,694 | INFO | finetune | epoch=0 train_loss=1.5339 val_fid=0.5103 val_Eerr=0.1397 score=0.5596
+2026-09-27 10:13:09,737 | INFO | finetune | epoch=1 train_loss=1.3216 val_fid=0.6443 val_Eerr=0.1344 score=0.4229
+2026-09-27 10:13:09,778 | INFO | finetune | Finetune complete: {'loss': 0.785963773727417, 'fidelity_mean': 0.6443342566490173, 'fidelity_std': 0.07663321495056152, 'rel_energy_error_mean': 0.134376622736454, 'selection_score': 0.42285405471920967}
+eval:test_ID:   0%|          | 0/2 [00:00<?, ?it/s]eval:test_ID: 100%|██████████| 2/2 [00:00<00:00, 237.56it/s]
+2026-09-27 10:13:09,810 | INFO | evaluate | Wrote evaluation to /Volumes/PRO-BLADE/Kyrlov-JEPA/spectral-krylov-jepa/experiments/raw/astra_controls_verification_20260927/eval_half_steps_n4_s11/test_ID
+eval:test_OOD_narrow:   0%|          | 0/2 [00:00<?, ?it/s]eval:test_OOD_narrow: 100%|██████████| 2/2 [00:00<00:00, 230.47it/s]
+2026-09-27 10:13:09,838 | INFO | evaluate | Wrote evaluation to /Volumes/PRO-BLADE/Kyrlov-JEPA/spectral-krylov-jepa/experiments/raw/astra_controls_verification_20260927/eval_half_steps_n4_s11/test_OOD_narrow
+eval:test_OOD_strong:   0%|          | 0/2 [00:00<?, ?it/s]eval:test_OOD_strong: 100%|██████████| 2/2 [00:00<00:00, 211.06it/s]
+2026-09-27 10:13:09,868 | INFO | evaluate | Wrote evaluation to /Volumes/PRO-BLADE/Kyrlov-JEPA/spectral-krylov-jepa/experiments/raw/astra_controls_verification_20260927/eval_half_steps_n4_s11/test_OOD_strong
+eval:test_OOD_double:   0%|          | 0/2 [00:00<?, ?it/s]eval:test_OOD_double: 100%|██████████| 2/2 [00:00<00:00, 204.90it/s]
+2026-09-27 10:13:09,896 | INFO | evaluate | Wrote evaluation to /Volumes/PRO-BLADE/Kyrlov-JEPA/spectral-krylov-jepa/experiments/raw/astra_controls_verification_20260927/eval_half_steps_n4_s11/test_OOD_double
+pretrain:krylov:   0%|          | 0/4 [00:00<?, ?it/s]pretrain:krylov: 100%|██████████| 4/4 [00:00<00:00, 56.69it/s]
+2026-09-27 10:13:10,033 | INFO | pretrain | Pretrain complete: {'final_loss': 1.628455400466919, 'mean_loss': 2.098105490207672, 'steps': 4, 'elapsed_sec': 0.07146286964416504, 'loss_history': [2.4778807163238525, 2.3350989818573, 1.9509868621826172, 1.628455400466919], 'n_params_total': 91554, 'n_params_trainable': 73602, 'encoder_parameters': 17952}
+2026-09-27 10:13:10,046 | INFO | finetune | Train stats: {'energy_mean': 7.720218896865845, 'energy_std': 1.6219287454634577, 'v_center': -1.4488328092708878, 'v_scale': 1.8399998287262598}
+2026-09-27 10:13:10,053 | INFO | finetune | Loaded pretrained encoder from /Volumes/PRO-BLADE/Kyrlov-JEPA/spectral-krylov-jepa/experiments/raw/astra_controls_verification_20260927/pre_half_dimension_s11/encoder.pt
+2026-09-27 10:13:10,099 | INFO | finetune | epoch=0 train_loss=2.1091 val_fid=0.1192 val_Eerr=0.1457 score=0.9537
+2026-09-27 10:13:10,129 | INFO | finetune | epoch=1 train_loss=1.8686 val_fid=0.3202 val_Eerr=0.1428 score=0.7512
+2026-09-27 10:13:10,159 | INFO | finetune | Finetune complete: {'loss': 1.2303991317749023, 'fidelity_mean': 0.3202084004878998, 'fidelity_std': 0.04991254210472107, 'rel_energy_error_mean': 0.14282770454883575, 'selection_score': 0.7512054517865181}
+eval:test_ID:   0%|          | 0/2 [00:00<?, ?it/s]eval:test_ID: 100%|██████████| 2/2 [00:00<00:00, 191.74it/s]
+2026-09-27 10:13:10,187 | INFO | evaluate | Wrote evaluation to /Volumes/PRO-BLADE/Kyrlov-JEPA/spectral-krylov-jepa/experiments/raw/astra_controls_verification_20260927/eval_half_dimension_n4_s11/test_ID
+eval:test_OOD_narrow:   0%|          | 0/2 [00:00<?, ?it/s]eval:test_OOD_narrow: 100%|██████████| 2/2 [00:00<00:00, 241.87it/s]
+2026-09-27 10:13:10,216 | INFO | evaluate | Wrote evaluation to /Volumes/PRO-BLADE/Kyrlov-JEPA/spectral-krylov-jepa/experiments/raw/astra_controls_verification_20260927/eval_half_dimension_n4_s11/test_OOD_narrow
+eval:test_OOD_strong:   0%|          | 0/2 [00:00<?, ?it/s]eval:test_OOD_strong: 100%|██████████| 2/2 [00:00<00:00, 290.05it/s]
+2026-09-27 10:13:10,239 | INFO | evaluate | Wrote evaluation to /Volumes/PRO-BLADE/Kyrlov-JEPA/spectral-krylov-jepa/experiments/raw/astra_controls_verification_20260927/eval_half_dimension_n4_s11/test_OOD_strong
+eval:test_OOD_double:   0%|          | 0/2 [00:00<?, ?it/s]eval:test_OOD_double: 100%|██████████| 2/2 [00:00<00:00, 286.04it/s]
+2026-09-27 10:13:10,261 | INFO | evaluate | Wrote evaluation to /Volumes/PRO-BLADE/Kyrlov-JEPA/spectral-krylov-jepa/experiments/raw/astra_controls_verification_20260927/eval_half_dimension_n4_s11/test_OOD_double

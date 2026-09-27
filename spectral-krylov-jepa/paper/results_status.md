@@ -1,3 +1,5 @@
+> Updated evidence: see `CLAIMS.md`, `REPRODUCE.md` and `paper/TECHNICAL_REPORT.md` at this project root. The 2026-09-27 baseline audit found no established Krylov gain. Full experiments remain unrun. Historical content below is preserved.
+
 # Results Status
 
 **Last updated:** 2026-09-26 (after improved smoke suite)

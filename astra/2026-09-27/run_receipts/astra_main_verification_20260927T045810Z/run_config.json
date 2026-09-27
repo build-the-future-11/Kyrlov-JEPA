@@ -1,0 +1,37 @@
+{
+  "config": {
+    "batch_size": 2,
+    "context_steps": 2,
+    "depth": 3,
+    "device": "cpu",
+    "finetune_epochs": 2,
+    "manifest_name": "astra_main_verification",
+    "methods": [
+      "scratch",
+      "field",
+      "operator",
+      "krylov"
+    ],
+    "model_size": "smoke",
+    "n_bootstrap": 50,
+    "n_interior": 8,
+    "n_ood_each": 2,
+    "n_starts": 1,
+    "n_test_id": 2,
+    "n_train": 6,
+    "n_unlabeled": 8,
+    "n_val": 2,
+    "pretrain_steps": 4,
+    "run_name": "astra_main_verification",
+    "seeds": [
+      11
+    ],
+    "subset_sizes": [
+      4
+    ]
+  },
+  "git_sha": "22e202d79cb483ad280e522af35e48469fc6c8ed",
+  "seeds": [
+    11
+  ]
+}

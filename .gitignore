@@ -21,3 +21,6 @@ research/free-physics-jepa/data/**/*.h5
 # Python
 *.pyc
 .Python
+
+# Local verification scratch; retained receipts live under astra/
+.astra/

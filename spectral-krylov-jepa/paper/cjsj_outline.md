@@ -1,3 +1,5 @@
+> Updated evidence: see `CLAIMS.md`, `REPRODUCE.md` and `paper/TECHNICAL_REPORT.md` at this project root. The 2026-09-27 baseline audit found no established Krylov gain. Full experiments remain unrun. Historical content below is preserved.
+
 # CJSJ Outline (2–3 pages)
 
 **Working title:** Spectral Krylov-JEPA: Learning Quantum Eigenstates from Unlabeled Hamiltonian Actions

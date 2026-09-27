@@ -1,3 +1,5 @@
+> Krylov status update (ASTRA, 2026-09-27): see `ASTRA_FINAL_REPORT.md` and `STATUS.md`. The historical audit below is preserved; LMOP status was not changed by this execution.
+
 # Portfolio status — /Volumes/PRO-BLADE/Kyrlov-JEPA
 
 **Updated:** 2026-09-27 · Git: single repo at workspace root, branch `master`, no remote, no CI (`.github/` absent). No secrets found (pattern scan of source/docs).

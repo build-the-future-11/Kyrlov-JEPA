@@ -1,0 +1,26 @@
+{
+  "checks": {
+    "box_energy_positive": true,
+    "box_normalized": true,
+    "box_residual_rel": 5.234508661567153e-08,
+    "ground_accepted": true,
+    "ground_energy": 9.496111186389202,
+    "ground_residual_rel": 1.1391681423907908e-08,
+    "hamiltonian_symmetric": true,
+    "hamiltonian_symmetry_error": 0.0,
+    "lanczos": {
+      "finite": true,
+      "max_norm_error": 2.220446049250313e-16,
+      "min_beta": 1081.3474777790666,
+      "ok": true,
+      "orthogonality_error": 4.440892098500626e-16,
+      "recurrence_residual": 2.891666565955302e-16
+    },
+    "laplacian_shape": true,
+    "laplacian_symmetric": true,
+    "laplacian_symmetry_error": 0.0,
+    "potential_family": "id_gaussian_mixture",
+    "potential_finite": true
+  },
+  "ok": true
+}

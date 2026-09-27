@@ -1,0 +1,11 @@
+.......................................                                  [100%]
+All checks passed!
+=== Spectral Krylov-JEPA physics validation ===
+Physics validation passed
+Laplacian symmetry error: 0.000e+00
+Hamiltonian symmetry error: 0.000e+00
+E0 = 9.49611119, residual_rel = 1.754e-08
+Lanczos validation: {'ok': True, 'finite': True, 'max_norm_error': 2.220446049250313e-16, 'orthogonality_error': 4.440892098500626e-16, 'recurrence_residual': 2.891666565955302e-16, 'min_beta': 1081.3474777790666}
+Wrote figure: .astra/physics/figure_A_physics_panel.png
+PHYSICS VALIDATION PASSED
+Engineering checks passed. This does not establish scientific efficacy or submission readiness.

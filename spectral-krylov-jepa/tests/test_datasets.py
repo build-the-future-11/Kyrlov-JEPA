@@ -46,6 +46,7 @@ def test_unlabeled_and_labeled_generation(tmp_path: Path):
         subset_sizes=[2, 4],
         split_seed=1,
         manifest_name="test_splits",
+        manifest_directory=tmp_path,
         id_base_seed=2000,
         ood_base_seed=3000,
     )

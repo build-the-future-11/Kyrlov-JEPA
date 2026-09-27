@@ -1,0 +1,21 @@
+# Pipeline validation only. Does not alter the frozen decisive configuration.
+run_name: astra_main_verification
+manifest_name: astra_main_verification
+n_interior: 8
+n_unlabeled: 8
+n_starts: 1
+depth: 3
+n_train: 6
+n_val: 2
+n_test_id: 2
+n_ood_each: 2
+subset_sizes: [4]
+model_size: smoke
+pretrain_steps: 4
+finetune_epochs: 2
+batch_size: 2
+seeds: [11]
+device: cpu
+context_steps: 2
+methods: [scratch, field, operator, krylov]
+n_bootstrap: 50

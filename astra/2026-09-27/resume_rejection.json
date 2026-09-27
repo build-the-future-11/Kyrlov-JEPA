@@ -1,0 +1,13 @@
+{
+  "command": [
+    "spectral-krylov-jepa/.venv/bin/python",
+    "spectral-krylov-jepa/scripts/11_run_main_experiment.py",
+    "--config",
+    ".astra/incompatible.yaml",
+    "--resume-run",
+    "astra_main_verification_20260927T045810Z"
+  ],
+  "exit_code": 1,
+  "expected_rejection": true,
+  "stderr": "/Users/ryan/.matplotlib is not a writable directory\nMatplotlib created a temporary cache directory at /var/folders/ct/lk8xnz1s6pvd55g05hqjv7k00000gn/T/matplotlib-rtcbi_eo because there was an issue with the default path (/Users/ryan/.matplotlib); it is highly recommended to set the MPLCONFIGDIR environment variable to a writable directory, in particular to speed up the import of Matplotlib and to better support multiprocessing.\n\nFontconfig error: No writable cache directories\n\t/opt/homebrew/var/cache/fontconfig\n\t/Users/ryan/.cache/fontconfig\n\t/Users/ryan/.fontconfig\nMatplotlib is building the font cache; this may take a moment.\nTraceback (most recent call last):\n  File \"/Volumes/PRO-BLADE/Kyrlov-JEPA/spectral-krylov-jepa/scripts/11_run_main_experiment.py\", line 276, in <module>\n    raise SystemExit(main())\n                     ~~~~^^\n  File \"/Volumes/PRO-BLADE/Kyrlov-JEPA/spectral-krylov-jepa/scripts/11_run_main_experiment.py\", line 90, in main\n    freeze_or_check(run_root / \"identity.json\", {\"config\": cfg, \"seeds\": seeds, \"sources\": source_hashes(ROOT)})\n    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Volumes/PRO-BLADE/Kyrlov-JEPA/spectral-krylov-jepa/src/spectral_krylov_jepa/utils/provenance.py\", line 29, in freeze_or_check\n    raise ValueError(f\"Refusing incompatible resume: {path}\")\nValueError: Refusing incompatible resume: /Volumes/PRO-BLADE/Kyrlov-JEPA/spectral-krylov-jepa/experiments/raw/astra_main_verification_20260927T045810Z/identity.json\n"
+}

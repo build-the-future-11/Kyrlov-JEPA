@@ -45,6 +45,7 @@ class KrylovJEPA(nn.Module):
         ema_momentum: float = 0.996,
         lambda_coeff: float = 0.0,
         remove_v: bool = False,
+        normalize_latents: bool = True,
         **encoder_overrides,
     ) -> None:
         super().__init__()
@@ -57,6 +58,7 @@ class KrylovJEPA(nn.Module):
         self.ema_momentum = ema_momentum
         self.lambda_coeff = lambda_coeff
         self.remove_v = remove_v
+        self.normalize_latents = normalize_latents
         self.img_size = img_size
 
         self.potential_enc = PotentialEncoder(img_size=img_size, **kwargs)
@@ -127,8 +129,10 @@ class KrylovJEPA(nn.Module):
         z_pred = self.predictor(cls, tokens)
         with torch.no_grad():
             z_tgt, _ = self.target_state(q_target)
-            z_tgt = nn.functional.layer_norm(z_tgt, (z_tgt.shape[-1],))
-        z_pred_n = nn.functional.layer_norm(z_pred, (z_pred.shape[-1],))
+            if self.normalize_latents:
+                z_tgt = nn.functional.layer_norm(z_tgt, (z_tgt.shape[-1],))
+        z_pred_n = (nn.functional.layer_norm(z_pred, (z_pred.shape[-1],))
+                    if self.normalize_latents else z_pred)
         loss_jepa = torch.mean((z_pred_n - z_tgt.detach()) ** 2)
 
         loss_coeff = torch.zeros((), device=v.device, dtype=v.dtype)

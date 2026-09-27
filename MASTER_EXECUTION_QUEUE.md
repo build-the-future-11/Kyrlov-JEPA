@@ -1,3 +1,5 @@
+> Krylov status update (ASTRA, 2026-09-27): see `ASTRA_FINAL_REPORT.md` and `STATUS.md`. The historical audit below is preserved; LMOP status was not changed by this execution.
+
 # Master execution queue
 
 **Updated:** 2026-09-27. Status: DONE · OPEN · BLOCKED (reason) · NOT RUN

@@ -1,0 +1,27 @@
+{
+  "base_seed": 10000,
+  "depth": 3,
+  "family": "id_gaussian_mixture",
+  "grid": {
+    "n_interior": 8,
+    "x_max": 1.0,
+    "x_min": 0.0,
+    "y_max": 1.0,
+    "y_min": 0.0
+  },
+  "n_examples": 8,
+  "n_starts": 1,
+  "path": "/Volumes/PRO-BLADE/Kyrlov-JEPA/spectral-krylov-jepa/experiments/raw/astra_main_verification_20260927T045810Z/unlabeled.h5",
+  "seeds": [
+    10000,
+    10001,
+    10002,
+    10003,
+    10004,
+    10005,
+    10006,
+    10007
+  ],
+  "shuffle_physics": false,
+  "shuffle_seed": 0
+}

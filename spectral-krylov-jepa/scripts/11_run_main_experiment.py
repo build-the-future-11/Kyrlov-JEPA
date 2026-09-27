@@ -35,6 +35,7 @@ from spectral_krylov_jepa.plotting.learning_curves import plot_label_efficiency
 from spectral_krylov_jepa.training.finetune import finetune
 from spectral_krylov_jepa.training.pretrain import pretrain
 from spectral_krylov_jepa.utils.config import load_config
+from spectral_krylov_jepa.utils.provenance import freeze_or_check, source_hashes, sha256, exclusive_run
 from spectral_krylov_jepa.utils.io import make_run_dir, write_json
 from spectral_krylov_jepa.utils.logging import setup_logger
 
@@ -80,15 +81,19 @@ def main() -> int:
         run_root = raw_root / args.resume_run
         if not run_root.is_dir():
             raise FileNotFoundError(run_root)
+        if not (run_root / "identity.json").exists():
+            raise ValueError("Legacy run has no source identity; preserve it and start a new run")
     else:
         run_root = make_run_dir(raw_root, str(cfg.get("run_name", "main_label_efficiency")))
     log = setup_logger("main_exp", log_file=run_root / "run.log")
     grid = GridSpec(n_interior=int(cfg.get("n_interior", 32)))
-    write_json({"config": cfg, "seeds": seeds, "git_sha": _git_sha()}, run_root / "run_config.json")
+    freeze_or_check(run_root / "identity.json", {"config": cfg, "seeds": seeds, "sources": source_hashes(ROOT)})
+    if not (run_root / "run_config.json").exists():
+        write_json({"config": cfg, "seeds": seeds, "git_sha": _git_sha()}, run_root / "run_config.json")
 
     unlab = run_root / "unlabeled.h5"
     labeled = run_root / "labeled.h5"
-    manifest_path = ROOT / "experiments" / "manifests" / f"{manifest_name}.json"
+    manifest_path = run_root / f"{manifest_name}.json"
     data_done = run_root / "data.done"
     if not data_done.exists():
         log.info("Generating unlabeled (%d)...", int(cfg["n_unlabeled"]))
@@ -112,10 +117,13 @@ def main() -> int:
             subset_sizes=list(cfg["subset_sizes"]),
             split_seed=2026,
             manifest_name=manifest_name,
+            manifest_directory=run_root,
         )
         data_done.write_text("ok\n")
     else:
         log.info("Resume: reusing data in %s", run_root)
+
+    freeze_or_check(run_root / "data_hashes.json", {p.name: sha256(p) for p in [unlab, labeled, manifest_path]})
 
     pretrain_cfg = {
         "device": cfg.get("device", "auto"),
@@ -264,4 +272,5 @@ def main() -> int:
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    with exclusive_run(ROOT / "experiments/raw/main_runner.lock"):
+        raise SystemExit(main())

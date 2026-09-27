@@ -1,0 +1,28 @@
+{
+  "config": {
+    "batch_size": 2,
+    "context_steps": 2,
+    "device": "cpu",
+    "img_size": 8,
+    "max_steps": 4,
+    "model_size": "smoke",
+    "num_workers": 0,
+    "seed": 11
+  },
+  "data_path": "/Volumes/PRO-BLADE/Kyrlov-JEPA/spectral-krylov-jepa/experiments/raw/astra_controls_final_20260927/unlabeled.h5",
+  "env": {
+    "cuda_available": false,
+    "device": "cpu",
+    "git_commit": "22e202d79cb483ad280e522af35e48469fc6c8ed",
+    "machine": "arm64",
+    "mps_available": false,
+    "numpy": "2.5.3",
+    "platform": "macOS-26.5.2-arm64-arm-64bit-Mach-O",
+    "python": "3.14.7 (main, Aug  5 2026, 10:29:49) [Clang 21.0.0 (clang-2100.1.1.101)]",
+    "scipy": "1.18.1",
+    "timestamp_utc": "2026-09-27T05:02:28.515351+00:00",
+    "torch": "2.14.0"
+  },
+  "method": "operator",
+  "n_params_trainable": 279936
+}

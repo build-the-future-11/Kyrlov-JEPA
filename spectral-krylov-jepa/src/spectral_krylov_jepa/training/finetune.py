@@ -125,6 +125,7 @@ def finetune(
         img_size=img_size,
         size=size,
         cell_area=ca,
+        **cfg.get("encoder_overrides", {}),
     ).to(device)
 
     stats = _compute_train_stats(train_ds)
@@ -138,6 +139,7 @@ def finetune(
         payload = torch.load(encoder_path, map_location="cpu", weights_only=False)
         enc_state = payload["encoder"] if "encoder" in payload else payload
         kwargs = default_encoder_kwargs(size)
+        kwargs.update(cfg.get("encoder_overrides", {}))
         enc = PotentialEncoder(img_size=img_size, **kwargs)
         enc.load_state_dict(enc_state, strict=True)
         model.load_pretrained_encoder(enc)

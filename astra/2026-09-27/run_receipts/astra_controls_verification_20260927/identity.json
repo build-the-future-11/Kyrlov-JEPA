@@ -1,0 +1,131 @@
+{
+  "config": {
+    "batch_size": 2,
+    "context_steps": 2,
+    "device": "cpu",
+    "img_size": 8,
+    "max_steps": 4,
+    "model_size": "smoke",
+    "num_workers": 0
+  },
+  "evidence_class": "pipeline_only",
+  "scale": "verification",
+  "seeds": [
+    11
+  ],
+  "sources": {
+    "paper/experiment_protocol.md": "6099aa4f5de6e698dcbe3f8047ffba59f75451a8d4dbf0bde0683fb635e2af61",
+    "scripts/00_validate_physics.py": "7aff109bd86fa801531b1aa75db7fc7a0cbec716e6ead6a426191d15ea40617b",
+    "scripts/01_generate_unlabeled.py": "90ed5d4d568b40eee7a7d8416ac3610d1ed76bbf344a2a0328c8f51a6c75f22d",
+    "scripts/02_generate_labeled.py": "e55589a69f39e7a543ced6f07030f09c73174d7b3fe9a2c3fbbe69a8cc069a63",
+    "scripts/03_pretrain_field_jepa.py": "a6f6d5da23deabf8fb983028eec066f6b157f31bf070ed2d50e1f6777ce017c5",
+    "scripts/04_pretrain_operator_jepa.py": "90a3bf694822010b17babbdea5838b728530a8e6f0971c0fe39d9dbdf9cd25e3",
+    "scripts/05_pretrain_krylov_jepa.py": "6a9205ab3126fefc73b3bdfc475d1e65fdf46558a2b82c44c4f79966b2e07405",
+    "scripts/06_finetune.py": "c41f45f206e10a78b9863cfa1d3f48d6e4a20f21b927ee28d8cddc4769a10790",
+    "scripts/07_evaluate.py": "dba0666d39c4e6fda5d39d5a95ab21662de9231f8512f2ecb08801be9de689ff",
+    "scripts/08_run_ablation.py": "f09e4049a6b51ceb538ace40cada31f34fc3c90059e6ade23ef405fde20d727a",
+    "scripts/09_generate_figures.py": "c8991d84202ff5f950fdcfc70b03bb7e7e05baebd70f3b15925a514246a09ef1",
+    "scripts/10_run_smoke_suite.py": "595790c565632864b1ec3a89b9703e386eb155de6c93349a64a022203941ee85",
+    "scripts/11_run_main_experiment.py": "70a6d385fef5d8a5c608b8f1887c0c1b0728835760b3336155af5151e50ba306",
+    "scripts/12_run_controls.py": "46225297fb396f10e67673adcf11b06954953a37f877255f505adfb736e0c5b4",
+    "scripts/13_audit_baselines.py": "4dfbb3933ad0f2d6f9b70a9269cd1165b4ded9b5edfc7773acefda3f35222e3d",
+    "src/spectral_krylov_jepa/__init__.py": "0bf87ee8679b6ed4e31843830e071e20663eb730285907150c3cc1c74ea48d06",
+    "src/spectral_krylov_jepa/data/__init__.py": "cf1c96f26f886bf4963f43266bd23fd259ee80c9b30510bd8754b3a52095822e",
+    "src/spectral_krylov_jepa/data/datasets.py": "1324fa58a020f35fa4089f27563f4a1a58f3933f95af4c10bb2b7125b45ffa0d",
+    "src/spectral_krylov_jepa/data/generate_labeled.py": "ed0efb57d46a50526f8bbfde087d4524cea9ede1a279fe612fd1da203108917f",
+    "src/spectral_krylov_jepa/data/generate_unlabeled.py": "53bc10923a8dbaba38d7933c31acf45231fb9fbc2d72e7fce21a98cd54b9f704",
+    "src/spectral_krylov_jepa/data/manifests.py": "8c86b52df2c9530186b438f0cabe9bcaff915851ddbb0e8ec198606cb17248be",
+    "src/spectral_krylov_jepa/data/splits.py": "4dd73ecfb21ef0065c0a9daf806c73578f60035f8e4be69a6524a31bbe1fa04b",
+    "src/spectral_krylov_jepa/data/storage.py": "7c36bdef2a71fd91a6e081cafa1c1f4d9ba240d0863c042a3a877d3efcb3e5ef",
+    "src/spectral_krylov_jepa/evaluation/__init__.py": "8db2853c63cd82aed1d2cefa58c0e3d7d535b6a2396bd851fdf9fe425d8b7d50",
+    "src/spectral_krylov_jepa/evaluation/ablations.py": "225a6aea1a60d35ef4b36f974d54356f6820314542198a64af23f839cccfb611",
+    "src/spectral_krylov_jepa/evaluation/baselines.py": "70a57cb1f7a58e5e721baed7ed3599410b5442c2e3c093edab1bf6bb1c56459d",
+    "src/spectral_krylov_jepa/evaluation/bootstrap.py": "75276f44c93cc5ffdfaf09b0fb00118d14a836d0e87898e2931a461557743513",
+    "src/spectral_krylov_jepa/evaluation/evaluate.py": "319d7a7fb0f0d1623bb6c5f7620f906d3274575417c0cc1751736ba433ce924c",
+    "src/spectral_krylov_jepa/evaluation/metrics.py": "c1e31cee4e09274b9e99ff2ee7345d780c93fcb6492305ab1eefaa2b7fbf17d1",
+    "src/spectral_krylov_jepa/evaluation/ood.py": "1d8202ee9512d24d0ec1bc9329948261dcc3c4330c32cd32ab01c4e966b1bbf8",
+    "src/spectral_krylov_jepa/evaluation/residual.py": "2f586246bc13dcc25f714399127eacb0dff570d3a6a5c2fbe6032187eb82dfe0",
+    "src/spectral_krylov_jepa/models/__init__.py": "1f243e3bb3e23d3684de73bcd952e96f903d6f2c867fb5007c9af5ff37edc00c",
+    "src/spectral_krylov_jepa/models/downstream.py": "a112953e5a6c823b01c5ecb500d7ca99e8bf306c009d8679a251d97b5bf2e5f9",
+    "src/spectral_krylov_jepa/models/ema_utils.py": "fa2fa459b22ee4e6116b1eecaa16b774a0fd5ce8d12cf059eb6a97b60c8a5770",
+    "src/spectral_krylov_jepa/models/encoders.py": "64bfe0dd1c7138d5db51a1a5d52f7ca9e67f613b5306e5f16c5b487ababc47e6",
+    "src/spectral_krylov_jepa/models/field_jepa.py": "8936c0a8ff08eb63a0e40b741db6ae6a10c9a3a137336334e5f848c25a83609c",
+    "src/spectral_krylov_jepa/models/heads.py": "9a597f1c3675152d8771dcf15b954af238c3549b68276ad262a9358b3c7078a9",
+    "src/spectral_krylov_jepa/models/krylov_jepa.py": "3db472ab25f5fd536d5d0d8b781a011a764b0727dc28b03496d818f295ecbdd6",
+    "src/spectral_krylov_jepa/models/operator_jepa.py": "f4f28b434171bb79221980aacb3db0e7a030a79ac68ad4fd59126fd17732950d",
+    "src/spectral_krylov_jepa/models/patch_embed.py": "76a5e4a74c588a84cf72e5916b0bd54730041dec40166e9c5bb629eef5f4b505",
+    "src/spectral_krylov_jepa/models/predictors.py": "8b16b55d173009b58339a10c804efab6a5f8f2f01ff5257687423fb9e2781e86",
+    "src/spectral_krylov_jepa/models/target_encoder.py": "158e7d313f96c7590fe97954688b8dc6c336c6dde4e64488c4aef94acba1a15e",
+    "src/spectral_krylov_jepa/physics/__init__.py": "54f3342709317a08c0032ab95ffd516ad5aa3b2de059d329122dfeb97ca8a3ca",
+    "src/spectral_krylov_jepa/physics/eigensolver.py": "acb58e257a494d1a4688c5fa8fe7edbbd28f1c1bcb5bd1b1d03aaa43439c52f6",
+    "src/spectral_krylov_jepa/physics/grid.py": "9edd41841fc011a32a9e8b1d6f45c2882d23f990c29b280be5b0860bcd010120",
+    "src/spectral_krylov_jepa/physics/hamiltonian.py": "222f83fa7c5156f236b9c455f7e431e6b96019a5dddd3fa726bb14ea2232b270",
+    "src/spectral_krylov_jepa/physics/lanczos.py": "d2b62225ed5f02d778411a05ea534da33b31990433a2e90def167f435d96f315",
+    "src/spectral_krylov_jepa/physics/laplacian.py": "7ef52316d3943451d9f43c1b1bad6a895531a7b56f726640d449915b222a6083",
+    "src/spectral_krylov_jepa/physics/potentials.py": "930be085a2e010342a4ea1006768c0bb145fbb4fed75003b1f2b02bf8c08dad2",
+    "src/spectral_krylov_jepa/physics/validation.py": "8ae97e3956d5cbedc7c90513f30299c23a0fa60fb20919a1f345bb58996254b3",
+    "src/spectral_krylov_jepa/plotting/__init__.py": "3e23ffe51747ec576035bb5a5f55bbbd37523aed7174a2a959b9581172e3d266",
+    "src/spectral_krylov_jepa/plotting/ablation_figures.py": "a25001de583e63677ba11376df0d5fdd598212b682d41d521a7d8e505cc87b1b",
+    "src/spectral_krylov_jepa/plotting/learning_curves.py": "6c4385f4813601b528b3dafc6fd59c762d61431e2a4861559ab95edfa37d028a",
+    "src/spectral_krylov_jepa/plotting/ood_figures.py": "a19a87850406962dfadbb0c8c696c6d89ecff764c27ab87561cdb32b1608e633",
+    "src/spectral_krylov_jepa/plotting/physics_figures.py": "c156284e734eda55b9994e6a24e68f20facf1a92029c646afde1459c81f5769c",
+    "src/spectral_krylov_jepa/training/__init__.py": "e86d3f81d9700674011bcc199539b636d8245d925c5d17cb3034368aee8edd4e",
+    "src/spectral_krylov_jepa/training/checkpointing.py": "180e6d0cba989a11951dcab25bd8ee727a005affe7c6bdbdc93958f7bb2a16f0",
+    "src/spectral_krylov_jepa/training/ema.py": "c8fea1666169afa892167148d657efe4d227575b43971b07275f8a6b857c5d52",
+    "src/spectral_krylov_jepa/training/finetune.py": "7d075522154cc29aacb25d09e9c6ab357176bfa74e549c2f981aa661237b16b8",
+    "src/spectral_krylov_jepa/training/losses.py": "283c103458dbea722036fce7bd0bdcaf3f942804850a1243377af24138892121",
+    "src/spectral_krylov_jepa/training/optim.py": "7634d1bf5bfabcf8e3602125a7570cd733cd3401cf1359833a34fad7be0e571a",
+    "src/spectral_krylov_jepa/training/pretrain.py": "3739d71ee4f2b84dc459e014d22f31a455f6ae7a505bd09e14c8f859f58f2164",
+    "src/spectral_krylov_jepa/training/seed.py": "8ed1700e51999e302959be6edbd7945a1117b4f7868f60380e693e8c3bbcdc3f",
+    "src/spectral_krylov_jepa/utils/__init__.py": "ec9f21cc6e5bd32117fa77d3b85a418c5bec6f7560e510fd9b24f75d9ecdd821",
+    "src/spectral_krylov_jepa/utils/config.py": "4c1e16fa27c997e55388c7fe6b281cb3b474a569a048aedaa717c3b14e557c58",
+    "src/spectral_krylov_jepa/utils/device.py": "c9cd479082c8a8d277b56ad107ccf929dceb9abcfaff45cb1a859ec0e914c753",
+    "src/spectral_krylov_jepa/utils/io.py": "5af5d7a6718b45bd9ad16541790e7c9a90245c1c272161643a176656568c59d8",
+    "src/spectral_krylov_jepa/utils/logging.py": "e8a09f702d8f610cbee2f311eaa19797ffe9634729e2987e80dc8acea3ce6ce9",
+    "src/spectral_krylov_jepa/utils/provenance.py": "370c3f20f283e8331d2cfdc7205d60be24574df1cba897449357d2d5016ee565"
+  },
+  "variants": {
+    "coeff": {
+      "lambda_coeff": 0.0001
+    },
+    "ema4": {
+      "target_update_frequency": 4
+    },
+    "field": {
+      "method": "field"
+    },
+    "half_dimension": {
+      "encoder_overrides": {
+        "embed_dim": 32
+      }
+    },
+    "half_steps": {
+      "max_steps": 2
+    },
+    "k1": {
+      "context_steps": 1
+    },
+    "k2": {},
+    "k3": {
+      "context_steps": 3
+    },
+    "no_latent_norm": {
+      "normalize_latents": false
+    },
+    "operator": {
+      "method": "operator"
+    },
+    "powers": {
+      "data_variant": "powers"
+    },
+    "remove_v": {
+      "remove_v": true
+    },
+    "scratch": {
+      "method": "scratch"
+    },
+    "shuffle": {
+      "data_variant": "shuffle"
+    }
+  }
+}

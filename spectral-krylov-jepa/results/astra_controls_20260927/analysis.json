@@ -1,0 +1,1003 @@
+{
+  "artifact_hashes": {
+    "eval_coeff_n4_s11/test_ID/metrics.json": "1dd1d58c18f5c4f0675422b3d5abbbd91c5b5b35f00c9c2491718910921a4124",
+    "eval_coeff_n4_s11/test_OOD_double/metrics.json": "09b8402bc40629879da323aa135c682eda5a0d3e3925fe8b550c04b9026e9a3a",
+    "eval_coeff_n4_s11/test_OOD_narrow/metrics.json": "ec84de6bf39575eab68f63b438507189502e854a69ac735b5c2f6346385ba26d",
+    "eval_coeff_n4_s11/test_OOD_strong/metrics.json": "20d6d8d7f81346940218c9de2d1cc4966d605e53f303dfda1a436a3ebd7eb53a",
+    "eval_ema4_n4_s11/test_ID/metrics.json": "41ffc4cf41c68414455b8db6358033f283f2ef7aa465cacbd4ce8edb292b1791",
+    "eval_ema4_n4_s11/test_OOD_double/metrics.json": "df6d434c0d870b4c8307b74f4083742b0260a451ccdd7d24fde7fcf77be1d7d7",
+    "eval_ema4_n4_s11/test_OOD_narrow/metrics.json": "c29ca904803d20e5dda18db6ec38b02575b4be252273b0fe4b3c769b53d82560",
+    "eval_ema4_n4_s11/test_OOD_strong/metrics.json": "cd36e12a397bbdd83de2701c5d78b58ecd3e5494a3bd4a5126f35c83644ffd1c",
+    "eval_field_n4_s11/test_ID/metrics.json": "fe435711171185c947fc2413ae3cc2e1b9bddf05c6454c4f20191b301ede86ec",
+    "eval_field_n4_s11/test_OOD_double/metrics.json": "f440ddd933a2fe1bead7c6cf9cd664fe9cb2f5885fc859806390f12ed372de06",
+    "eval_field_n4_s11/test_OOD_narrow/metrics.json": "0c383139da3067d2ef86515cdff08d20e193058a1b7a39d1fe70bd96f7215ba5",
+    "eval_field_n4_s11/test_OOD_strong/metrics.json": "e0e1d868e5ff88ff3665201b657b0626a229db7622b01d31046a075660ebdf02",
+    "eval_half_dimension_n4_s11/test_ID/metrics.json": "a8fc046bd6302693d276c778e5bdb47b6bf1d60bd49b745a2a1783a50dc7f369",
+    "eval_half_dimension_n4_s11/test_OOD_double/metrics.json": "a332fc803fc75c8957f600a87b4f4087225a038fa1e6f14f6975cac102f19b73",
+    "eval_half_dimension_n4_s11/test_OOD_narrow/metrics.json": "5c7cc5805c0d94ee821b36f90794914f699bd0126a220ac556fa5771b5296041",
+    "eval_half_dimension_n4_s11/test_OOD_strong/metrics.json": "96585870b87ee3ebd454b22cddd405961a39e85b9e8fa53bc3999e6474feee44",
+    "eval_half_steps_n4_s11/test_ID/metrics.json": "400ac77c40f7a1a03a946b7183853ae8ca3c76aba964293bafa5b51c33262f76",
+    "eval_half_steps_n4_s11/test_OOD_double/metrics.json": "a247814bdbc580395b357c93bf84f906355cfdc5c773794c9e76f5ae7911d3a9",
+    "eval_half_steps_n4_s11/test_OOD_narrow/metrics.json": "c63983be99f4663dc779158cef1f7a88da0926d38f49e3f8657a76a714d99ad3",
+    "eval_half_steps_n4_s11/test_OOD_strong/metrics.json": "61299621d95c5c457a573d2ad8b7b8202d1d0e72a2e4f65c5fee769729ba2cdc",
+    "eval_k1_n4_s11/test_ID/metrics.json": "c3c070d296a58033c1d84febc4fa69bfbdcb6ca030a4c968a30f738dfd1276db",
+    "eval_k1_n4_s11/test_OOD_double/metrics.json": "d46683762b0dc2ec03cc7c9783694c3fc208e74a0fc3f37f2c13b59d8290b684",
+    "eval_k1_n4_s11/test_OOD_narrow/metrics.json": "c09f6704a998c28ad9c853a68b4542a1960c9fc23266bcf1085db39290e351a2",
+    "eval_k1_n4_s11/test_OOD_strong/metrics.json": "8731e8336f85fc72e5ac4b01602be2fa01e6fddcf6c58363f30d267eb77b2a89",
+    "eval_k2_n4_s11/test_ID/metrics.json": "b69386291088e21f9e20845bd872b7e9534a41d7fc13a4460c52840248d17943",
+    "eval_k2_n4_s11/test_OOD_double/metrics.json": "dd4e557e519506600881a0b2be5d16dc622da23b35ab4922e6e148889efcaee0",
+    "eval_k2_n4_s11/test_OOD_narrow/metrics.json": "90fd2e115d117fe3494020d7504cb0e2e0a539e162592fba892be8f9af8bd775",
+    "eval_k2_n4_s11/test_OOD_strong/metrics.json": "e0022c6b61c7663ef6db3e4e86ecbcc715ff12c34f0a581d63742e17c95be523",
+    "eval_k3_n4_s11/test_ID/metrics.json": "736d7039506e5ed6287a7d5607130c84f2795cefc8cdf886c572499541ffec65",
+    "eval_k3_n4_s11/test_OOD_double/metrics.json": "c6eda30953e27c422b41bfe3e5e2190d9482f796d366dd54621d616ca58ba572",
+    "eval_k3_n4_s11/test_OOD_narrow/metrics.json": "fe204134bbb34b2bba4530a11b20823b960af13ff7d28bfc6c9f9ce39747ec37",
+    "eval_k3_n4_s11/test_OOD_strong/metrics.json": "11883502cbd84b4842b77b0fc56d36d1cea06411b31cd3ed96b17c8da75098aa",
+    "eval_no_latent_norm_n4_s11/test_ID/metrics.json": "fc80d8cdaf690932891332e67972c54ccca6338783463f62537fffa84cef0621",
+    "eval_no_latent_norm_n4_s11/test_OOD_double/metrics.json": "bf38e5b40378382b506c2f2653d88728bcdd1cd26a86c482b00ca18feba5f0ce",
+    "eval_no_latent_norm_n4_s11/test_OOD_narrow/metrics.json": "25ac0e10962e1aba3e28c8e438a28ed0d603e87099b433058592229287f46a3f",
+    "eval_no_latent_norm_n4_s11/test_OOD_strong/metrics.json": "3c680852eb1e0838b46c5cc0fafd985ab3aa8b9223a9c77c92430d706c1e80e6",
+    "eval_operator_n4_s11/test_ID/metrics.json": "c58fe85c60ae049e7f1d1f64edf0a2a0c8636749a9f0ca1a99992952b3877c7f",
+    "eval_operator_n4_s11/test_OOD_double/metrics.json": "50f24cac2f8bbc33374cafee5abb993938f64e994273be081ae58f3d68691eaf",
+    "eval_operator_n4_s11/test_OOD_narrow/metrics.json": "9ab4e639d058274262505e576c29a79c76851efd00d13034266f80aa985b9d91",
+    "eval_operator_n4_s11/test_OOD_strong/metrics.json": "bfcc2e1feda87051a8173e4ea6024881c307399fe40b04178af63b92398c5be9",
+    "eval_powers_n4_s11/test_ID/metrics.json": "57ea08cfe260af1f79e77377bc756792d7739157862afcb454aa1761cb6d899d",
+    "eval_powers_n4_s11/test_OOD_double/metrics.json": "5220a29a7472e11bb07bc14440fed6db504f34a3839e0ccddb313ec2c9f3dbdc",
+    "eval_powers_n4_s11/test_OOD_narrow/metrics.json": "791fd19332e02648a62c6898d06a9c838a265bc543e525e2d60f793c1c2fc984",
+    "eval_powers_n4_s11/test_OOD_strong/metrics.json": "d23f8c4684b424d7a44a34ea96aa77515e9e47fe66222c1b87d39f782a19ab6e",
+    "eval_remove_v_n4_s11/test_ID/metrics.json": "40c4a0a630fd13b3d1bb81824df0644c7d85a8331a2db5199a439dc9651720ae",
+    "eval_remove_v_n4_s11/test_OOD_double/metrics.json": "92ac32f14cb39d3f02f038189e3f1d838aa9df338081f18a36be007608afad6b",
+    "eval_remove_v_n4_s11/test_OOD_narrow/metrics.json": "1a6d78fa9ec14ff6ce2c3c01b7505310b3b68350d45a0b1995435fd746558475",
+    "eval_remove_v_n4_s11/test_OOD_strong/metrics.json": "8b7143e41220ea6ee609fb57576709e66f14e02a2381cedf75705433c1806cfe",
+    "eval_scratch_n4_s11/test_ID/metrics.json": "03c7da981583eb7849e83cb6ef31678fc42f2d957530f07d5a2dbbddefc62dcf",
+    "eval_scratch_n4_s11/test_OOD_double/metrics.json": "2f8d120a69927507f0659cd985d71f203a8b888036d8445d05cc3760c592c1b8",
+    "eval_scratch_n4_s11/test_OOD_narrow/metrics.json": "7c7400428d83a34714e74e9155b6f626bc12e75fc241f6f711697ba8f0238793",
+    "eval_scratch_n4_s11/test_OOD_strong/metrics.json": "9087c7cb0c156c87604fe28231826b51ccc969136701e1bc9b2a25be6545e752",
+    "eval_shuffle_n4_s11/test_ID/metrics.json": "be7c192ffbd4e32871dae76c0a28c1128dd233882adadf1ffb1c889b59e4e842",
+    "eval_shuffle_n4_s11/test_OOD_double/metrics.json": "82cee8a71fad011f9c50cab382a4af080b7079d2c22b15d26aca36fbfb39fffc",
+    "eval_shuffle_n4_s11/test_OOD_narrow/metrics.json": "5ccbc845f1277a5f5a8abcf99fe745905c38e22f3a93e943a7ddd97c48dfba1d",
+    "eval_shuffle_n4_s11/test_OOD_strong/metrics.json": "46533f2d939f1f0420a01c000844f97c65420e8592d2edb58ebcac0dc73ed891"
+  },
+  "comparisons": [
+    {
+      "alpha": 0.05,
+      "ci_high": -1.252068753887503e-05,
+      "ci_interpretation": "paired potentials after averaging specified seeds; excludes new-training-seed uncertainty; unadjusted exploratory intervals",
+      "ci_low": -1.6750846734026048e-05,
+      "comparator": "coeff",
+      "estimate": -1.463576713645054e-05,
+      "mean_per_seed": [
+        -1.463576713645054e-05
+      ],
+      "n": 2,
+      "n_labels": 4,
+      "n_resamples": 2000,
+      "split": "test_ID",
+      "statistic": "mean"
+    },
+    {
+      "alpha": 0.05,
+      "ci_high": -2.8624006851440953e-06,
+      "ci_interpretation": "paired potentials after averaging specified seeds; excludes new-training-seed uncertainty; unadjusted exploratory intervals",
+      "ci_low": -3.0772590573491243e-06,
+      "comparator": "coeff",
+      "estimate": -2.96982987124661e-06,
+      "mean_per_seed": [
+        -2.96982987124661e-06
+      ],
+      "n": 2,
+      "n_labels": 4,
+      "n_resamples": 2000,
+      "split": "test_OOD_narrow",
+      "statistic": "mean"
+    },
+    {
+      "alpha": 0.05,
+      "ci_high": 0.0003083173287609098,
+      "ci_interpretation": "paired potentials after averaging specified seeds; excludes new-training-seed uncertainty; unadjusted exploratory intervals",
+      "ci_low": -3.6487813462549035e-05,
+      "comparator": "coeff",
+      "estimate": 0.00013591475764918037,
+      "mean_per_seed": [
+        0.00013591475764918037
+      ],
+      "n": 2,
+      "n_labels": 4,
+      "n_resamples": 2000,
+      "split": "test_OOD_strong",
+      "statistic": "mean"
+    },
+    {
+      "alpha": 0.05,
+      "ci_high": 7.476834853548109e-05,
+      "ci_interpretation": "paired potentials after averaging specified seeds; excludes new-training-seed uncertainty; unadjusted exploratory intervals",
+      "ci_low": -5.281868656670241e-06,
+      "comparator": "coeff",
+      "estimate": 3.4743239939405424e-05,
+      "mean_per_seed": [
+        3.4743239939405424e-05
+      ],
+      "n": 2,
+      "n_labels": 4,
+      "n_resamples": 2000,
+      "split": "test_OOD_double",
+      "statistic": "mean"
+    },
+    {
+      "alpha": 0.05,
+      "ci_high": 7.544376700030497e-07,
+      "ci_interpretation": "paired potentials after averaging specified seeds; excludes new-training-seed uncertainty; unadjusted exploratory intervals",
+      "ci_low": -1.889188730452851e-06,
+      "comparator": "ema4",
+      "estimate": -5.673755302249006e-07,
+      "mean_per_seed": [
+        -5.673755302249006e-07
+      ],
+      "n": 2,
+      "n_labels": 4,
+      "n_resamples": 2000,
+      "split": "test_ID",
+      "statistic": "mean"
+    },
+    {
+      "alpha": 0.05,
+      "ci_high": -1.5703504693265202e-06,
+      "ci_interpretation": "paired potentials after averaging specified seeds; excludes new-training-seed uncertainty; unadjusted exploratory intervals",
+      "ci_low": -1.6133195825940305e-06,
+      "comparator": "ema4",
+      "estimate": -1.5918350259602754e-06,
+      "mean_per_seed": [
+        -1.5918350259602754e-06
+      ],
+      "n": 2,
+      "n_labels": 4,
+      "n_resamples": 2000,
+      "split": "test_OOD_narrow",
+      "statistic": "mean"
+    },
+    {
+      "alpha": 0.05,
+      "ci_high": 1.7161633688589362e-06,
+      "ci_interpretation": "paired potentials after averaging specified seeds; excludes new-training-seed uncertainty; unadjusted exploratory intervals",
+      "ci_low": -1.2527154646946315e-08,
+      "comparator": "ema4",
+      "estimate": 8.518181071059949e-07,
+      "mean_per_seed": [
+        8.518181071059949e-07
+      ],
+      "n": 2,
+      "n_labels": 4,
+      "n_resamples": 2000,
+      "split": "test_OOD_strong",
+      "statistic": "mean"
+    },
+    {
+      "alpha": 0.05,
+      "ci_high": -5.20105264856241e-07,
+      "ci_interpretation": "paired potentials after averaging specified seeds; excludes new-training-seed uncertainty; unadjusted exploratory intervals",
+      "ci_low": -1.1142405251796106e-06,
+      "comparator": "ema4",
+      "estimate": -8.171728950179258e-07,
+      "mean_per_seed": [
+        -8.171728950179258e-07
+      ],
+      "n": 2,
+      "n_labels": 4,
+      "n_resamples": 2000,
+      "split": "test_OOD_double",
+      "statistic": "mean"
+    },
+    {
+      "alpha": 0.05,
+      "ci_high": 0.0010728533116158845,
+      "ci_interpretation": "paired potentials after averaging specified seeds; excludes new-training-seed uncertainty; unadjusted exploratory intervals",
+      "ci_low": -0.0018889681555839255,
+      "comparator": "field",
+      "estimate": -0.0004080574219840205,
+      "mean_per_seed": [
+        -0.0004080574219840205
+      ],
+      "n": 2,
+      "n_labels": 4,
+      "n_resamples": 2000,
+      "split": "test_ID",
+      "statistic": "mean"
+    },
+    {
+      "alpha": 0.05,
+      "ci_high": 0.001550585202930721,
+      "ci_interpretation": "paired potentials after averaging specified seeds; excludes new-training-seed uncertainty; unadjusted exploratory intervals",
+      "ci_low": 0.0012960387128556627,
+      "comparator": "field",
+      "estimate": 0.0014233119578931919,
+      "mean_per_seed": [
+        0.0014233119578931919
+      ],
+      "n": 2,
+      "n_labels": 4,
+      "n_resamples": 2000,
+      "split": "test_OOD_narrow",
+      "statistic": "mean"
+    },
+    {
+      "alpha": 0.05,
+      "ci_high": 0.007156672344830417,
+      "ci_interpretation": "paired potentials after averaging specified seeds; excludes new-training-seed uncertainty; unadjusted exploratory intervals",
+      "ci_low": 0.001147245979837841,
+      "comparator": "field",
+      "estimate": 0.004151959162334129,
+      "mean_per_seed": [
+        0.004151959162334129
+      ],
+      "n": 2,
+      "n_labels": 4,
+      "n_resamples": 2000,
+      "split": "test_OOD_strong",
+      "statistic": "mean"
+    },
+    {
+      "alpha": 0.05,
+      "ci_high": 0.002456712430728536,
+      "ci_interpretation": "paired potentials after averaging specified seeds; excludes new-training-seed uncertainty; unadjusted exploratory intervals",
+      "ci_low": -0.0011108823530794343,
+      "comparator": "field",
+      "estimate": 0.0006729150388245508,
+      "mean_per_seed": [
+        0.0006729150388245508
+      ],
+      "n": 2,
+      "n_labels": 4,
+      "n_resamples": 2000,
+      "split": "test_OOD_double",
+      "statistic": "mean"
+    },
+    {
+      "alpha": 0.05,
+      "ci_high": 0.319274716527693,
+      "ci_interpretation": "paired potentials after averaging specified seeds; excludes new-training-seed uncertainty; unadjusted exploratory intervals",
+      "ci_low": 0.29656453264637817,
+      "comparator": "half_dimension",
+      "estimate": 0.3079196245870356,
+      "mean_per_seed": [
+        0.3079196245870356
+      ],
+      "n": 2,
+      "n_labels": 4,
+      "n_resamples": 2000,
+      "split": "test_ID",
+      "statistic": "mean"
+    },
+    {
+      "alpha": 0.05,
+      "ci_high": 0.22506813321429076,
+      "ci_interpretation": "paired potentials after averaging specified seeds; excludes new-training-seed uncertainty; unadjusted exploratory intervals",
+      "ci_low": 0.21233083794381336,
+      "comparator": "half_dimension",
+      "estimate": 0.21869948557905206,
+      "mean_per_seed": [
+        0.21869948557905206
+      ],
+      "n": 2,
+      "n_labels": 4,
+      "n_resamples": 2000,
+      "split": "test_OOD_narrow",
+      "statistic": "mean"
+    },
+    {
+      "alpha": 0.05,
+      "ci_high": 0.2546382157337823,
+      "ci_interpretation": "paired potentials after averaging specified seeds; excludes new-training-seed uncertainty; unadjusted exploratory intervals",
+      "ci_low": 0.2396627253480345,
+      "comparator": "half_dimension",
+      "estimate": 0.2471504705409084,
+      "mean_per_seed": [
+        0.2471504705409084
+      ],
+      "n": 2,
+      "n_labels": 4,
+      "n_resamples": 2000,
+      "split": "test_OOD_strong",
+      "statistic": "mean"
+    },
+    {
+      "alpha": 0.05,
+      "ci_high": 0.21045045234391774,
+      "ci_interpretation": "paired potentials after averaging specified seeds; excludes new-training-seed uncertainty; unadjusted exploratory intervals",
+      "ci_low": 0.04876210578012907,
+      "comparator": "half_dimension",
+      "estimate": 0.1296062790620234,
+      "mean_per_seed": [
+        0.1296062790620234
+      ],
+      "n": 2,
+      "n_labels": 4,
+      "n_resamples": 2000,
+      "split": "test_OOD_double",
+      "statistic": "mean"
+    },
+    {
+      "alpha": 0.05,
+      "ci_high": 0.0005342389775062628,
+      "ci_interpretation": "paired potentials after averaging specified seeds; excludes new-training-seed uncertainty; unadjusted exploratory intervals",
+      "ci_low": -0.0014983262934642472,
+      "comparator": "half_steps",
+      "estimate": -0.0004820436579789922,
+      "mean_per_seed": [
+        -0.0004820436579789922
+      ],
+      "n": 2,
+      "n_labels": 4,
+      "n_resamples": 2000,
+      "split": "test_ID",
+      "statistic": "mean"
+    },
+    {
+      "alpha": 0.05,
+      "ci_high": 0.0013251559617750708,
+      "ci_interpretation": "paired potentials after averaging specified seeds; excludes new-training-seed uncertainty; unadjusted exploratory intervals",
+      "ci_low": 0.0008851005186503169,
+      "comparator": "half_steps",
+      "estimate": 0.0011051282402126938,
+      "mean_per_seed": [
+        0.0011051282402126938
+      ],
+      "n": 2,
+      "n_labels": 4,
+      "n_resamples": 2000,
+      "split": "test_OOD_narrow",
+      "statistic": "mean"
+    },
+    {
+      "alpha": 0.05,
+      "ci_high": 0.00689509280952505,
+      "ci_interpretation": "paired potentials after averaging specified seeds; excludes new-training-seed uncertainty; unadjusted exploratory intervals",
+      "ci_low": 0.00017676369490771116,
+      "comparator": "half_steps",
+      "estimate": 0.0035359282522163804,
+      "mean_per_seed": [
+        0.0035359282522163804
+      ],
+      "n": 2,
+      "n_labels": 4,
+      "n_resamples": 2000,
+      "split": "test_OOD_strong",
+      "statistic": "mean"
+    },
+    {
+      "alpha": 0.05,
+      "ci_high": 0.001082973775693108,
+      "ci_interpretation": "paired potentials after averaging specified seeds; excludes new-training-seed uncertainty; unadjusted exploratory intervals",
+      "ci_low": 0.0004761070552965485,
+      "comparator": "half_steps",
+      "estimate": 0.0007795404154948282,
+      "mean_per_seed": [
+        0.0007795404154948282
+      ],
+      "n": 2,
+      "n_labels": 4,
+      "n_resamples": 2000,
+      "split": "test_OOD_double",
+      "statistic": "mean"
+    },
+    {
+      "alpha": 0.05,
+      "ci_high": 0.0011635670875815851,
+      "ci_interpretation": "paired potentials after averaging specified seeds; excludes new-training-seed uncertainty; unadjusted exploratory intervals",
+      "ci_low": 0.0006860824833747614,
+      "comparator": "k1",
+      "estimate": 0.0009248247854781733,
+      "mean_per_seed": [
+        0.0009248247854781733
+      ],
+      "n": 2,
+      "n_labels": 4,
+      "n_resamples": 2000,
+      "split": "test_ID",
+      "statistic": "mean"
+    },
+    {
+      "alpha": 0.05,
+      "ci_high": -0.0004737292623416822,
+      "ci_interpretation": "paired potentials after averaging specified seeds; excludes new-training-seed uncertainty; unadjusted exploratory intervals",
+      "ci_low": -0.0005088293248084463,
+      "comparator": "k1",
+      "estimate": -0.0004912792935750643,
+      "mean_per_seed": [
+        -0.0004912792935750643
+      ],
+      "n": 2,
+      "n_labels": 4,
+      "n_resamples": 2000,
+      "split": "test_OOD_narrow",
+      "statistic": "mean"
+    },
+    {
+      "alpha": 0.05,
+      "ci_high": 0.0017150666664335068,
+      "ci_interpretation": "paired potentials after averaging specified seeds; excludes new-training-seed uncertainty; unadjusted exploratory intervals",
+      "ci_low": -0.0009234530389717888,
+      "comparator": "k1",
+      "estimate": 0.000395806813730859,
+      "mean_per_seed": [
+        0.000395806813730859
+      ],
+      "n": 2,
+      "n_labels": 4,
+      "n_resamples": 2000,
+      "split": "test_OOD_strong",
+      "statistic": "mean"
+    },
+    {
+      "alpha": 0.05,
+      "ci_high": 0.0005057505356123038,
+      "ci_interpretation": "paired potentials after averaging specified seeds; excludes new-training-seed uncertainty; unadjusted exploratory intervals",
+      "ci_low": -0.0007639477858377708,
+      "comparator": "k1",
+      "estimate": -0.0001290986251127335,
+      "mean_per_seed": [
+        -0.0001290986251127335
+      ],
+      "n": 2,
+      "n_labels": 4,
+      "n_resamples": 2000,
+      "split": "test_OOD_double",
+      "statistic": "mean"
+    },
+    {
+      "alpha": 0.05,
+      "ci_high": -0.00044986737967200874,
+      "ci_interpretation": "paired potentials after averaging specified seeds; excludes new-training-seed uncertainty; unadjusted exploratory intervals",
+      "ci_low": -0.004407341561059042,
+      "comparator": "k3",
+      "estimate": -0.002428604470365525,
+      "mean_per_seed": [
+        -0.002428604470365525
+      ],
+      "n": 2,
+      "n_labels": 4,
+      "n_resamples": 2000,
+      "split": "test_ID",
+      "statistic": "mean"
+    },
+    {
+      "alpha": 0.05,
+      "ci_high": -6.603637763880066e-05,
+      "ci_interpretation": "paired potentials after averaging specified seeds; excludes new-training-seed uncertainty; unadjusted exploratory intervals",
+      "ci_low": -0.001474729679351361,
+      "comparator": "k3",
+      "estimate": -0.0007703830284950808,
+      "mean_per_seed": [
+        -0.0007703830284950808
+      ],
+      "n": 2,
+      "n_labels": 4,
+      "n_resamples": 2000,
+      "split": "test_OOD_narrow",
+      "statistic": "mean"
+    },
+    {
+      "alpha": 0.05,
+      "ci_high": 0.0007228653200040958,
+      "ci_interpretation": "paired potentials after averaging specified seeds; excludes new-training-seed uncertainty; unadjusted exploratory intervals",
+      "ci_low": -1.0373951692232986e-05,
+      "comparator": "k3",
+      "estimate": 0.0003562456841559314,
+      "mean_per_seed": [
+        0.0003562456841559314
+      ],
+      "n": 2,
+      "n_labels": 4,
+      "n_resamples": 2000,
+      "split": "test_OOD_strong",
+      "statistic": "mean"
+    },
+    {
+      "alpha": 0.05,
+      "ci_high": 0.0030223498234001056,
+      "ci_interpretation": "paired potentials after averaging specified seeds; excludes new-training-seed uncertainty; unadjusted exploratory intervals",
+      "ci_low": 0.0015193684952398145,
+      "comparator": "k3",
+      "estimate": 0.00227085915931996,
+      "mean_per_seed": [
+        0.00227085915931996
+      ],
+      "n": 2,
+      "n_labels": 4,
+      "n_resamples": 2000,
+      "split": "test_OOD_double",
+      "statistic": "mean"
+    },
+    {
+      "alpha": 0.05,
+      "ci_high": 0.0019395522704305224,
+      "ci_interpretation": "paired potentials after averaging specified seeds; excludes new-training-seed uncertainty; unadjusted exploratory intervals",
+      "ci_low": -0.0014273604204584345,
+      "comparator": "no_latent_norm",
+      "estimate": 0.00025609592498604394,
+      "mean_per_seed": [
+        0.00025609592498604394
+      ],
+      "n": 2,
+      "n_labels": 4,
+      "n_resamples": 2000,
+      "split": "test_ID",
+      "statistic": "mean"
+    },
+    {
+      "alpha": 0.05,
+      "ci_high": 0.0009555604280653274,
+      "ci_interpretation": "paired potentials after averaging specified seeds; excludes new-training-seed uncertainty; unadjusted exploratory intervals",
+      "ci_low": 0.0008298001950577394,
+      "comparator": "no_latent_norm",
+      "estimate": 0.0008926803115615334,
+      "mean_per_seed": [
+        0.0008926803115615334
+      ],
+      "n": 2,
+      "n_labels": 4,
+      "n_resamples": 2000,
+      "split": "test_OOD_narrow",
+      "statistic": "mean"
+    },
+    {
+      "alpha": 0.05,
+      "ci_high": 0.008025659548405173,
+      "ci_interpretation": "paired potentials after averaging specified seeds; excludes new-training-seed uncertainty; unadjusted exploratory intervals",
+      "ci_low": -1.1490277186831932e-05,
+      "comparator": "no_latent_norm",
+      "estimate": 0.0040070846356091705,
+      "mean_per_seed": [
+        0.0040070846356091705
+      ],
+      "n": 2,
+      "n_labels": 4,
+      "n_resamples": 2000,
+      "split": "test_OOD_strong",
+      "statistic": "mean"
+    },
+    {
+      "alpha": 0.05,
+      "ci_high": 0.0019351885427008053,
+      "ci_interpretation": "paired potentials after averaging specified seeds; excludes new-training-seed uncertainty; unadjusted exploratory intervals",
+      "ci_low": 0.0007505216517976754,
+      "comparator": "no_latent_norm",
+      "estimate": 0.0013428550972492403,
+      "mean_per_seed": [
+        0.0013428550972492403
+      ],
+      "n": 2,
+      "n_labels": 4,
+      "n_resamples": 2000,
+      "split": "test_OOD_double",
+      "statistic": "mean"
+    },
+    {
+      "alpha": 0.05,
+      "ci_high": 0.0035336763733014864,
+      "ci_interpretation": "paired potentials after averaging specified seeds; excludes new-training-seed uncertainty; unadjusted exploratory intervals",
+      "ci_low": -0.0018785353713717257,
+      "comparator": "operator",
+      "estimate": 0.0008275705009648804,
+      "mean_per_seed": [
+        0.0008275705009648804
+      ],
+      "n": 2,
+      "n_labels": 4,
+      "n_resamples": 2000,
+      "split": "test_ID",
+      "statistic": "mean"
+    },
+    {
+      "alpha": 0.05,
+      "ci_high": 0.0035498714969403045,
+      "ci_interpretation": "paired potentials after averaging specified seeds; excludes new-training-seed uncertainty; unadjusted exploratory intervals",
+      "ci_low": 0.0027957204861275287,
+      "comparator": "operator",
+      "estimate": 0.0031727959915339166,
+      "mean_per_seed": [
+        0.0031727959915339166
+      ],
+      "n": 2,
+      "n_labels": 4,
+      "n_resamples": 2000,
+      "split": "test_OOD_narrow",
+      "statistic": "mean"
+    },
+    {
+      "alpha": 0.05,
+      "ci_high": 0.018367310942102977,
+      "ci_interpretation": "paired potentials after averaging specified seeds; excludes new-training-seed uncertainty; unadjusted exploratory intervals",
+      "ci_low": 0.002940874006186478,
+      "comparator": "operator",
+      "estimate": 0.010654092474144727,
+      "mean_per_seed": [
+        0.010654092474144727
+      ],
+      "n": 2,
+      "n_labels": 4,
+      "n_resamples": 2000,
+      "split": "test_OOD_strong",
+      "statistic": "mean"
+    },
+    {
+      "alpha": 0.05,
+      "ci_high": 0.004333068197223788,
+      "ci_interpretation": "paired potentials after averaging specified seeds; excludes new-training-seed uncertainty; unadjusted exploratory intervals",
+      "ci_low": 0.004261514007949163,
+      "comparator": "operator",
+      "estimate": 0.004297291102586476,
+      "mean_per_seed": [
+        0.004297291102586476
+      ],
+      "n": 2,
+      "n_labels": 4,
+      "n_resamples": 2000,
+      "split": "test_OOD_double",
+      "statistic": "mean"
+    },
+    {
+      "alpha": 0.05,
+      "ci_high": -6.233762587792846e-06,
+      "ci_interpretation": "paired potentials after averaging specified seeds; excludes new-training-seed uncertainty; unadjusted exploratory intervals",
+      "ci_low": -9.841701546497994e-06,
+      "comparator": "powers",
+      "estimate": -8.03773206714542e-06,
+      "mean_per_seed": [
+        -8.03773206714542e-06
+      ],
+      "n": 2,
+      "n_labels": 4,
+      "n_resamples": 2000,
+      "split": "test_ID",
+      "statistic": "mean"
+    },
+    {
+      "alpha": 0.05,
+      "ci_high": 0.00015061007631744783,
+      "ci_interpretation": "paired potentials after averaging specified seeds; excludes new-training-seed uncertainty; unadjusted exploratory intervals",
+      "ci_low": 3.88638664389207e-05,
+      "comparator": "powers",
+      "estimate": 9.473697137818426e-05,
+      "mean_per_seed": [
+        9.473697137818426e-05
+      ],
+      "n": 2,
+      "n_labels": 4,
+      "n_resamples": 2000,
+      "split": "test_OOD_narrow",
+      "statistic": "mean"
+    },
+    {
+      "alpha": 0.05,
+      "ci_high": -0.00011410549294588179,
+      "ci_interpretation": "paired potentials after averaging specified seeds; excludes new-training-seed uncertainty; unadjusted exploratory intervals",
+      "ci_low": -0.001053444681163529,
+      "comparator": "powers",
+      "estimate": -0.0005837750870547054,
+      "mean_per_seed": [
+        -0.0005837750870547054
+      ],
+      "n": 2,
+      "n_labels": 4,
+      "n_resamples": 2000,
+      "split": "test_OOD_strong",
+      "statistic": "mean"
+    },
+    {
+      "alpha": 0.05,
+      "ci_high": -0.00030641544477849614,
+      "ci_interpretation": "paired potentials after averaging specified seeds; excludes new-training-seed uncertainty; unadjusted exploratory intervals",
+      "ci_low": -0.0005023504615816465,
+      "comparator": "powers",
+      "estimate": -0.00040438295318007134,
+      "mean_per_seed": [
+        -0.00040438295318007134
+      ],
+      "n": 2,
+      "n_labels": 4,
+      "n_resamples": 2000,
+      "split": "test_OOD_double",
+      "statistic": "mean"
+    },
+    {
+      "alpha": 0.05,
+      "ci_high": 0.0011725007989411562,
+      "ci_interpretation": "paired potentials after averaging specified seeds; excludes new-training-seed uncertainty; unadjusted exploratory intervals",
+      "ci_low": -0.0035320161402828676,
+      "comparator": "remove_v",
+      "estimate": -0.0011797576706708557,
+      "mean_per_seed": [
+        -0.0011797576706708557
+      ],
+      "n": 2,
+      "n_labels": 4,
+      "n_resamples": 2000,
+      "split": "test_ID",
+      "statistic": "mean"
+    },
+    {
+      "alpha": 0.05,
+      "ci_high": 0.002572871257553566,
+      "ci_interpretation": "paired potentials after averaging specified seeds; excludes new-training-seed uncertainty; unadjusted exploratory intervals",
+      "ci_low": 0.0014531098919071672,
+      "comparator": "remove_v",
+      "estimate": 0.0020129905747303667,
+      "mean_per_seed": [
+        0.0020129905747303667
+      ],
+      "n": 2,
+      "n_labels": 4,
+      "n_resamples": 2000,
+      "split": "test_OOD_narrow",
+      "statistic": "mean"
+    },
+    {
+      "alpha": 0.05,
+      "ci_high": 0.011904122002813211,
+      "ci_interpretation": "paired potentials after averaging specified seeds; excludes new-training-seed uncertainty; unadjusted exploratory intervals",
+      "ci_low": 0.00026781840882550423,
+      "comparator": "remove_v",
+      "estimate": 0.006085970205819358,
+      "mean_per_seed": [
+        0.006085970205819358
+      ],
+      "n": 2,
+      "n_labels": 4,
+      "n_resamples": 2000,
+      "split": "test_OOD_strong",
+      "statistic": "mean"
+    },
+    {
+      "alpha": 0.05,
+      "ci_high": 0.002464236470883119,
+      "ci_interpretation": "paired potentials after averaging specified seeds; excludes new-training-seed uncertainty; unadjusted exploratory intervals",
+      "ci_low": 0.0010414908910788556,
+      "comparator": "remove_v",
+      "estimate": 0.0017528636809809872,
+      "mean_per_seed": [
+        0.0017528636809809872
+      ],
+      "n": 2,
+      "n_labels": 4,
+      "n_resamples": 2000,
+      "split": "test_OOD_double",
+      "statistic": "mean"
+    },
+    {
+      "alpha": 0.05,
+      "ci_high": -0.016228235076422792,
+      "ci_interpretation": "paired potentials after averaging specified seeds; excludes new-training-seed uncertainty; unadjusted exploratory intervals",
+      "ci_low": -0.024521525208747508,
+      "comparator": "scratch",
+      "estimate": -0.02037488014258515,
+      "mean_per_seed": [
+        -0.02037488014258515
+      ],
+      "n": 2,
+      "n_labels": 4,
+      "n_resamples": 2000,
+      "split": "test_ID",
+      "statistic": "mean"
+    },
+    {
+      "alpha": 0.05,
+      "ci_high": -0.009189050446537728,
+      "ci_interpretation": "paired potentials after averaging specified seeds; excludes new-training-seed uncertainty; unadjusted exploratory intervals",
+      "ci_low": -0.024579679646025365,
+      "comparator": "scratch",
+      "estimate": -0.016884365046281546,
+      "mean_per_seed": [
+        -0.016884365046281546
+      ],
+      "n": 2,
+      "n_labels": 4,
+      "n_resamples": 2000,
+      "split": "test_OOD_narrow",
+      "statistic": "mean"
+    },
+    {
+      "alpha": 0.05,
+      "ci_high": -0.04406061834664565,
+      "ci_interpretation": "paired potentials after averaging specified seeds; excludes new-training-seed uncertainty; unadjusted exploratory intervals",
+      "ci_low": -0.044412538590187345,
+      "comparator": "scratch",
+      "estimate": -0.0442365784684165,
+      "mean_per_seed": [
+        -0.0442365784684165
+      ],
+      "n": 2,
+      "n_labels": 4,
+      "n_resamples": 2000,
+      "split": "test_OOD_strong",
+      "statistic": "mean"
+    },
+    {
+      "alpha": 0.05,
+      "ci_high": -0.014180654771247636,
+      "ci_interpretation": "paired potentials after averaging specified seeds; excludes new-training-seed uncertainty; unadjusted exploratory intervals",
+      "ci_low": -0.021845391664215952,
+      "comparator": "scratch",
+      "estimate": -0.018013023217731794,
+      "mean_per_seed": [
+        -0.018013023217731794
+      ],
+      "n": 2,
+      "n_labels": 4,
+      "n_resamples": 2000,
+      "split": "test_OOD_double",
+      "statistic": "mean"
+    },
+    {
+      "alpha": 0.05,
+      "ci_high": -0.00019308814954477338,
+      "ci_interpretation": "paired potentials after averaging specified seeds; excludes new-training-seed uncertainty; unadjusted exploratory intervals",
+      "ci_low": -0.0005507016909350737,
+      "comparator": "shuffle",
+      "estimate": -0.00037189492023992354,
+      "mean_per_seed": [
+        -0.00037189492023992354
+      ],
+      "n": 2,
+      "n_labels": 4,
+      "n_resamples": 2000,
+      "split": "test_ID",
+      "statistic": "mean"
+    },
+    {
+      "alpha": 0.05,
+      "ci_high": -0.00032087188085028195,
+      "ci_interpretation": "paired potentials after averaging specified seeds; excludes new-training-seed uncertainty; unadjusted exploratory intervals",
+      "ci_low": -0.0004041492363204835,
+      "comparator": "shuffle",
+      "estimate": -0.0003625105585853827,
+      "mean_per_seed": [
+        -0.0003625105585853827
+      ],
+      "n": 2,
+      "n_labels": 4,
+      "n_resamples": 2000,
+      "split": "test_OOD_narrow",
+      "statistic": "mean"
+    },
+    {
+      "alpha": 0.05,
+      "ci_high": -0.000329394573280517,
+      "ci_interpretation": "paired potentials after averaging specified seeds; excludes new-training-seed uncertainty; unadjusted exploratory intervals",
+      "ci_low": -0.0025382517612271283,
+      "comparator": "shuffle",
+      "estimate": -0.0014338231672538226,
+      "mean_per_seed": [
+        -0.0014338231672538226
+      ],
+      "n": 2,
+      "n_labels": 4,
+      "n_resamples": 2000,
+      "split": "test_OOD_strong",
+      "statistic": "mean"
+    },
+    {
+      "alpha": 0.05,
+      "ci_high": -0.0005296956511534612,
+      "ci_interpretation": "paired potentials after averaging specified seeds; excludes new-training-seed uncertainty; unadjusted exploratory intervals",
+      "ci_low": -0.0006812531061139993,
+      "comparator": "shuffle",
+      "estimate": -0.0006054743786337302,
+      "mean_per_seed": [
+        -0.0006054743786337302
+      ],
+      "n": 2,
+      "n_labels": 4,
+      "n_resamples": 2000,
+      "split": "test_OOD_double",
+      "statistic": "mean"
+    }
+  ],
+  "costs": [
+    {
+      "elapsed_sec": 0.07836413383483887,
+      "encoder_parameters": 68672,
+      "n_params_total": 353090,
+      "n_params_trainable": 284418,
+      "run": "pre_coeff_s11",
+      "steps": 4
+    },
+    {
+      "elapsed_sec": 0.07346606254577637,
+      "encoder_parameters": 68672,
+      "n_params_total": 353090,
+      "n_params_trainable": 284418,
+      "run": "pre_ema4_s11",
+      "steps": 4
+    },
+    {
+      "elapsed_sec": 0.059916019439697266,
+      "encoder_parameters": 68672,
+      "n_params_total": 212800,
+      "n_params_trainable": 144128,
+      "run": "pre_field_s11",
+      "steps": 4
+    },
+    {
+      "elapsed_sec": 0.07146286964416504,
+      "encoder_parameters": 17952,
+      "n_params_total": 91554,
+      "n_params_trainable": 73602,
+      "run": "pre_half_dimension_s11",
+      "steps": 4
+    },
+    {
+      "elapsed_sec": 0.04403185844421387,
+      "encoder_parameters": 68672,
+      "n_params_total": 353090,
+      "n_params_trainable": 284418,
+      "run": "pre_half_steps_s11",
+      "steps": 2
+    },
+    {
+      "elapsed_sec": 0.0870978832244873,
+      "encoder_parameters": 68672,
+      "n_params_total": 352962,
+      "n_params_trainable": 284290,
+      "run": "pre_k1_s11",
+      "steps": 4
+    },
+    {
+      "elapsed_sec": 0.09529280662536621,
+      "encoder_parameters": 68672,
+      "n_params_total": 353090,
+      "n_params_trainable": 284418,
+      "run": "pre_k2_s11",
+      "steps": 4
+    },
+    {
+      "elapsed_sec": 0.08756804466247559,
+      "encoder_parameters": 68672,
+      "n_params_total": 353218,
+      "n_params_trainable": 284546,
+      "run": "pre_k3_s11",
+      "steps": 4
+    },
+    {
+      "elapsed_sec": 0.07159185409545898,
+      "encoder_parameters": 68672,
+      "n_params_total": 353090,
+      "n_params_trainable": 284418,
+      "run": "pre_no_latent_norm_s11",
+      "steps": 4
+    },
+    {
+      "elapsed_sec": 0.07877397537231445,
+      "encoder_parameters": 68672,
+      "n_params_total": 348608,
+      "n_params_trainable": 279936,
+      "run": "pre_operator_s11",
+      "steps": 4
+    },
+    {
+      "elapsed_sec": 0.0739288330078125,
+      "encoder_parameters": 68672,
+      "n_params_total": 353090,
+      "n_params_trainable": 284418,
+      "run": "pre_powers_s11",
+      "steps": 4
+    },
+    {
+      "elapsed_sec": 0.06657886505126953,
+      "encoder_parameters": 68672,
+      "n_params_total": 353090,
+      "n_params_trainable": 284418,
+      "run": "pre_remove_v_s11",
+      "steps": 4
+    },
+    {
+      "elapsed_sec": 0.09094476699829102,
+      "encoder_parameters": 68672,
+      "n_params_total": 353090,
+      "n_params_trainable": 284418,
+      "run": "pre_shuffle_s11",
+      "steps": 4
+    }
+  ],
+  "evidence_class": "pipeline_only",
+  "verdict": "NO_EFFICACY_INFERENCE_FROM_VERIFICATION_SCALE",
+  "verified_cells": 56
+}

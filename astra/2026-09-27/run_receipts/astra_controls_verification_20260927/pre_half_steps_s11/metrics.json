@@ -1,0 +1,13 @@
+{
+  "elapsed_sec": 0.04403185844421387,
+  "encoder_parameters": 68672,
+  "final_loss": 2.55029296875,
+  "loss_history": [
+    2.6164917945861816,
+    2.55029296875
+  ],
+  "mean_loss": 2.583392381668091,
+  "n_params_total": 353090,
+  "n_params_trainable": 284418,
+  "steps": 2
+}

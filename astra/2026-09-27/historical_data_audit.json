@@ -1,0 +1,18 @@
+{
+  "hashes": {
+    "labeled.h5": "21d9ea104ade174bf3743dc4eae8bc89a04677af7d7c14a9fee955d61259204b",
+    "labeled.manifest.json": "65245f8796ca3ca09ade8e057e8319b7e7904f6231efefb0873ed5299b5d7003",
+    "unlabeled.h5": "63a38ec3da5bb2f502954a6b07c579a7e44ea51abfbd1113d0b2a669994a0153"
+  },
+  "labeled_count": 88,
+  "split_counts": {
+    "test_ID": 12,
+    "test_OOD_double": 8,
+    "test_OOD_narrow": 8,
+    "test_OOD_strong": 8,
+    "train_pool": 40,
+    "validation": 12
+  },
+  "status": "PASS",
+  "unlabeled_count": 120
+}

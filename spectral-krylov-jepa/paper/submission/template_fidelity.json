@@ -1,0 +1,27 @@
+{
+  "source_sha256": "8364cac9efdde28a3da5532e9b9ce22e7d6d34e4337785cad9fb0d33eeb5ec2f",
+  "unchanged_parts": [
+    "word/header1.xml",
+    "word/numbering.xml",
+    "word/settings.xml",
+    "word/fontTable.xml",
+    "word/_rels/fontTable.xml.rels",
+    "word/styles.xml",
+    "_rels/.rels",
+    "word/fonts/NotoSansSymbols-regular.ttf",
+    "word/fonts/NotoSansSymbols-bold.ttf",
+    "word/theme/theme1.xml",
+    "word/media/image1.png"
+  ],
+  "changed_parts": [
+    "word/footnotes.xml",
+    "word/document.xml",
+    "word/_rels/document.xml.rels",
+    "[Content_Types].xml"
+  ],
+  "intentional_changes": [
+    "replace all example manuscript content",
+    "remove example footnotes and author metadata",
+    "add real figure and caption"
+  ]
+}

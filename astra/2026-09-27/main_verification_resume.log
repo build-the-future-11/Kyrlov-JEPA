@@ -1,0 +1,9 @@
+2026-09-27 10:31:31,901 | INFO | main_exp | Resume: reusing data in /Volumes/PRO-BLADE/Kyrlov-JEPA/spectral-krylov-jepa/experiments/raw/astra_main_verification_20260927T045810Z
+2026-09-27 10:31:31,906 | INFO | main_exp | Resume: pretrain field complete
+2026-09-27 10:31:31,909 | INFO | main_exp | Resume: pretrain operator complete
+2026-09-27 10:31:31,911 | INFO | main_exp | Resume: pretrain krylov complete
+2026-09-27 10:31:31,912 | INFO | main_exp | Resume: finetune scratch n4 seed=11 complete
+2026-09-27 10:31:31,916 | INFO | main_exp | Resume: finetune field n4 seed=11 complete
+2026-09-27 10:31:31,919 | INFO | main_exp | Resume: finetune operator n4 seed=11 complete
+2026-09-27 10:31:31,922 | INFO | main_exp | Resume: finetune krylov n4 seed=11 complete
+2026-09-27 10:31:34,882 | INFO | main_exp | Wrote /Volumes/PRO-BLADE/Kyrlov-JEPA/spectral-krylov-jepa/results/tables/astra_main_verification.csv, /Volumes/PRO-BLADE/Kyrlov-JEPA/spectral-krylov-jepa/results/tables/astra_main_verification_per_seed.csv and figures/astra_main_verification*.png

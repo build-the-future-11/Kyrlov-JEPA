@@ -1,3 +1,5 @@
+> Updated evidence: see `CLAIMS.md`, `REPRODUCE.md` and `paper/TECHNICAL_REPORT.md` at this project root. The 2026-09-27 baseline audit found no established Krylov gain. Full experiments remain unrun. Historical content below is preserved.
+
 # Spectral Krylov-JEPA
 
 **Krylov-Subspace Joint-Embedding Pretraining for Few-Shot Quantum Eigenstate Prediction**
