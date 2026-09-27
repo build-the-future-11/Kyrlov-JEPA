@@ -1,0 +1,14 @@
+data_path: experiments/raw/unlabeled.h5
+method: field
+model_size: default
+img_size: 32
+mask_ratio: 0.4
+batch_size: 8
+max_steps: 2000
+lr: 3.0e-4
+weight_decay: 0.05
+ema_momentum: 0.996
+warmup_steps: 200
+seed: 0
+device: auto
+num_workers: 0

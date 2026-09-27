@@ -1,0 +1,13 @@
+model_size: smoke
+img_size: 16
+batch_size: 4
+max_steps: 30
+epochs: 8
+lr: 3.0e-4
+n_unlabeled: 60
+n_starts: 1
+depth: 3
+device: auto
+seed: 0
+num_workers: 0
+early_stopping_patience: 5

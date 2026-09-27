@@ -1,0 +1,22 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "Spectral Krylov-JEPA: Krylov-Subspace Joint-Embedding Pretraining for Few-Shot Quantum Eigenstate Prediction"
+version: 0.1.0
+date-released: "2026-09-26"
+license: MIT
+type: software
+authors:
+  - family-names: Contributors
+    given-names: Spectral Krylov-JEPA
+abstract: >-
+  Research software evaluating whether self-supervised pretraining on
+  inexpensive Lanczos/Krylov trajectories improves few-shot prediction of
+  low-energy eigenstates of 2D Schrödinger operators relative to matched
+  baselines (scratch, Field-JEPA, Operator-JEPA).
+keywords:
+  - JEPA
+  - Krylov subspace
+  - Lanczos
+  - Schrödinger equation
+  - self-supervised learning
+  - few-shot learning

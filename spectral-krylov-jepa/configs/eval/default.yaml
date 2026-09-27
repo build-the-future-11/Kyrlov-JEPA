@@ -1,0 +1,5 @@
+model_size: default
+img_size: 32
+device: auto
+seed: 0
+n_bootstrap: 2000

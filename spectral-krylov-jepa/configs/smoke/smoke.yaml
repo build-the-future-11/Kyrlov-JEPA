@@ -1,0 +1,25 @@
+# Improved smoke: all four methods, slightly harder, still MacBook-safe.
+# Purpose: verify full comparison pipeline — NOT prove the hypothesis.
+n_interior: 16
+n_unlabeled: 120
+n_starts: 1
+depth: 3
+n_train: 40
+n_val: 12
+n_test_id: 12
+n_ood_each: 8
+subset_sizes: [10, 20]
+model_size: smoke
+pretrain_steps: 80
+finetune_epochs: 25
+batch_size: 4
+seed: 11
+device: auto
+context_steps: 2
+include_baselines: true
+lambda_psi: 1.0
+lambda_e: 1.0
+lambda_psi_mse: 0.1
+standardize_energy: true
+standardize_potential: true
+early_stopping_patience: 10

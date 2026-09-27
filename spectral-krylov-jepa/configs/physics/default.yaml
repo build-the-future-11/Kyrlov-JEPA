@@ -1,0 +1,10 @@
+# Frozen physics defaults (see paper/experiment_protocol.md)
+n_interior: 32
+x_min: 0.0
+x_max: 1.0
+y_min: 0.0
+y_max: 1.0
+residual_tol: 1.0e-5
+eigsh_tol: 1.0e-8
+lanczos_depth: 3
+reorthogonalize: true

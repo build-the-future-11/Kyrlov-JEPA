@@ -1,0 +1,19 @@
+# Target configuration for the first decisive label-efficiency experiment.
+# STATUS: protocol frozen; full run NOT YET EXECUTED.
+n_interior: 32
+n_unlabeled: 1000
+n_starts: 2
+depth: 3
+n_train: 120
+n_val: 40
+n_test_id: 40
+n_ood_each: 40
+subset_sizes: [10, 25, 50, 100]
+model_size: default
+pretrain_steps: 2000
+finetune_epochs: 80
+batch_size: 8
+seeds: [11, 23, 47]
+device: auto
+context_steps: 2
+methods: [scratch, field, operator, krylov]

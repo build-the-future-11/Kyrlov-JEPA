@@ -1,0 +1,124 @@
+{
+  "elapsed_sec": 73.67531394958496,
+  "note": "Improved smoke with Field/Operator/Krylov/Scratch, energy standardization, dual residuals, and Rayleigh energy. Not a claim of scientific success. Full decisive experiment not yet executed.",
+  "status": "ok",
+  "steps": {
+    "eval_field_n10": {
+      "fidelity_mean": 0.9858970724629311,
+      "fidelity_std": 0.007359045891932488,
+      "rel_energy_error_mean": 0.037797763603235515,
+      "rel_rayleigh_energy_error_mean": 0.5076388847224808,
+      "residual_rayleigh_mean": 50.253987980239856,
+      "residual_rel_mean": 50.41880542445248,
+      "residual_true_e_mean": 50.42302266408338
+    },
+    "eval_field_n20": {
+      "fidelity_mean": 0.9909627446924448,
+      "fidelity_std": 0.00526533331488485,
+      "rel_energy_error_mean": 0.04262416929117433,
+      "rel_rayleigh_energy_error_mean": 0.3361658035924346,
+      "residual_rayleigh_mean": 41.35330086617262,
+      "residual_rel_mean": 41.452657873327844,
+      "residual_true_e_mean": 41.44330559451782
+    },
+    "eval_krylov_n10": {
+      "fidelity_mean": 0.9804114385710401,
+      "fidelity_std": 0.00922872340441145,
+      "rel_energy_error_mean": 0.03570880033802833,
+      "rel_rayleigh_energy_error_mean": 0.715456476500082,
+      "residual_rayleigh_mean": 60.97775753831029,
+      "residual_rel_mean": 61.261461060597775,
+      "residual_true_e_mean": 61.257317175925415
+    },
+    "eval_krylov_n20": {
+      "fidelity_mean": 0.9916496889541183,
+      "fidelity_std": 0.006223070708134876,
+      "rel_energy_error_mean": 0.034059284114022474,
+      "rel_rayleigh_energy_error_mean": 0.30840244408565304,
+      "residual_rayleigh_mean": 40.11224016906545,
+      "residual_rel_mean": 40.19635674260835,
+      "residual_true_e_mean": 40.19089036780306
+    },
+    "eval_operator_n10": {
+      "fidelity_mean": 0.9834033976365677,
+      "fidelity_std": 0.007484895573568115,
+      "rel_energy_error_mean": 0.048882964784751404,
+      "rel_rayleigh_energy_error_mean": 0.5723888934237789,
+      "residual_rayleigh_mean": 54.284952288076056,
+      "residual_rel_mean": 54.48866335783706,
+      "residual_true_e_mean": 54.48290464919854
+    },
+    "eval_operator_n20": {
+      "fidelity_mean": 0.9922983940903397,
+      "fidelity_std": 0.005361104909399049,
+      "rel_energy_error_mean": 0.03963181618229537,
+      "rel_rayleigh_energy_error_mean": 0.2916371335855852,
+      "residual_rayleigh_mean": 38.88710454220929,
+      "residual_rel_mean": 38.96720461419085,
+      "residual_true_e_mean": 38.95873908054005
+    },
+    "eval_scratch_n10": {
+      "fidelity_mean": 0.9833423149202237,
+      "fidelity_std": 0.021493388297237934,
+      "rel_energy_error_mean": 0.03258044431937023,
+      "rel_rayleigh_energy_error_mean": 0.4604675833914981,
+      "residual_rayleigh_mean": 44.81850413681028,
+      "residual_rel_mean": 44.98272213626473,
+      "residual_true_e_mean": 44.98532767123208
+    },
+    "eval_scratch_n20": {
+      "fidelity_mean": 0.9939449302733622,
+      "fidelity_std": 0.00613178307238345,
+      "rel_energy_error_mean": 0.03215210817868769,
+      "rel_rayleigh_energy_error_mean": 0.18600082939158782,
+      "residual_rayleigh_mean": 29.002279023009226,
+      "residual_rel_mean": 29.048787195900516,
+      "residual_true_e_mean": 29.04363463159122
+    },
+    "ood_krylov": {
+      "test_ID": {
+        "fidelity_mean": 0.9916496889541183,
+        "rel_energy_error_mean": 0.034059284114022474,
+        "residual_true_e_mean": 40.19089036780306
+      },
+      "test_OOD_double": {
+        "fidelity_mean": 0.9928421158610086,
+        "rel_energy_error_mean": 0.05545343271249392,
+        "residual_true_e_mean": 40.32723593818138
+      },
+      "test_OOD_narrow": {
+        "fidelity_mean": 0.987506859200775,
+        "rel_energy_error_mean": 0.03360211358756557,
+        "residual_true_e_mean": 45.10607999717955
+      },
+      "test_OOD_strong": {
+        "fidelity_mean": 0.9655778126095061,
+        "rel_energy_error_mean": 1.1513489819732055,
+        "residual_true_e_mean": 51.28833469680386
+      }
+    },
+    "physics": {
+      "energy": 8.327948461575406,
+      "ok": true
+    },
+    "pretrain_field": {
+      "elapsed_sec": 5.2546679973602295,
+      "final_loss": 0.10062453150749207,
+      "mean_loss": 0.5022856320254505,
+      "steps": 80
+    },
+    "pretrain_krylov": {
+      "elapsed_sec": 6.722484111785889,
+      "final_loss": 0.012681717053055763,
+      "mean_loss": 0.3603992725489661,
+      "steps": 80
+    },
+    "pretrain_operator": {
+      "elapsed_sec": 6.001689195632935,
+      "final_loss": 0.03169294446706772,
+      "mean_loss": 0.33795624382328243,
+      "steps": 80
+    }
+  },
+  "table": "results/tables/smoke_label_efficiency.csv"
+}

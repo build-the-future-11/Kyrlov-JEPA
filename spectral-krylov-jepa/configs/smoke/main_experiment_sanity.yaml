@@ -1,0 +1,21 @@
+# Pipeline sanity check for scripts/11_run_main_experiment.py — NOT evidence.
+run_name: main_sanity
+manifest_name: main_sanity_splits
+n_interior: 16
+n_unlabeled: 40
+n_starts: 1
+depth: 3
+n_train: 24
+n_val: 8
+n_test_id: 8
+n_ood_each: 4
+subset_sizes: [10]
+model_size: smoke
+pretrain_steps: 10
+finetune_epochs: 2
+batch_size: 4
+seeds: [11]
+device: cpu
+context_steps: 2
+n_bootstrap: 100
+methods: [scratch, field, operator, krylov]

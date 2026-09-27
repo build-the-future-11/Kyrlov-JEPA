@@ -1,0 +1,84 @@
+{
+  "data_path": "/private/var/folders/ct/lk8xnz1s6pvd55g05hqjv7k00000gn/T/pytest-of-ryan/pytest-6/test_unlabeled_and_labeled_gen0/l.h5",
+  "family_by_index": [
+    "id_gaussian_mixture",
+    "id_gaussian_mixture",
+    "id_gaussian_mixture",
+    "id_gaussian_mixture",
+    "id_gaussian_mixture",
+    "id_gaussian_mixture",
+    "id_gaussian_mixture",
+    "id_gaussian_mixture",
+    "id_gaussian_mixture",
+    "id_gaussian_mixture",
+    "ood_narrow",
+    "ood_narrow",
+    "ood_strong",
+    "ood_strong",
+    "ood_double",
+    "ood_double"
+  ],
+  "grid": {
+    "n_interior": 8,
+    "x_max": 1.0,
+    "x_min": 0.0,
+    "y_max": 1.0,
+    "y_min": 0.0
+  },
+  "id_base_seed": 2000,
+  "layout": {
+    "n_ood_each": 2,
+    "n_test_id": 2,
+    "n_train": 6,
+    "n_val": 2,
+    "subset_sizes": [
+      2,
+      4
+    ]
+  },
+  "n_total": 16,
+  "ood_base_seed": 3000,
+  "seed": 1,
+  "splits": {
+    "test_ID": [
+      6,
+      3
+    ],
+    "test_OOD_double": [
+      14,
+      15
+    ],
+    "test_OOD_narrow": [
+      10,
+      11
+    ],
+    "test_OOD_strong": [
+      12,
+      13
+    ],
+    "train_pool": [
+      8,
+      4,
+      7,
+      0,
+      1,
+      2
+    ],
+    "validation": [
+      5,
+      9
+    ]
+  },
+  "subsets": {
+    "n2": [
+      0,
+      2
+    ],
+    "n4": [
+      0,
+      2,
+      7,
+      1
+    ]
+  }
+}
