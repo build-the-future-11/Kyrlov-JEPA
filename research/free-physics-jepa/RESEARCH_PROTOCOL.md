@@ -1,9 +1,9 @@
 # Free-Physics JEPA / LMOP-JEPA — Research Protocol (Frozen)
 
 **Freeze date:** 2026-09-26  
-**Amendment:** see `amendments/` (Study-2 active: `PROTOCOL_AMENDMENT_0003_matched_block_jepa.md`)
+**Amendment:** see `amendments/` (Study-3 active: `PROTOCOL_AMENDMENT_0004_preserve_ssl.md`; `0005_coordinate_channels` PROPOSED, not active)
 
-Study-1 (amendments 0001–0002) is archived as a negative/null confirmatory result.
+Study-1 (amendments 0001–0002) is archived as a negative/null confirmatory result. Studies 2–3 are uninformative for the research question (downstream models fail a trivial baseline); see `../../RESEARCH_AUDIT.md`.
 
 ## Research question
 

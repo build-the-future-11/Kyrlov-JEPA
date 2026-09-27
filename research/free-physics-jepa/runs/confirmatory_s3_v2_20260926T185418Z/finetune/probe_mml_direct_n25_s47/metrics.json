@@ -1,0 +1,436 @@
+{
+  "best_val": 0.26184115272301894,
+  "epochs": 60,
+  "freeze_epochs": 10,
+  "adaptation": "probe",
+  "backbone_lr_scale": null,
+  "wall_seconds": 22.53567886352539,
+  "parameter_count": 1089,
+  "init_kind": "mml",
+  "n_train": 25,
+  "normalize_inputs": true,
+  "history": [
+    {
+      "epoch": 0,
+      "train": 0.3899990831102644,
+      "val": 0.28306571680765885,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 1,
+      "train": 0.3078146534306662,
+      "val": 0.3072304186912683,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 2,
+      "train": 0.28057970319475445,
+      "val": 0.26764591955221617,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 3,
+      "train": 0.25783718483788626,
+      "val": 0.278949845295686,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 4,
+      "train": 0.2742938825062343,
+      "val": 0.2713352762735807,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 5,
+      "train": 0.2676944434642792,
+      "val": 0.27379982746564424,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 6,
+      "train": 0.26577351561614443,
+      "val": 0.26552897920975316,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 7,
+      "train": 0.2664277212960379,
+      "val": 0.2661314732753314,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 8,
+      "train": 0.26122456789016724,
+      "val": 0.26605419241465056,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 9,
+      "train": 0.2690542872462954,
+      "val": 0.26554106863645405,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 10,
+      "train": 0.26140424609184265,
+      "val": 0.2664832862523886,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 11,
+      "train": 0.2564666760819299,
+      "val": 0.2655024597278008,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 12,
+      "train": 0.2696228665964944,
+      "val": 0.2675187381414267,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 13,
+      "train": 0.2609871732337134,
+      "val": 0.2687024600230731,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 14,
+      "train": 0.2569807789155415,
+      "val": 0.26541753801015705,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 15,
+      "train": 0.2557796175990786,
+      "val": 0.2659305769663591,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 16,
+      "train": 0.2631590153489794,
+      "val": 0.26527188832943255,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 17,
+      "train": 0.26016182558877127,
+      "val": 0.2676945947683774,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 18,
+      "train": 0.2465954444238118,
+      "val": 0.27430104406980366,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 19,
+      "train": 0.2745866115604128,
+      "val": 0.2716628760099411,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 20,
+      "train": 0.27821715814726694,
+      "val": 0.2690332050506885,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 21,
+      "train": 0.2669033088854381,
+      "val": 0.2734916634284533,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 22,
+      "train": 0.2690966214452471,
+      "val": 0.2645601687523035,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 23,
+      "train": 0.259090502347265,
+      "val": 0.2638360628714928,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 24,
+      "train": 0.25616435067994253,
+      "val": 0.2665533217099997,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 25,
+      "train": 0.263506110225405,
+      "val": 0.2654435199040633,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 26,
+      "train": 0.2581494173833302,
+      "val": 0.26399807975842404,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 27,
+      "train": 0.2599947729281017,
+      "val": 0.2634805807700524,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 28,
+      "train": 0.2680988609790802,
+      "val": 0.26446958230091977,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 29,
+      "train": 0.2568088003567287,
+      "val": 0.26804553316189694,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 30,
+      "train": 0.26103230885096956,
+      "val": 0.26414204560793364,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 31,
+      "train": 0.264818657721792,
+      "val": 0.26375797390937805,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 32,
+      "train": 0.2564969594989504,
+      "val": 0.2632093486877588,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 33,
+      "train": 0.25713686645030975,
+      "val": 0.26345532215558565,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 34,
+      "train": 0.2606413406985147,
+      "val": 0.26480557597600496,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 35,
+      "train": 0.25832552356379374,
+      "val": 0.26461937908942884,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 36,
+      "train": 0.25015456335885183,
+      "val": 0.264499116402406,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 37,
+      "train": 0.2578109311206,
+      "val": 0.26994225726677823,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 38,
+      "train": 0.2584272835935865,
+      "val": 0.26694756975540745,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 39,
+      "train": 0.2544646220547812,
+      "val": 0.2628646664894544,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 40,
+      "train": 0.26490965485572815,
+      "val": 0.262915422136967,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 41,
+      "train": 0.2617220197405134,
+      "val": 0.26588554909596074,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 42,
+      "train": 0.2607032358646393,
+      "val": 0.2636035428597377,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 43,
+      "train": 0.2608411652701242,
+      "val": 0.2645013297979648,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 44,
+      "train": 0.25473412019865854,
+      "val": 0.26645858815083134,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 45,
+      "train": 0.2556274086236954,
+      "val": 0.2627178705655612,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 46,
+      "train": 0.27571654319763184,
+      "val": 0.26546790508123547,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 47,
+      "train": 0.2607869676181248,
+      "val": 0.2682077024991696,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 48,
+      "train": 0.26573491735117777,
+      "val": 0.2626196787907527,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 49,
+      "train": 0.26001673511096407,
+      "val": 0.27312713173719555,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 50,
+      "train": 0.25727816777569906,
+      "val": 0.2667671189858363,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 51,
+      "train": 0.27597012903009144,
+      "val": 0.2629037545277522,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 52,
+      "train": 0.26343362246240887,
+      "val": 0.2631809734381162,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 53,
+      "train": 0.2719689352171762,
+      "val": 0.2632311536715581,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 54,
+      "train": 0.2510795273951122,
+      "val": 0.2747028928536635,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 55,
+      "train": 0.26757977477141787,
+      "val": 0.2662427264910478,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 56,
+      "train": 0.25869941072804586,
+      "val": 0.26383220576322997,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 57,
+      "train": 0.2590159135205405,
+      "val": 0.2626391121974358,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 58,
+      "train": 0.251859330705234,
+      "val": 0.26184115272301894,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 59,
+      "train": 0.2538687735795975,
+      "val": 0.2621542261197017,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    }
+  ],
+  "checkpoint": "/Volumes/PRO-BLADE/Kyrlov-JEPA/research/free-physics-jepa/runs/confirmatory_s3_v2_20260926T185418Z/finetune/probe_mml_direct_n25_s47/checkpoint_best.pt",
+  "amendment": "0004_preserve_ssl"
+}

@@ -1,0 +1,32 @@
+{
+  "correct": {
+    "amendment": "0002_anticollapse",
+    "checkpoint": "/Volumes/PRO-BLADE/Kyrlov-JEPA/research/free-physics-jepa/runs/confirmatory_20260926T150845Z/pretrain_lmop/checkpoint.pt",
+    "final_loss": 0.8240561485290527,
+    "mean_latent_std": 0.2936771755358204,
+    "mean_loss": 0.8598558658957481,
+    "method": "lmop_jepa",
+    "parameter_count": 1187201,
+    "shuffle_physics": false,
+    "steps": 2000,
+    "wall_seconds": 211.72737002372742
+  },
+  "correct_final_loss": 0.8240561485290527,
+  "correct_mean_latent_std": 0.2936771755358204,
+  "mechanism_supported": false,
+  "note": "Support requires shuffled pretrain loss worse than correct-physics LMOP.",
+  "shuffled": {
+    "amendment": "0002_anticollapse",
+    "checkpoint": "/Volumes/PRO-BLADE/Kyrlov-JEPA/research/free-physics-jepa/runs/confirmatory_20260926T150845Z/pretrain_lmop_shuffled/checkpoint.pt",
+    "final_loss": 0.7795073986053467,
+    "mean_latent_std": 0.29702740924991666,
+    "mean_loss": 0.8582377364039421,
+    "method": "lmop_jepa",
+    "parameter_count": 1187201,
+    "shuffle_physics": true,
+    "steps": 2000,
+    "wall_seconds": 120.9595992565155
+  },
+  "shuffled_final_loss": 0.7795073986053467,
+  "shuffled_mean_latent_std": 0.29702740924991666
+}

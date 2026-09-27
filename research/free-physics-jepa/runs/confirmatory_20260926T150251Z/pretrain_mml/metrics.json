@@ -1,0 +1,10 @@
+{
+  "method": "mml_direct",
+  "steps": 2000,
+  "final_loss": 0.12881408631801605,
+  "mean_loss": 0.24787066604197025,
+  "wall_seconds": 71.60356020927429,
+  "parameter_count": 1185057,
+  "shuffle_physics": false,
+  "checkpoint": "/Volumes/PRO-BLADE/Kyrlov-JEPA/research/free-physics-jepa/runs/confirmatory_20260926T150251Z/pretrain_mml/checkpoint.pt"
+}

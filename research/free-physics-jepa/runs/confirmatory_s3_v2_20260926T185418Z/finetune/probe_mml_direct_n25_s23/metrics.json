@@ -1,0 +1,436 @@
+{
+  "best_val": 0.26253887437857115,
+  "epochs": 60,
+  "freeze_epochs": 10,
+  "adaptation": "probe",
+  "backbone_lr_scale": null,
+  "wall_seconds": 14.696354866027832,
+  "parameter_count": 1089,
+  "init_kind": "mml",
+  "n_train": 25,
+  "normalize_inputs": true,
+  "history": [
+    {
+      "epoch": 0,
+      "train": 0.384701920407159,
+      "val": 0.28495704898467433,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 1,
+      "train": 0.34144546730177744,
+      "val": 0.3013524974767978,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 2,
+      "train": 0.2745972233159201,
+      "val": 0.2783409494620103,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 3,
+      "train": 0.27763733693531584,
+      "val": 0.279662447480055,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 4,
+      "train": 0.2644717927489962,
+      "val": 0.27080143988132477,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 5,
+      "train": 0.278438646878515,
+      "val": 0.2730257786237277,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 6,
+      "train": 0.25964744814804624,
+      "val": 0.2665200325158926,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 7,
+      "train": 0.26452470251492094,
+      "val": 0.26643033898793733,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 8,
+      "train": 0.25983756354876925,
+      "val": 0.2654957198179685,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 9,
+      "train": 0.25406857260635923,
+      "val": 0.2675119088246272,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 10,
+      "train": 0.2644165520157133,
+      "val": 0.2689456229026501,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 11,
+      "train": 0.2604172910962786,
+      "val": 0.26925223951156324,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 12,
+      "train": 0.2615764502968107,
+      "val": 0.26492580198324645,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 13,
+      "train": 0.2597716919013432,
+      "val": 0.26446800850904906,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 14,
+      "train": 0.2602161722523825,
+      "val": 0.2659269170119212,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 15,
+      "train": 0.25771217899663107,
+      "val": 0.2655525757716252,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 16,
+      "train": 0.2638625545161111,
+      "val": 0.264639838383748,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 17,
+      "train": 0.25753165781497955,
+      "val": 0.2655363896718392,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 18,
+      "train": 0.2627352071659906,
+      "val": 0.2647466453222128,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 19,
+      "train": 0.2582628663097109,
+      "val": 0.2649524464057042,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 20,
+      "train": 0.262792523418154,
+      "val": 0.26986253834687746,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 21,
+      "train": 0.258832471711295,
+      "val": 0.2661713785850085,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 22,
+      "train": 0.26437378355434965,
+      "val": 0.2664147684207329,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 23,
+      "train": 0.2618835653577532,
+      "val": 0.26455671282914967,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 24,
+      "train": 0.2539857817547662,
+      "val": 0.2637924219553287,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 25,
+      "train": 0.25404879450798035,
+      "val": 0.26387173395890456,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 26,
+      "train": 0.2630029980625425,
+      "val": 0.2640184656931804,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 27,
+      "train": 0.26363565027713776,
+      "val": 0.26732068910048556,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 28,
+      "train": 0.2560520086969648,
+      "val": 0.26404916552396923,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 29,
+      "train": 0.25043395161628723,
+      "val": 0.26870576120339906,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 30,
+      "train": 0.2673960455826351,
+      "val": 0.269468571131046,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 31,
+      "train": 0.26198706456593107,
+      "val": 0.2671507402108266,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 32,
+      "train": 0.2549732412610735,
+      "val": 0.2639253953328499,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 33,
+      "train": 0.2527386780296053,
+      "val": 0.26409678963514477,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 34,
+      "train": 0.25428237872464315,
+      "val": 0.2633681824574104,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 35,
+      "train": 0.25500882949147907,
+      "val": 0.26660018356946796,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 36,
+      "train": 0.2508056823696409,
+      "val": 0.26820263725060683,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 37,
+      "train": 0.26017878098147257,
+      "val": 0.2668624176428868,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 38,
+      "train": 0.2594662606716156,
+      "val": 0.2653804409962434,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 39,
+      "train": 0.25472585218293325,
+      "val": 0.2637850848528055,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 40,
+      "train": 0.25703945755958557,
+      "val": 0.2689876820032413,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 41,
+      "train": 0.2624844248805727,
+      "val": 0.26372034733112043,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 42,
+      "train": 0.25162239585603985,
+      "val": 0.26289771497249603,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 43,
+      "train": 0.25050767617566244,
+      "val": 0.26443347334861755,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 44,
+      "train": 0.2548751469169344,
+      "val": 0.26555473185502565,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 45,
+      "train": 0.25462494790554047,
+      "val": 0.2633833105747516,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 46,
+      "train": 0.2631858140230179,
+      "val": 0.26284150779247284,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 47,
+      "train": 0.26268077322414946,
+      "val": 0.2627120338953458,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 48,
+      "train": 0.2530707227332251,
+      "val": 0.26253887437857115,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 49,
+      "train": 0.25230558855193,
+      "val": 0.26279267554099744,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 50,
+      "train": 0.25256532430648804,
+      "val": 0.2644938895335564,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 51,
+      "train": 0.2547258010932377,
+      "val": 0.26920236761753374,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 52,
+      "train": 0.2638407456023352,
+      "val": 0.2649470716714859,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 53,
+      "train": 0.2636649374450956,
+      "val": 0.26269143934433276,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 54,
+      "train": 0.26575730953897747,
+      "val": 0.2646635862497183,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 55,
+      "train": 0.27049130627087187,
+      "val": 0.26526608031529647,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 56,
+      "train": 0.2595933015857424,
+      "val": 0.2701279417826579,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 57,
+      "train": 0.2583055921963283,
+      "val": 0.26476954038326556,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 58,
+      "train": 0.27778169938496183,
+      "val": 0.2645767147724445,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    },
+    {
+      "epoch": 59,
+      "train": 0.26365962624549866,
+      "val": 0.26326966973451466,
+      "backbone_frozen": true,
+      "adaptation": "probe"
+    }
+  ],
+  "checkpoint": "/Volumes/PRO-BLADE/Kyrlov-JEPA/research/free-physics-jepa/runs/confirmatory_s3_v2_20260926T185418Z/finetune/probe_mml_direct_n25_s23/checkpoint_best.pt",
+  "amendment": "0004_preserve_ssl"
+}

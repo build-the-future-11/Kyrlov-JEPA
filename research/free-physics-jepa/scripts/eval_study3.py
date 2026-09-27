@@ -31,10 +31,12 @@ from lmop_jepa.training import (  # noqa: E402
     finetune_genuine,
     get_device,
     normalize_af,
+    seed_all,
     set_threads,
     train_lmop,
 )
 from aggregate_claim_gate import write_claim_artifacts  # noqa: E402
+from summarize_study3 import summarize_study3  # noqa: E402
 
 
 def load_json(path: Path) -> dict:
@@ -168,6 +170,13 @@ def main() -> int:
         help="Retrain LMOP with Study-3 λ_var=1, λ_u=1 before eval",
     )
     parser.add_argument("--skip-shuffled-retrain", action="store_true")
+    parser.add_argument(
+        "--resume-run",
+        type=str,
+        default=None,
+        help="Existing Study-3 run dir name under runs/; reuses its pretrain_lmop checkpoint, "
+        "shuffled_control.json, and completed fine-tunes",
+    )
     args = parser.parse_args()
 
     set_threads(4)
@@ -205,7 +214,12 @@ def main() -> int:
     adaptations = [a.strip() for a in args.adaptations.split(",") if a.strip()]
 
     pre_root = PKG / "runs" / args.pretrain_run
-    run_root = PKG / "runs" / f"{mode}_s3_v2_{time.strftime('%Y%m%dT%H%M%SZ')}"
+    if args.resume_run:
+        run_root = PKG / "runs" / args.resume_run
+        if not run_root.is_dir():
+            raise FileNotFoundError(run_root)
+    else:
+        run_root = PKG / "runs" / f"{mode}_s3_v2_{time.strftime('%Y%m%dT%H%M%SZ')}"
     run_root.mkdir(parents=True, exist_ok=True)
     sha = git_sha()
     status = PKG / "OVERNIGHT_STATUS.md"
@@ -222,11 +236,18 @@ def main() -> int:
         f"- adaptations: {adaptations}\n"
         f"- device: {device}\n"
         f"- git_sha: {sha}\n"
+        + (f"- resume: {run_root}\n" if args.resume_run else "")
     )
 
     mml_ckpt = pre_root / "pretrain_mml" / "checkpoint.pt"
     lmop_dir = run_root / "pretrain_lmop"
-    if args.retrain_lmop:
+    resumed_lmop = lmop_dir / "checkpoint.pt"
+    if args.resume_run and resumed_lmop.exists():
+        lmop_ckpt = resumed_lmop
+        if not (run_root / "shuffled_control.json").exists():
+            raise FileNotFoundError(run_root / "shuffled_control.json")
+        log(f"- resume LMOP ckpt {lmop_ckpt}")
+    elif args.retrain_lmop:
         log("- retrain LMOP with λ_var=1, λ_u=1...")
         lmop_meta = train_lmop(
             data_dir / "manufactured_mixed.h5",
@@ -322,6 +343,7 @@ def main() -> int:
                     tag = f"{adaptation}_{method}_n{n_lab}_s{seed}"
                     if adaptation == "zero_shot":
                         # Scratch zero-shot = random; pretrained methods use pretrain head
+                        seed_all(seed)
                         model = build_downstream_from_pretrain(
                             kind=kind, ckpt=ckpt, width=width, modes=modes, n_layers=n_layers, device=device
                         )
@@ -431,68 +453,15 @@ def main() -> int:
             proto=proto,
             shuffle_path=run_root / "shuffled_control.json",
             git_sha=sha,
+            out_stem=f"claim_gate_s3_{adaptation}",
+            write_paper_stub=False,
+            source_csv=str(csv_path.relative_to(PKG)),
         )
-        # Rename generic claim outputs to adaptation-specific
-        import shutil
-
-        for src, dst in [
-            (PKG / "results" / "tables" / "claim_gate.json", PKG / "results" / "tables" / f"claim_gate_s3_{adaptation}.json"),
-            (PKG / "results" / "tables" / "claim_gate.md", PKG / "results" / "tables" / f"claim_gate_s3_{adaptation}.md"),
-        ]:
-            if src.exists():
-                shutil.copy(src, dst)
         write_json({"rows": table_rows, "verdict": claim["verdict"]}, run_root / adaptation / "summary.json")
         log(f"- {adaptation} claim_gate: {claim['verdict']} ({claim['summary']})")
         all_rows.extend(table_rows)
 
-    # Combined summary
-    combined = PKG / "results" / "tables" / f"study3_{mode}_all.csv"
-    with combined.open("w", newline="") as f:
-        w = csv.DictWriter(f, fieldnames=list(all_rows[0].keys()))
-        w.writeheader()
-        w.writerows(all_rows)
-
-    # Human summary markdown
-    lines = [
-        "# Study-3 results (amendment 0004)",
-        "",
-        f"Run: `{run_root.name}`",
-        f"Pretrain source: `{pre_root.name}`",
-        f"Retrain LMOP: `{args.retrain_lmop}`",
-        f"Git: `{sha}`",
-        "",
-    ]
-    for adaptation in adaptations:
-        sub = [r for r in all_rows if r["adaptation"] == adaptation]
-        lines.append(f"## {adaptation}")
-        lines.append("")
-        lines.append("| N | Dist | Scratch | MML | LMOP | Δ(LMOP−MML) |")
-        lines.append("|---|------|---------|-----|------|-------------|")
-        for n in subsets:
-            for dist in ("id", "ood"):
-                means = {}
-                for method in ("scratch", "mml_direct", "lmop_jepa"):
-                    vals = [
-                        float(r["relative_l2"])
-                        for r in sub
-                        if r["method"] == method and int(r["real_label_budget"]) == n and r["distribution"] == dist
-                    ]
-                    means[method] = float(np.mean(vals)) if vals else float("nan")
-                delta = means["lmop_jepa"] - means["mml_direct"]
-                lines.append(
-                    f"| {n} | {dist} | {means['scratch']:.4f} | {means['mml_direct']:.4f} | "
-                    f"{means['lmop_jepa']:.4f} | {delta:+.4f} |"
-                )
-        gate = PKG / "results" / "tables" / f"claim_gate_s3_{adaptation}.md"
-        if gate.exists():
-            verdict_line = next((ln for ln in gate.read_text().splitlines() if "Verdict" in ln), "")
-            lines.append("")
-            lines.append(verdict_line)
-        lines.append("")
-    summary_md = PKG / "results" / "tables" / "STUDY3_RESULTS.md"
-    summary_md.write_text("\n".join(lines) + "\n")
-    (PKG / "STUDY3_RESULTS.md").write_text("\n".join(lines) + "\n")
-    (PKG / "paper" / "RESULTS_STUDY3.md").write_text("\n".join(lines) + "\n")
+    summary_md = summarize_study3(mode)
     log(f"- DONE study3 -> {summary_md}")
     print(json.dumps({"run_root": str(run_root), "n_rows": len(all_rows), "summary": str(summary_md)}, indent=2))
     return 0

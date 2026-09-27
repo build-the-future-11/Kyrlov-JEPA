@@ -1,0 +1,374 @@
+{
+  "best_val": 0.2654957198179685,
+  "epochs": 60,
+  "freeze_epochs": 10,
+  "wall_seconds": 12.564389944076538,
+  "parameter_count": 1185057,
+  "init_kind": "mml",
+  "n_train": 25,
+  "normalize_inputs": true,
+  "history": [
+    {
+      "epoch": 0,
+      "train": 0.384701920407159,
+      "val": 0.28495704898467433,
+      "backbone_frozen": true
+    },
+    {
+      "epoch": 1,
+      "train": 0.34144546730177744,
+      "val": 0.3013524974767978,
+      "backbone_frozen": true
+    },
+    {
+      "epoch": 2,
+      "train": 0.2745972233159201,
+      "val": 0.2783409494620103,
+      "backbone_frozen": true
+    },
+    {
+      "epoch": 3,
+      "train": 0.27763733693531584,
+      "val": 0.279662447480055,
+      "backbone_frozen": true
+    },
+    {
+      "epoch": 4,
+      "train": 0.2644717927489962,
+      "val": 0.27080143988132477,
+      "backbone_frozen": true
+    },
+    {
+      "epoch": 5,
+      "train": 0.278438646878515,
+      "val": 0.2730257786237277,
+      "backbone_frozen": true
+    },
+    {
+      "epoch": 6,
+      "train": 0.25964744814804624,
+      "val": 0.2665200325158926,
+      "backbone_frozen": true
+    },
+    {
+      "epoch": 7,
+      "train": 0.26452470251492094,
+      "val": 0.26643033898793733,
+      "backbone_frozen": true
+    },
+    {
+      "epoch": 8,
+      "train": 0.25983756354876925,
+      "val": 0.2654957198179685,
+      "backbone_frozen": true
+    },
+    {
+      "epoch": 9,
+      "train": 0.25406857260635923,
+      "val": 0.2675119088246272,
+      "backbone_frozen": true
+    },
+    {
+      "epoch": 10,
+      "train": 0.279289539371218,
+      "val": 0.2870228198858408,
+      "backbone_frozen": false
+    },
+    {
+      "epoch": 11,
+      "train": 0.2598616821425302,
+      "val": 0.2703448316225639,
+      "backbone_frozen": false
+    },
+    {
+      "epoch": 12,
+      "train": 0.2600663346903665,
+      "val": 0.2662183837248729,
+      "backbone_frozen": false
+    },
+    {
+      "epoch": 13,
+      "train": 0.24700725717203958,
+      "val": 0.2724713832139969,
+      "backbone_frozen": false
+    },
+    {
+      "epoch": 14,
+      "train": 0.24815043807029724,
+      "val": 0.26999396888109356,
+      "backbone_frozen": false
+    },
+    {
+      "epoch": 15,
+      "train": 0.23729663235800608,
+      "val": 0.26747718568031603,
+      "backbone_frozen": false
+    },
+    {
+      "epoch": 16,
+      "train": 0.23711145988532475,
+      "val": 0.2688662696343202,
+      "backbone_frozen": false
+    },
+    {
+      "epoch": 17,
+      "train": 0.2300886788538524,
+      "val": 0.2790981806241549,
+      "backbone_frozen": false
+    },
+    {
+      "epoch": 18,
+      "train": 0.22866210554327285,
+      "val": 0.3011278429856667,
+      "backbone_frozen": false
+    },
+    {
+      "epoch": 19,
+      "train": 0.2072084971836635,
+      "val": 0.28994018183304715,
+      "backbone_frozen": false
+    },
+    {
+      "epoch": 20,
+      "train": 0.20280918053218297,
+      "val": 0.30196954768437606,
+      "backbone_frozen": false
+    },
+    {
+      "epoch": 21,
+      "train": 0.19454944346632277,
+      "val": 0.3073716049010937,
+      "backbone_frozen": false
+    },
+    {
+      "epoch": 22,
+      "train": 0.19079768444810594,
+      "val": 0.32187160505698276,
+      "backbone_frozen": false
+    },
+    {
+      "epoch": 23,
+      "train": 0.17655571017946517,
+      "val": 0.3198872529543363,
+      "backbone_frozen": false
+    },
+    {
+      "epoch": 24,
+      "train": 0.14451716574175016,
+      "val": 0.34634093137887806,
+      "backbone_frozen": false
+    },
+    {
+      "epoch": 25,
+      "train": 0.1510955457176481,
+      "val": 0.3524020520540384,
+      "backbone_frozen": false
+    },
+    {
+      "epoch": 26,
+      "train": 0.12609982596976416,
+      "val": 0.3494075582577632,
+      "backbone_frozen": false
+    },
+    {
+      "epoch": 27,
+      "train": 0.11272128990718297,
+      "val": 0.3653336946780865,
+      "backbone_frozen": false
+    },
+    {
+      "epoch": 28,
+      "train": 0.08838939187782151,
+      "val": 0.3996193294341748,
+      "backbone_frozen": false
+    },
+    {
+      "epoch": 29,
+      "train": 0.07422081061771937,
+      "val": 0.3921267894598154,
+      "backbone_frozen": false
+    },
+    {
+      "epoch": 30,
+      "train": 0.06279418457831655,
+      "val": 0.38450715175041783,
+      "backbone_frozen": false
+    },
+    {
+      "epoch": 31,
+      "train": 0.0545668468943664,
+      "val": 0.41260642959521365,
+      "backbone_frozen": false
+    },
+    {
+      "epoch": 32,
+      "train": 0.05725988080458982,
+      "val": 0.4195798612557925,
+      "backbone_frozen": false
+    },
+    {
+      "epoch": 33,
+      "train": 0.043684890759842734,
+      "val": 0.43141324474261356,
+      "backbone_frozen": false
+    },
+    {
+      "epoch": 34,
+      "train": 0.034332835115492344,
+      "val": 0.41338486396349394,
+      "backbone_frozen": false
+    },
+    {
+      "epoch": 35,
+      "train": 0.030517444546733583,
+      "val": 0.43504014152746934,
+      "backbone_frozen": false
+    },
+    {
+      "epoch": 36,
+      "train": 0.029834954334156855,
+      "val": 0.4048950236577254,
+      "backbone_frozen": false
+    },
+    {
+      "epoch": 37,
+      "train": 0.024864533650023595,
+      "val": 0.4217185756334892,
+      "backbone_frozen": false
+    },
+    {
+      "epoch": 38,
+      "train": 0.02146283789936985,
+      "val": 0.43039069725916934,
+      "backbone_frozen": false
+    },
+    {
+      "epoch": 39,
+      "train": 0.01844427841050284,
+      "val": 0.42653069587854237,
+      "backbone_frozen": false
+    },
+    {
+      "epoch": 40,
+      "train": 0.016680220142006874,
+      "val": 0.44047441161595857,
+      "backbone_frozen": false
+    },
+    {
+      "epoch": 41,
+      "train": 0.014615517242678575,
+      "val": 0.4486522674560547,
+      "backbone_frozen": false
+    },
+    {
+      "epoch": 42,
+      "train": 0.013600550591945648,
+      "val": 0.43422738634623015,
+      "backbone_frozen": false
+    },
+    {
+      "epoch": 43,
+      "train": 0.012215361531291689,
+      "val": 0.43956212126291716,
+      "backbone_frozen": false
+    },
+    {
+      "epoch": 44,
+      "train": 0.011921474177922522,
+      "val": 0.4310966982291295,
+      "backbone_frozen": false
+    },
+    {
+      "epoch": 45,
+      "train": 0.01012753336025136,
+      "val": 0.4454540014266968,
+      "backbone_frozen": false
+    },
+    {
+      "epoch": 46,
+      "train": 0.009327161591500044,
+      "val": 0.4361443771765782,
+      "backbone_frozen": false
+    },
+    {
+      "epoch": 47,
+      "train": 0.008190896827727556,
+      "val": 0.43192920776513904,
+      "backbone_frozen": false
+    },
+    {
+      "epoch": 48,
+      "train": 0.009627669450959988,
+      "val": 0.4406998845247122,
+      "backbone_frozen": false
+    },
+    {
+      "epoch": 49,
+      "train": 0.008662351506895252,
+      "val": 0.4293727863293428,
+      "backbone_frozen": false
+    },
+    {
+      "epoch": 50,
+      "train": 0.007828052953949996,
+      "val": 0.44709001596157366,
+      "backbone_frozen": false
+    },
+    {
+      "epoch": 51,
+      "train": 0.008890696934291295,
+      "val": 0.43046346192176527,
+      "backbone_frozen": false
+    },
+    {
+      "epoch": 52,
+      "train": 0.011592174081930093,
+      "val": 0.4212283675487225,
+      "backbone_frozen": false
+    },
+    {
+      "epoch": 53,
+      "train": 0.012167402010943209,
+      "val": 0.43224854652698225,
+      "backbone_frozen": false
+    },
+    {
+      "epoch": 54,
+      "train": 0.00942875464845981,
+      "val": 0.45397722262602586,
+      "backbone_frozen": false
+    },
+    {
+      "epoch": 55,
+      "train": 0.0074107337609997815,
+      "val": 0.4336583476800185,
+      "backbone_frozen": false
+    },
+    {
+      "epoch": 56,
+      "train": 0.008423164353838988,
+      "val": 0.43653688866358537,
+      "backbone_frozen": false
+    },
+    {
+      "epoch": 57,
+      "train": 0.007169758235769612,
+      "val": 0.4225358206492204,
+      "backbone_frozen": false
+    },
+    {
+      "epoch": 58,
+      "train": 0.0066289398819208145,
+      "val": 0.41860014314834887,
+      "backbone_frozen": false
+    },
+    {
+      "epoch": 59,
+      "train": 0.008751587210489171,
+      "val": 0.4395221104988685,
+      "backbone_frozen": false
+    }
+  ],
+  "checkpoint": "/Volumes/PRO-BLADE/Kyrlov-JEPA/research/free-physics-jepa/runs/confirmatory_s2_v2_20260926T162730Z/finetune/mml_direct_n25_s23/checkpoint_best.pt",
+  "amendment": "0003_matched_block_jepa"
+}

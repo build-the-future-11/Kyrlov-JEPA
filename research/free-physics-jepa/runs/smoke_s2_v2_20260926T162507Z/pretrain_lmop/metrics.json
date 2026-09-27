@@ -1,0 +1,14 @@
+{
+  "method": "lmop_jepa",
+  "steps": 200,
+  "final_loss": 15.211813926696777,
+  "mean_loss": 19.38718671321869,
+  "mean_latent_std": 0.33364007985219357,
+  "wall_seconds": 8.518976211547852,
+  "parameter_count": 67233,
+  "shuffle_physics": false,
+  "shuffle_mode": null,
+  "normalize_inputs": true,
+  "checkpoint": "/Volumes/PRO-BLADE/Kyrlov-JEPA/research/free-physics-jepa/runs/smoke_s2_v2_20260926T162507Z/pretrain_lmop/checkpoint.pt",
+  "amendment": "0003_matched_block_jepa"
+}

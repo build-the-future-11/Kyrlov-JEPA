@@ -1,0 +1,12 @@
+{
+  "method": "lmop_jepa",
+  "steps": 2000,
+  "final_loss": 0.7795073986053467,
+  "mean_loss": 0.8582377364039421,
+  "mean_latent_std": 0.29702740924991666,
+  "wall_seconds": 120.9595992565155,
+  "parameter_count": 1187201,
+  "shuffle_physics": true,
+  "checkpoint": "/Volumes/PRO-BLADE/Kyrlov-JEPA/research/free-physics-jepa/runs/confirmatory_20260926T150845Z/pretrain_lmop_shuffled/checkpoint.pt",
+  "amendment": "0002_anticollapse"
+}

@@ -1,0 +1,16 @@
+{
+  "condition_est": 2268.2845269991517,
+  "grid": {
+    "n": 32,
+    "x0": 0.0,
+    "x1": 1.0
+  },
+  "ok": true,
+  "roundtrip": {
+    "ok": 1.0,
+    "rel_roundtrip_error": 1.9015416506576314e-15,
+    "solver_residual_rel": 1.3843697435073001e-14
+  },
+  "spd": true,
+  "symmetry_error": 0.0
+}

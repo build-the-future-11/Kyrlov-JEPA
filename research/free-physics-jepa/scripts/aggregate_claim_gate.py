@@ -98,6 +98,21 @@ def cis_nonoverlap(a: dict, b: dict) -> bool:
     return a["ci_high"] < b["ci_low"] or b["ci_high"] < a["ci_low"]
 
 
+def seed_variance_degenerate(a: dict, b: dict) -> bool:
+    """True when seeds do not vary either model (e.g. zero-shot: one checkpoint per method).
+
+    A zero-width across-seed CI makes any nonzero difference "non-overlapping", so the
+    CI criterion carries no statistical information and must not count as support.
+    """
+    tol = 1e-9
+    return (
+        a["n_seeds"] > 1
+        and b["n_seeds"] > 1
+        and a["std_relative_l2"] <= tol * max(1.0, abs(a["mean_relative_l2"]))
+        and b["std_relative_l2"] <= tol * max(1.0, abs(b["mean_relative_l2"]))
+    )
+
+
 def write_claim_artifacts(
     *,
     table_rows: list[dict],
@@ -105,6 +120,10 @@ def write_claim_artifacts(
     proto: dict,
     shuffle_path: Path,
     git_sha: str | None,
+    out_stem: str = "claim_gate",
+    write_paper_stub: bool = True,
+    amendments: list[str] | None = None,
+    source_csv: str = "results/tables/confirmatory.csv",
 ) -> dict[str, Any]:
     seeds = list(proto["seeds"])
     subsets = list(proto["data_sizes"]["confirmatory"]["subsets"])
@@ -116,11 +135,13 @@ def write_claim_artifacts(
             lmop = aggregate_cell(table_rows, method="lmop_jepa", n=n, dist=dist)
             scratch = aggregate_cell(table_rows, method="scratch", n=n, dist=dist)
             paired = paired_seed_deltas(table_rows, n=n, dist=dist)
+            degenerate = seed_variance_degenerate(lmop, mml)
             lmop_beats_mml = bool(
                 mml["n_seeds"] == len(seeds)
                 and lmop["n_seeds"] == len(seeds)
                 and paired["all_lmop_better"]
                 and cis_nonoverlap(lmop, mml)
+                and not degenerate
             )
             comparisons.append(
                 {
@@ -132,6 +153,7 @@ def write_claim_artifacts(
                     "paired": paired,
                     "lmop_beats_mml_nonoverlap_ci": lmop_beats_mml,
                     "mml_beats_or_ties_lmop": paired["all_mml_better_or_tie"],
+                    "seed_variance_degenerate": degenerate,
                 }
             )
             if lmop_beats_mml:
@@ -149,6 +171,12 @@ def write_claim_artifacts(
     if not complete:
         verdict = "INCOMPLETE_MATRIX"
         summary = f"Only {len(table_rows)}/{expected_rows} eval rows; do not claim."
+    elif comparisons and all(c["seed_variance_degenerate"] for c in comparisons):
+        verdict = "NOT_TESTABLE_NO_SEED_VARIANCE"
+        summary = (
+            "MML and LMOP predictions do not vary across seeds (single checkpoint per method), "
+            "so the across-seed CI criterion is degenerate; the frozen gate cannot be applied."
+        )
     elif support_cells and mechanism_ok:
         verdict = "SUPPORTS_HYPOTHESIS"
         summary = (
@@ -192,10 +220,10 @@ def write_claim_artifacts(
             "Smoke metrics are not evidence.",
             "Krylov-JEPA is unrelated and must not be cited as LMOP support.",
         ],
-        "amendments": ["0001_initial_freeze", "0002_anticollapse"],
+        "amendments": amendments or list(proto.get("amendments", [])),
     }
 
-    out_json = PKG / "results" / "tables" / "claim_gate.json"
+    out_json = PKG / "results" / "tables" / f"{out_stem}.json"
     out_json.parent.mkdir(parents=True, exist_ok=True)
     out_json.write_text(json.dumps(report, indent=2))
     (run_root / "claim_gate.json").write_text(json.dumps(report, indent=2))
@@ -215,12 +243,12 @@ def write_claim_artifacts(
         "",
         "## Seed-aggregated relative L2",
         "",
-        "| N | Dist | Scratch | MML | LMOP | Δ(LMOP−MML) | LMOP wins (CI) |",
-        "|---|------|---------|-----|------|-------------|----------------|",
+        "| N | Dist | Scratch | MML | LMOP | Δ(LMOP−MML) | LMOP wins (CI) | Seed CI degenerate |",
+        "|---|------|---------|-----|------|-------------|----------------|--------------------|",
     ]
     for c in comparisons:
         lines.append(
-            "| {n} | {dist} | {s:.4f}±{ss:.4f} | {m:.4f}±{ms:.4f} | {l:.4f}±{ls:.4f} | {d:.4f} | {w} |".format(
+            "| {n} | {dist} | {s:.4f}±{ss:.4f} | {m:.4f}±{ms:.4f} | {l:.4f}±{ls:.4f} | {d:.4f} | {w} | {g} |".format(
                 n=c["n"],
                 dist=c["distribution"],
                 s=c["scratch"]["mean_relative_l2"],
@@ -231,6 +259,7 @@ def write_claim_artifacts(
                 ls=c["lmop_jepa"]["std_relative_l2"],
                 d=c["paired"]["mean_delta"],
                 w="yes" if c["lmop_beats_mml_nonoverlap_ci"] else "no",
+                g="yes" if c["seed_variance_degenerate"] else "no",
             )
         )
     lines.extend(
@@ -243,26 +272,26 @@ def write_claim_artifacts(
             "",
         ]
     )
-    md_path = PKG / "results" / "tables" / "claim_gate.md"
+    md_path = PKG / "results" / "tables" / f"{out_stem}.md"
     md_path.write_text("\n".join(lines) + "\n")
     (run_root / "claim_gate.md").write_text("\n".join(lines) + "\n")
 
-    # Fill paper results stub if present
-    paper = PKG / "paper" / "RESULTS_AUTO.md"
-    paper.parent.mkdir(parents=True, exist_ok=True)
-    paper.write_text(
-        "\n".join(
-            [
-                "# Auto-filled results (do not edit by hand — regenerated by overnight run)",
-                "",
-                *lines[1:],
-                "",
-                "Source CSV: `results/tables/confirmatory.csv`",
-                "Source gate: `results/tables/claim_gate.json`",
-                "",
-            ]
+    if write_paper_stub:
+        paper = PKG / "paper" / "RESULTS_AUTO.md"
+        paper.parent.mkdir(parents=True, exist_ok=True)
+        paper.write_text(
+            "\n".join(
+                [
+                    "# Auto-filled results (do not edit by hand — regenerated by overnight run)",
+                    "",
+                    *lines[1:],
+                    "",
+                    f"Source CSV: `{source_csv}`",
+                    f"Source gate: `results/tables/{out_stem}.json`",
+                    "",
+                ]
+            )
         )
-    )
 
     report["artifact"] = str(out_json)
     return report
@@ -276,19 +305,31 @@ def main() -> int:
     p = argparse.ArgumentParser()
     p.add_argument("--csv", type=str, default=str(PKG / "results" / "tables" / "confirmatory.csv"))
     p.add_argument("--run-root", type=str, required=True)
+    p.add_argument("--out-stem", type=str, default="claim_gate")
+    p.add_argument("--no-paper-stub", action="store_true")
+    p.add_argument("--shuffle-json", type=str, default=None)
+    p.add_argument("--git-sha", type=str, default=None)
     args = p.parse_args()
     proto = yaml.safe_load((PKG / "protocol.yaml").read_text())
     rows = load_rows_from_csv(Path(args.csv))
     run_root = Path(args.run_root)
-    sha = None
-    if (run_root / "summary.json").exists():
+    sha = args.git_sha
+    if sha is None and (run_root / "summary.json").exists():
         sha = json.loads((run_root / "summary.json").read_text()).get("git_sha")
+    shuffle_path = Path(args.shuffle_json) if args.shuffle_json else run_root / "shuffled_control.json"
+    try:
+        source_csv = str(Path(args.csv).resolve().relative_to(PKG))
+    except ValueError:
+        source_csv = args.csv
     out = write_claim_artifacts(
         table_rows=rows,
         run_root=run_root,
         proto=proto,
-        shuffle_path=run_root / "shuffled_control.json",
+        shuffle_path=shuffle_path,
         git_sha=sha,
+        out_stem=args.out_stem,
+        write_paper_stub=not args.no_paper_stub,
+        source_csv=source_csv,
     )
     print(json.dumps({"verdict": out["verdict"], "artifact": out["artifact"]}, indent=2))
     return 0

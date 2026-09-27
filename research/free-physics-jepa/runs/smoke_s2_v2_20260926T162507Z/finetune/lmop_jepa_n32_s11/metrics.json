@@ -1,0 +1,134 @@
+{
+  "best_val": 0.22614790499210358,
+  "epochs": 20,
+  "freeze_epochs": 5,
+  "wall_seconds": 1.7442078590393066,
+  "parameter_count": 66417,
+  "init_kind": "lmop",
+  "n_train": 32,
+  "normalize_inputs": true,
+  "history": [
+    {
+      "epoch": 0,
+      "train": 1.6252775192260742,
+      "val": 0.4246336370706558,
+      "backbone_frozen": true
+    },
+    {
+      "epoch": 1,
+      "train": 0.5719734542071819,
+      "val": 0.6473707854747772,
+      "backbone_frozen": true
+    },
+    {
+      "epoch": 2,
+      "train": 0.5559074096381664,
+      "val": 0.35899998247623444,
+      "backbone_frozen": true
+    },
+    {
+      "epoch": 3,
+      "train": 0.3925599008798599,
+      "val": 0.35707952082157135,
+      "backbone_frozen": true
+    },
+    {
+      "epoch": 4,
+      "train": 0.385134294629097,
+      "val": 0.31300728023052216,
+      "backbone_frozen": true
+    },
+    {
+      "epoch": 5,
+      "train": 0.3475354090332985,
+      "val": 0.28349488228559494,
+      "backbone_frozen": false
+    },
+    {
+      "epoch": 6,
+      "train": 0.2761221416294575,
+      "val": 0.2833661437034607,
+      "backbone_frozen": false
+    },
+    {
+      "epoch": 7,
+      "train": 0.25339491479098797,
+      "val": 0.24116142839193344,
+      "backbone_frozen": false
+    },
+    {
+      "epoch": 8,
+      "train": 0.2514912635087967,
+      "val": 0.2615455649793148,
+      "backbone_frozen": false
+    },
+    {
+      "epoch": 9,
+      "train": 0.23979798518121243,
+      "val": 0.23699816688895226,
+      "backbone_frozen": false
+    },
+    {
+      "epoch": 10,
+      "train": 0.23162822611629963,
+      "val": 0.23948844149708748,
+      "backbone_frozen": false
+    },
+    {
+      "epoch": 11,
+      "train": 0.22841255366802216,
+      "val": 0.24314672499895096,
+      "backbone_frozen": false
+    },
+    {
+      "epoch": 12,
+      "train": 0.21657467633485794,
+      "val": 0.2371678166091442,
+      "backbone_frozen": false
+    },
+    {
+      "epoch": 13,
+      "train": 0.22281425073742867,
+      "val": 0.23068541288375854,
+      "backbone_frozen": false
+    },
+    {
+      "epoch": 14,
+      "train": 0.22040743939578533,
+      "val": 0.2325158305466175,
+      "backbone_frozen": false
+    },
+    {
+      "epoch": 15,
+      "train": 0.21845921874046326,
+      "val": 0.22748184576630592,
+      "backbone_frozen": false
+    },
+    {
+      "epoch": 16,
+      "train": 0.2126815728843212,
+      "val": 0.22822687774896622,
+      "backbone_frozen": false
+    },
+    {
+      "epoch": 17,
+      "train": 0.21298549883067608,
+      "val": 0.23119504749774933,
+      "backbone_frozen": false
+    },
+    {
+      "epoch": 18,
+      "train": 0.21259882673621178,
+      "val": 0.22915732488036156,
+      "backbone_frozen": false
+    },
+    {
+      "epoch": 19,
+      "train": 0.21188679710030556,
+      "val": 0.22614790499210358,
+      "backbone_frozen": false
+    }
+  ],
+  "checkpoint": "/Volumes/PRO-BLADE/Kyrlov-JEPA/research/free-physics-jepa/runs/smoke_s2_v2_20260926T162507Z/finetune/lmop_jepa_n32_s11/checkpoint_best.pt",
+  "amendment": "0003_matched_block_jepa"
+}

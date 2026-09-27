@@ -1,0 +1,32 @@
+{
+  "base_seed": 200000,
+  "family": "id_val",
+  "field_ids": [
+    "id_val_00200000",
+    "id_val_00200001",
+    "id_val_00200002",
+    "id_val_00200003",
+    "id_val_00200004",
+    "id_val_00200005",
+    "id_val_00200006",
+    "id_val_00200007",
+    "id_val_00200008",
+    "id_val_00200009",
+    "id_val_00200010",
+    "id_val_00200011",
+    "id_val_00200012",
+    "id_val_00200013",
+    "id_val_00200014",
+    "id_val_00200015"
+  ],
+  "file_sha256": "a601fb8492b0716b039b69fd8723858a57a4dbf64e04c5ebe2839df58120b233",
+  "grid": {
+    "n": 32,
+    "x0": 0.0,
+    "x1": 1.0
+  },
+  "length_scale": 0.2,
+  "n": 16,
+  "path": "/Volumes/PRO-BLADE/Kyrlov-JEPA/research/free-physics-jepa/data/smoke_v2/genuine_val.h5",
+  "variance": 1.0
+}

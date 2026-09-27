@@ -1,0 +1,15 @@
+{
+  "evidence_class": "ENGINEERING_SANITY (validation split only; not claim evidence)",
+  "subset": "n100",
+  "epochs": 60,
+  "seed": 11,
+  "val_train_mean_field_rel_l2": 0.3313198983669281,
+  "fno_2ch_no_coords": {
+    "best_val_rel_l2": 0.5093877911567688,
+    "wall_seconds": 412.61378622055054
+  },
+  "fno_4ch_with_coords": {
+    "best_val_rel_l2": 0.08400139957666397,
+    "wall_seconds": 268.9476180076599
+  }
+}

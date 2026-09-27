@@ -1,5 +1,7 @@
 # AUDIT: Free-Physics JEPA / LMOP-JEPA
 
+> **SUPERSEDED (2026-09-27)** by `RESEARCH_AUDIT.md`. This audit predates the LMOP code in `research/free-physics-jepa/`; its "absent" findings are historical.
+
 **Audit date:** 2026-09-26  
 **Workspace audited:** `/Volumes/PRO-BLADE/Kyrlov-JEPA`  
 **Auditor posture:** skeptical ML reviewer + numerical PDE + reproducibility  

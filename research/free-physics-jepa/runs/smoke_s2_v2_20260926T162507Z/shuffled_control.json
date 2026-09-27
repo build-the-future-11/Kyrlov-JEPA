@@ -1,0 +1,37 @@
+{
+  "amendment": "0003_matched_block_jepa",
+  "correct": {
+    "amendment": "0003_matched_block_jepa",
+    "checkpoint": "/Volumes/PRO-BLADE/Kyrlov-JEPA/research/free-physics-jepa/runs/smoke_s2_v2_20260926T162507Z/pretrain_lmop/checkpoint.pt",
+    "final_loss": 15.211813926696777,
+    "mean_latent_std": 0.33364007985219357,
+    "mean_loss": 19.38718671321869,
+    "method": "lmop_jepa",
+    "normalize_inputs": true,
+    "parameter_count": 67233,
+    "shuffle_mode": null,
+    "shuffle_physics": false,
+    "steps": 200,
+    "wall_seconds": 8.518976211547852
+  },
+  "correct_final_loss": 15.211813926696777,
+  "correct_mean_latent_std": 0.33364007985219357,
+  "mechanism_supported": true,
+  "shuffle_mode": "u_vs_af",
+  "shuffled": {
+    "amendment": "0003_matched_block_jepa",
+    "checkpoint": "/Volumes/PRO-BLADE/Kyrlov-JEPA/research/free-physics-jepa/runs/smoke_s2_v2_20260926T162507Z/pretrain_lmop_shuffled/checkpoint.pt",
+    "final_loss": 15.283977508544922,
+    "mean_latent_std": 0.3351079951925203,
+    "mean_loss": 19.412845277786253,
+    "method": "lmop_jepa",
+    "normalize_inputs": true,
+    "parameter_count": 67233,
+    "shuffle_mode": "u_vs_af",
+    "shuffle_physics": true,
+    "steps": 200,
+    "wall_seconds": 5.754435777664185
+  },
+  "shuffled_final_loss": 15.283977508544922,
+  "shuffled_mean_latent_std": 0.3351079951925203
+}

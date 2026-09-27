@@ -673,6 +673,8 @@ def main() -> int:
             proto=proto,
             shuffle_path=run_root / "shuffled_control.json",
             git_sha=sha,
+            amendments=["0001_initial_freeze", "0002_anticollapse", "0003_matched_block_jepa"],
+            source_csv=str(Path(table_path).relative_to(PKG)),
         )
         # Also write Study-2-specific copies
         for src_name, dst_name in [

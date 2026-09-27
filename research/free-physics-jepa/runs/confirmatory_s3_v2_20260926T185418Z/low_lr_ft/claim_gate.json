@@ -1,0 +1,304 @@
+{
+  "program": "lmop-jepa",
+  "evidence_class": "CONFIRMATORY",
+  "verdict": "FALSIFIES_HYPOTHESIS",
+  "summary": "MML \u2265 LMOP on relative L2 across seeds under this protocol.",
+  "git_sha": "22a06963cb940753b00e61e7df136be4ce7773df",
+  "run_root": "/Volumes/PRO-BLADE/Kyrlov-JEPA/research/free-physics-jepa/runs/confirmatory_s3_v2_20260926T185418Z/low_lr_ft",
+  "expected_eval_rows": 36,
+  "observed_eval_rows": 36,
+  "matrix_complete": true,
+  "shuffled_control": {
+    "path": "/Volumes/PRO-BLADE/Kyrlov-JEPA/research/free-physics-jepa/runs/confirmatory_s3_v2_20260926T185418Z/shuffled_control.json",
+    "mechanism_supported": true,
+    "correct_final_loss": 1.3984802961349487,
+    "shuffled_final_loss": 2.2257986068725586
+  },
+  "comparisons": [
+    {
+      "n": 25,
+      "distribution": "id",
+      "scratch": {
+        "method": "scratch",
+        "n": 25,
+        "distribution": "id",
+        "n_seeds": 3,
+        "mean_relative_l2": 0.5149310501416524,
+        "std_relative_l2": 0.003264647409111029,
+        "ci_low": 0.5112367538231518,
+        "ci_high": 0.518625346460153,
+        "per_seed": [
+          0.5160590898990631,
+          0.5174820852279663,
+          0.5112519752979279
+        ]
+      },
+      "mml_direct": {
+        "method": "mml_direct",
+        "n": 25,
+        "distribution": "id",
+        "n_seeds": 3,
+        "mean_relative_l2": 0.5027313405275345,
+        "std_relative_l2": 0.002079785600122414,
+        "ci_low": 0.5003778415664033,
+        "ci_high": 0.5050848394886658,
+        "per_seed": [
+          0.5046905207633973,
+          0.50295454621315,
+          0.5005489546060562
+        ]
+      },
+      "lmop_jepa": {
+        "method": "lmop_jepa",
+        "n": 25,
+        "distribution": "id",
+        "n_seeds": 3,
+        "mean_relative_l2": 0.507121837735176,
+        "std_relative_l2": 0.0028434706930126805,
+        "ci_low": 0.5039041477378904,
+        "ci_high": 0.5103395277324617,
+        "per_seed": [
+          0.5042830967903137,
+          0.5071124017238617,
+          0.5099700146913528
+        ]
+      },
+      "paired": {
+        "seeds": [
+          11,
+          23,
+          47
+        ],
+        "deltas_lmop_minus_mml": [
+          -0.00040742397308357603,
+          0.004157855510711683,
+          0.00942106008529664
+        ],
+        "mean_delta": 0.004390497207641582,
+        "std_delta": 0.004918370293178557,
+        "all_lmop_better": false,
+        "all_mml_better_or_tie": false
+      },
+      "lmop_beats_mml_nonoverlap_ci": false,
+      "mml_beats_or_ties_lmop": false,
+      "seed_variance_degenerate": false
+    },
+    {
+      "n": 25,
+      "distribution": "ood",
+      "scratch": {
+        "method": "scratch",
+        "n": 25,
+        "distribution": "ood",
+        "n_seeds": 3,
+        "mean_relative_l2": 0.5356885302066803,
+        "std_relative_l2": 0.00182528240315646,
+        "ci_low": 0.5336230287245337,
+        "ci_high": 0.5377540316888269,
+        "per_seed": [
+          0.5376801407337188,
+          0.5340954214334488,
+          0.5352900284528732
+        ]
+      },
+      "mml_direct": {
+        "method": "mml_direct",
+        "n": 25,
+        "distribution": "ood",
+        "n_seeds": 3,
+        "mean_relative_l2": 0.5316708346207937,
+        "std_relative_l2": 0.00031794660046228964,
+        "ci_low": 0.5313110441722786,
+        "ci_high": 0.5320306250693088,
+        "per_seed": [
+          0.5313579523563385,
+          0.5316609370708466,
+          0.5319936144351959
+        ]
+      },
+      "lmop_jepa": {
+        "method": "lmop_jepa",
+        "n": 25,
+        "distribution": "ood",
+        "n_seeds": 3,
+        "mean_relative_l2": 0.5323533443609874,
+        "std_relative_l2": 0.0012003256094808587,
+        "ci_low": 0.5309950480660394,
+        "ci_high": 0.5337116406559353,
+        "per_seed": [
+          0.5322983610630035,
+          0.5335802167654038,
+          0.5311814552545547
+        ]
+      },
+      "paired": {
+        "seeds": [
+          11,
+          23,
+          47
+        ],
+        "deltas_lmop_minus_mml": [
+          0.000940408706665008,
+          0.0019192796945571855,
+          -0.0008121591806411477
+        ],
+        "mean_delta": 0.0006825097401936819,
+        "std_delta": 0.0013838618030411916,
+        "all_lmop_better": false,
+        "all_mml_better_or_tie": false
+      },
+      "lmop_beats_mml_nonoverlap_ci": false,
+      "mml_beats_or_ties_lmop": false,
+      "seed_variance_degenerate": false
+    },
+    {
+      "n": 100,
+      "distribution": "id",
+      "scratch": {
+        "method": "scratch",
+        "n": 100,
+        "distribution": "id",
+        "n_seeds": 3,
+        "mean_relative_l2": 0.49967603723208115,
+        "std_relative_l2": 0.0021811702759355874,
+        "ci_low": 0.4972078107099999,
+        "ci_high": 0.5021442637541624,
+        "per_seed": [
+          0.5021506190299988,
+          0.4988447481393814,
+          0.4980327445268631
+        ]
+      },
+      "mml_direct": {
+        "method": "mml_direct",
+        "n": 100,
+        "distribution": "id",
+        "n_seeds": 3,
+        "mean_relative_l2": 0.49744832118352256,
+        "std_relative_l2": 0.0018398379919933516,
+        "ci_low": 0.4953663485020349,
+        "ci_high": 0.4995302938650102,
+        "per_seed": [
+          0.4972012829780579,
+          0.49939919710159303,
+          0.49574448347091676
+        ]
+      },
+      "lmop_jepa": {
+        "method": "lmop_jepa",
+        "n": 100,
+        "distribution": "id",
+        "n_seeds": 3,
+        "mean_relative_l2": 0.502094568212827,
+        "std_relative_l2": 0.0017818401180474744,
+        "ci_low": 0.5000782263040842,
+        "ci_high": 0.5041109101215699,
+        "per_seed": [
+          0.500184565782547,
+          0.503712043762207,
+          0.5023870950937271
+        ]
+      },
+      "paired": {
+        "seeds": [
+          11,
+          23,
+          47
+        ],
+        "deltas_lmop_minus_mml": [
+          0.002983282804489118,
+          0.004312846660613989,
+          0.006642611622810379
+        ],
+        "mean_delta": 0.0046462470293044955,
+        "std_delta": 0.0018523063203831445,
+        "all_lmop_better": false,
+        "all_mml_better_or_tie": true
+      },
+      "lmop_beats_mml_nonoverlap_ci": false,
+      "mml_beats_or_ties_lmop": true,
+      "seed_variance_degenerate": false
+    },
+    {
+      "n": 100,
+      "distribution": "ood",
+      "scratch": {
+        "method": "scratch",
+        "n": 100,
+        "distribution": "ood",
+        "n_seeds": 3,
+        "mean_relative_l2": 0.5396179322401683,
+        "std_relative_l2": 0.005553357196669082,
+        "ci_low": 0.5333337169862583,
+        "ci_high": 0.5459021474940783,
+        "per_seed": [
+          0.5458866733312607,
+          0.5376527237892151,
+          0.535314399600029
+        ]
+      },
+      "mml_direct": {
+        "method": "mml_direct",
+        "n": 100,
+        "distribution": "ood",
+        "n_seeds": 3,
+        "mean_relative_l2": 0.5319803857803346,
+        "std_relative_l2": 0.001053935615890723,
+        "ci_low": 0.5307877453577102,
+        "ci_high": 0.5331730262029589,
+        "per_seed": [
+          0.5314696317911148,
+          0.5312791395187378,
+          0.5331923860311508
+        ]
+      },
+      "lmop_jepa": {
+        "method": "lmop_jepa",
+        "n": 100,
+        "distribution": "ood",
+        "n_seeds": 3,
+        "mean_relative_l2": 0.5325314829746882,
+        "std_relative_l2": 0.00028372982473372715,
+        "ci_low": 0.5322104124529414,
+        "ci_high": 0.532852553496435,
+        "per_seed": [
+          0.5326983219385147,
+          0.5322038787603378,
+          0.5326922482252121
+        ]
+      },
+      "paired": {
+        "seeds": [
+          11,
+          23,
+          47
+        ],
+        "deltas_lmop_minus_mml": [
+          0.0012286901473999023,
+          0.00092473924159997,
+          -0.0005001378059387163
+        ],
+        "mean_delta": 0.0005510971943537187,
+        "std_delta": 0.0009229939369595159,
+        "all_lmop_better": false,
+        "all_mml_better_or_tie": false
+      },
+      "lmop_beats_mml_nonoverlap_ci": false,
+      "mml_beats_or_ties_lmop": false,
+      "seed_variance_degenerate": false
+    }
+  ],
+  "support_cells": [],
+  "language_rules": [
+    "Do not claim novelty of manufactured solutions, FNO, or JEPA.",
+    "State comparative transfer hypothesis only.",
+    "Smoke metrics are not evidence.",
+    "Krylov-JEPA is unrelated and must not be cited as LMOP support."
+  ],
+  "amendments": [
+    "amendments/PROTOCOL_AMENDMENT_0001_initial_freeze.md",
+    "amendments/PROTOCOL_AMENDMENT_0002_anticollapse.md",
+    "amendments/PROTOCOL_AMENDMENT_0003_matched_block_jepa.md",
+    "amendments/PROTOCOL_AMENDMENT_0004_preserve_ssl.md"
+  ]
+}

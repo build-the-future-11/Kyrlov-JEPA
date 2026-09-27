@@ -1,0 +1,13 @@
+{
+  "method": "mml_direct",
+  "steps": 200,
+  "final_loss": 0.22966624796390533,
+  "mean_loss": 0.4789651919901371,
+  "wall_seconds": 5.2305731773376465,
+  "parameter_count": 66417,
+  "shuffle_physics": false,
+  "shuffle_mode": null,
+  "normalize_inputs": true,
+  "checkpoint": "/Volumes/PRO-BLADE/Kyrlov-JEPA/research/free-physics-jepa/runs/smoke_s2_v2_20260926T162507Z/pretrain_mml/checkpoint.pt",
+  "amendment": "0003_matched_block_jepa"
+}

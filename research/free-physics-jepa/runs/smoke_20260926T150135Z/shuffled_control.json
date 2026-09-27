@@ -1,0 +1,24 @@
+{
+  "correct": {
+    "checkpoint": "/Volumes/PRO-BLADE/Kyrlov-JEPA/research/free-physics-jepa/runs/smoke_20260926T150135Z/pretrain_lmop/checkpoint.pt",
+    "final_loss": 0.011573998257517815,
+    "mean_latent_var": 0.00015375910924603887,
+    "mean_loss": 0.2964579349197447,
+    "method": "lmop_jepa",
+    "parameter_count": 66977,
+    "shuffle_physics": false,
+    "steps": 100,
+    "wall_seconds": 4.46460223197937
+  },
+  "shuffled": {
+    "checkpoint": "/Volumes/PRO-BLADE/Kyrlov-JEPA/research/free-physics-jepa/runs/smoke_20260926T150135Z/pretrain_lmop_shuffled/checkpoint.pt",
+    "final_loss": 0.011836858466267586,
+    "mean_latent_var": 0.00015589172416980546,
+    "mean_loss": 0.2965199967566878,
+    "method": "lmop_jepa",
+    "parameter_count": 66977,
+    "shuffle_physics": true,
+    "steps": 100,
+    "wall_seconds": 3.679987907409668
+  }
+}

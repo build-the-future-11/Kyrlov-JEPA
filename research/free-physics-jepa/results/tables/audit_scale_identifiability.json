@@ -1,0 +1,67 @@
+{
+  "oracle_global_scale": 0.6218041567138857,
+  "splits": {
+    "id": {
+      "forcing_constant": true,
+      "mean_a_mean": 1.5862093809452562,
+      "mean_a_cv": 0.041143538685227174,
+      "mean_a_min": 1.4487717871488712,
+      "mean_a_max": 1.704508215210808,
+      "oracle_rel_l2_mean": 0.034370221971504925,
+      "oracle_rel_l2_median": 0.03130380184516818,
+      "model_correlation_with_oracle_error": {
+        "confirmatory_s3_v2_20260926T185418Z/probe_scratch_n100_s11": {
+          "model_rel_l2_mean": 0.5219371372461319,
+          "pearson_r": 0.09380487208661704
+        },
+        "confirmatory_s3_v2_20260926T185418Z/probe_mml_direct_n100_s11": {
+          "model_rel_l2_mean": 0.4998329716920853,
+          "pearson_r": -0.157712660786675
+        },
+        "confirmatory_s3_v2_20260926T185418Z/probe_lmop_jepa_n100_s11": {
+          "model_rel_l2_mean": 0.5032197916507721,
+          "pearson_r": -0.12842096400748618
+        },
+        "confirmatory_s2_v2_20260926T162730Z/scratch_n100_s11": {
+          "model_rel_l2_mean": 0.5097393864393234,
+          "pearson_r": -0.04837143717093185
+        },
+        "confirmatory_s2_v2_20260926T162730Z/mml_direct_n100_s11": {
+          "model_rel_l2_mean": 0.5013987636566162,
+          "pearson_r": -0.143838948072074
+        }
+      }
+    },
+    "ood": {
+      "forcing_constant": true,
+      "mean_a_mean": 1.6054829109049387,
+      "mean_a_cv": 0.02292465295228124,
+      "mean_a_min": 1.525024642209246,
+      "mean_a_max": 1.6983712492492486,
+      "oracle_rel_l2_mean": 0.018248357214527732,
+      "oracle_rel_l2_median": 0.017434002911664137,
+      "model_correlation_with_oracle_error": {
+        "confirmatory_s3_v2_20260926T185418Z/probe_scratch_n100_s11": {
+          "model_rel_l2_mean": 0.5377950209379196,
+          "pearson_r": -0.03151729200868231
+        },
+        "confirmatory_s3_v2_20260926T185418Z/probe_mml_direct_n100_s11": {
+          "model_rel_l2_mean": 0.5322241723537445,
+          "pearson_r": -0.015114443267680319
+        },
+        "confirmatory_s3_v2_20260926T185418Z/probe_lmop_jepa_n100_s11": {
+          "model_rel_l2_mean": 0.5326389729976654,
+          "pearson_r": -0.05280864876894527
+        },
+        "confirmatory_s2_v2_20260926T162730Z/scratch_n100_s11": {
+          "model_rel_l2_mean": 0.5371815818548202,
+          "pearson_r": -0.10748151945529436
+        },
+        "confirmatory_s2_v2_20260926T162730Z/mml_direct_n100_s11": {
+          "model_rel_l2_mean": 0.5350755292177201,
+          "pearson_r": -0.133359362167507
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "method": "lmop_jepa",
+  "steps": 4000,
+  "final_loss": 1.3984802961349487,
+  "mean_loss": 1.5026158408224584,
+  "mean_latent_std": 0.14841447416413575,
+  "wall_seconds": 540.1744618415833,
+  "parameter_count": 1188225,
+  "shuffle_physics": false,
+  "shuffle_mode": null,
+  "normalize_inputs": true,
+  "checkpoint": "/Volumes/PRO-BLADE/Kyrlov-JEPA/research/free-physics-jepa/runs/confirmatory_s3_v2_20260926T185418Z/pretrain_lmop/checkpoint.pt",
+  "amendment": "0004_preserve_ssl",
+  "lambda_var": 1.0,
+  "lambda_cov": 1.0,
+  "lambda_u": 1.0
+}
