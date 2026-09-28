@@ -3,26 +3,36 @@
 This workspace contains Spectral Krylov-JEPA (`spectral-krylov-jepa/`) and the
 separate Free-Physics/LMOP-JEPA study (`research/free-physics-jepa/`).
 
-The two principal Spectral Krylov-JEPA studies are complete: 576 evaluations
-across the original main and exploratory successor matrices. The current paper
-separates wavefunction overlap from physical accuracy, retains failed conditions,
-and does not claim a general pretraining advantage. Supplemental experiments and
-human submission requirements remain incomplete.
+## Public evidence boundary
 
-- [Current CJSJ paper and figures](spectral-krylov-jepa/paper/revision_20260928/README.md)
-- [28 September completion update](PROJECT_COMPLETION_UPDATE_2026-09-28.md)
+At this exact repository revision, the tracked public package contains the
+27 September ASTRA engineering/control evidence, technical report, result
+summaries, reproduction instructions, and claim/limitation ledgers.
+
+A later README edit referenced `PROJECT_COMPLETION_UPDATE_2026-09-28.md` and
+`spectral-krylov-jepa/paper/revision_20260928/README.md`, but those paths are
+not present at the same public Git revision. Until the corresponding artifacts
+and source-bound receipts are actually committed, they are not public evidence
+for a 28 September completion claim.
+
+The retained public evidence does **not** establish a general Krylov pretraining
+advantage. It includes a negative baseline audit and bounded control execution;
+submission readiness still requires the missing result package to be committed
+and reconciled with the existing claim/reproduction ledgers, plus human
+scientific review.
 
 - [Current status](STATUS.md)
-- [Full project completion checklist](PROJECT_COMPLETION_CHECKLIST_2026-09-27.md)
-- [Next experiments and model additions](PUBLICATION_EXECUTION_PLAN_2026-09-27.md)
-- [Run the successor model additions](spectral-krylov-jepa/SUCCESSOR_RUNBOOK.md)
-- [Successor implementation and verification](SUCCESSOR_IMPLEMENTATION_REPORT_2026-09-27.md)
 - [Historical execution report](ASTRA_FINAL_REPORT.md)
 - [Mission checklist](COMPLETION_CHECKLIST_2026-09-27.md)
 - [Exact reproduction commands](spectral-krylov-jepa/REPRODUCE.md)
 - [Technical report](spectral-krylov-jepa/paper/TECHNICAL_REPORT.md)
 - [Claim ledger](spectral-krylov-jepa/CLAIMS.md)
+- [Limitations](spectral-krylov-jepa/LIMITATIONS.md)
 
-Historical workspace audits remain available and are explicitly superseded for
-Krylov by the dated execution report. No neighboring LMOP experiment was rerun.
-# Kyrlov-JEPA
+If a newer result package exists outside Git, commit it with its exact source,
+configuration, run receipts, retained failures, and paper linkage before
+upgrading this public status.
+
+Historical workspace audits remain available and are explicitly superseded only
+by source-bound evidence that is actually present in the repository. No
+neighboring LMOP experiment is reinterpreted by this README.
