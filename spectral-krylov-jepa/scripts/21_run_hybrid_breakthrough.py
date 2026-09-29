@@ -854,73 +854,115 @@ def main() -> int:
                             )
                         )
 
-            x_train = np.concatenate(
-                [feat["krylov"]["train"][idx], physics_train[idx]],
-                axis=1,
-            )
-            x_val = np.concatenate(
-                [feat["krylov"]["validation"], physics_val],
-                axis=1,
-            )
-            residual_model, tuning = choose_ridge(
-                x_train,
-                target_train[idx] - pt2_train[idx],
-                x_val,
-                validation,
-                grid,
-                pt2_val=pt2_val,
-            )
-            method = "krylov_pt2_residual_adaptive_10"
-            tuning_rows.append(
-                {
-                    "seed": pretrain_seed,
-                    "n_labels": n_labels,
-                    "method": method,
-                    **tuning,
-                }
-            )
-            for split_name, samples in splits.items():
-                x_test = np.concatenate(
-                    [feat["krylov"][split_name], physics_split[split_name]],
-                    axis=1,
-                )
-                pred_residual = residual_model.predict(x_test)
-                pt2_test = pt2_matrix(samples, grid)
-                for sample, c_pt2, c_res in zip(samples, pt2_test, pred_residual):
-                    result = adaptive_from_coeff(
-                        sample,
-                        grid,
-                        c_pt2 + c_res,
-                    )
-                    rows.append(
-                        metric_row(
-                            method,
-                            sample,
-                            result,
-                            grid,
-                            seed=pretrain_seed,
-                            n_labels=n_labels,
-                            split=split_name,
+            residual_feature_variants = {
+                "scratch_pt2_residual_adaptive_10": (
+                    np.concatenate(
+                        [feat["scratch"]["train"][idx], physics_train[idx]],
+                        axis=1,
+                    ),
+                    np.concatenate(
+                        [feat["scratch"]["validation"], physics_val],
+                        axis=1,
+                    ),
+                    {
+                        k: np.concatenate(
+                            [feat["scratch"][k], physics_split[k]],
+                            axis=1,
                         )
-                    )
+                        for k in splits
+                    },
+                ),
+                "krylov_pt2_residual_adaptive_10": (
+                    np.concatenate(
+                        [feat["krylov"]["train"][idx], physics_train[idx]],
+                        axis=1,
+                    ),
+                    np.concatenate(
+                        [feat["krylov"]["validation"], physics_val],
+                        axis=1,
+                    ),
+                    {
+                        k: np.concatenate(
+                            [feat["krylov"][k], physics_split[k]],
+                            axis=1,
+                        )
+                        for k in splits
+                    },
+                ),
+                "projected_krylov_pt2_residual_adaptive_10": (
+                    np.concatenate(
+                        [feat["projected"]["train"][idx], physics_train[idx]],
+                        axis=1,
+                    ),
+                    np.concatenate(
+                        [feat["projected"]["validation"], physics_val],
+                        axis=1,
+                    ),
+                    {
+                        k: np.concatenate(
+                            [feat["projected"][k], physics_split[k]],
+                            axis=1,
+                        )
+                        for k in splits
+                    },
+                ),
+            }
 
-                    result11 = adaptive_two_direction(
-                        sample,
-                        grid,
-                        c_pt2,
-                        c_res,
-                    )
-                    rows.append(
-                        metric_row(
-                            "krylov_pt2_two_direction_11",
+            for method, (x_train, x_val, x_splits) in residual_feature_variants.items():
+                residual_model, tuning = choose_ridge(
+                    x_train,
+                    target_train[idx] - pt2_train[idx],
+                    x_val,
+                    validation,
+                    grid,
+                    pt2_val=pt2_val,
+                )
+                tuning_rows.append(
+                    {
+                        "seed": pretrain_seed,
+                        "n_labels": n_labels,
+                        "method": method,
+                        **tuning,
+                    }
+                )
+                for split_name, samples in splits.items():
+                    pred_residual = residual_model.predict(x_splits[split_name])
+                    pt2_test = pt2_matrix(samples, grid)
+                    for sample, c_pt2, c_res in zip(samples, pt2_test, pred_residual):
+                        result = adaptive_from_coeff(
                             sample,
-                            result11,
                             grid,
-                            seed=pretrain_seed,
-                            n_labels=n_labels,
-                            split=split_name,
+                            c_pt2 + c_res,
                         )
-                    )
+                        rows.append(
+                            metric_row(
+                                method,
+                                sample,
+                                result,
+                                grid,
+                                seed=pretrain_seed,
+                                n_labels=n_labels,
+                                split=split_name,
+                            )
+                        )
+                        if method == "krylov_pt2_residual_adaptive_10":
+                            result11 = adaptive_two_direction(
+                                sample,
+                                grid,
+                                c_pt2,
+                                c_res,
+                            )
+                            rows.append(
+                                metric_row(
+                                    "krylov_pt2_two_direction_11",
+                                    sample,
+                                    result11,
+                                    grid,
+                                    seed=pretrain_seed,
+                                    n_labels=n_labels,
+                                    split=split_name,
+                                )
+                            )
 
     aggregate_rows = aggregate(rows)
     write_csv(out / "per_example.csv", rows)
