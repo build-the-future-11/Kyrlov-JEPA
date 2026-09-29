@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Krylov-JEPA confirmatory benchmark result",
+  "type": "object",
+  "required": ["protocol", "provenance", "execution", "rows", "not_executed"],
+  "properties": {
+    "protocol": {
+      "type": "object",
+      "required": ["protocol_id", "config_sha256", "parent_main_sha"]
+    },
+    "provenance": {
+      "type": "object",
+      "required": ["runner_sha256", "core_sha256", "source_tree_sha"]
+    },
+    "execution": {
+      "type": "object",
+      "required": ["mode", "confirmatory_run_launched"]
+    },
+    "rows": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["method", "split", "fidelity", "residual_true_e", "rel_energy_error", "compute"]
+      }
+    },
+    "not_executed": {"type": "array", "items": {"type": "string"}}
+  }
+}
