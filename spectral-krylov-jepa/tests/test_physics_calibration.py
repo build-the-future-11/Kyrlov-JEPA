@@ -4,6 +4,7 @@ import numpy as np
 import torch
 
 from spectral_krylov_jepa.models.downstream import DownstreamGroundStateModel
+from spectral_krylov_jepa.models.krylov_jepa import KrylovJEPA
 from spectral_krylov_jepa.physics.eigensolver import solve_ground_state
 from spectral_krylov_jepa.physics.grid import GridSpec, cell_area
 from spectral_krylov_jepa.physics.hamiltonian import build_hamiltonian
@@ -88,3 +89,49 @@ def test_sine_decoder_downstream_is_normalized():
     assert torch.isfinite(out.psi).all()
     norms = torch.sum(out.psi * out.psi, dim=(-2, -1)) * cell_area(g)
     assert torch.allclose(norms, torch.ones_like(norms), atol=1e-5, rtol=1e-5)
+
+
+def test_projected_ritz_target_matches_free_box_ground_energy():
+    g = GridSpec(n_interior=16)
+    v, _ = generate_box_potential(g)
+    gs = solve_ground_state(build_hamiltonian(g, v))
+    model = KrylovJEPA(
+        img_size=16,
+        size="smoke",
+        context_steps=2,
+        lambda_projected_ritz=1.0,
+        projected_modes=9,
+    )
+    with torch.no_grad():
+        e_target, coeff = model._projected_ritz_targets(
+            torch.from_numpy(v).unsqueeze(0).float()
+        )
+    assert abs(float(e_target.item()) - gs.energy) / abs(gs.energy) < 1e-5
+    assert coeff.shape == (1, 9)
+    assert torch.isfinite(coeff).all()
+
+
+def test_projected_ritz_auxiliary_loss_reaches_potential_encoder():
+    model = KrylovJEPA(
+        img_size=16,
+        size="smoke",
+        context_steps=2,
+        lambda_projected_ritz=1.0,
+        projected_modes=9,
+    )
+    v = torch.randn(2, 16, 16)
+    q_ctx = torch.randn(2, 2, 256)
+    q_ctx = q_ctx / q_ctx.norm(dim=-1, keepdim=True)
+    q_tgt = torch.randn(2, 256)
+    q_tgt = q_tgt / q_tgt.norm(dim=-1, keepdim=True)
+    alpha = torch.randn(2, 3)
+    beta = torch.rand(2, 3) + 0.1
+    out = model(v, q_ctx, q_tgt, alpha=alpha, beta=beta)
+    assert torch.isfinite(out.loss)
+    assert torch.isfinite(out.loss_projected_ritz)
+    assert float(out.loss_projected_ritz.item()) > 0.0
+    out.loss.backward()
+    assert any(
+        p.grad is not None and torch.isfinite(p.grad).all() and p.grad.abs().sum() > 0
+        for p in model.potential_enc.parameters()
+    )
