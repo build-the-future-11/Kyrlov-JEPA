@@ -9,6 +9,7 @@ a subspace rather than directly claiming a physical eigenstate.
 from __future__ import annotations
 
 from dataclasses import dataclass
+from functools import lru_cache
 from typing import Iterable
 
 import numpy as np
@@ -27,24 +28,84 @@ class AdaptiveRitzResult:
     projected_eigenvalues: np.ndarray
 
 
-def sine_basis(grid: GridSpec, side: int) -> tuple[np.ndarray, np.ndarray]:
-    """Return Euclidean-orthonormal tensor-product Dirichlet sine modes."""
-    if not 1 <= side <= grid.n_interior:
-        raise ValueError(f"side must be in [1, {grid.n_interior}], got {side}")
-    x = (grid.x_coords() - grid.x_min) / (grid.x_max - grid.x_min)
-    y = (grid.y_coords() - grid.y_min) / (grid.y_max - grid.y_min)
+@lru_cache(maxsize=64)
+def _cached_sine_basis(
+    n: int,
+    x_min: float,
+    x_max: float,
+    y_min: float,
+    y_max: float,
+    side: int,
+) -> tuple[np.ndarray, np.ndarray]:
+    if not 1 <= side <= n:
+        raise ValueError(f"side must be in [1, {n}], got {side}")
+    hx = (x_max - x_min) / (n + 1)
+    hy = (y_max - y_min) / (n + 1)
+    x = x_min + hx * np.arange(1, n + 1, dtype=np.float64)
+    y = y_min + hy * np.arange(1, n + 1, dtype=np.float64)
+    x = (x - x_min) / (x_max - x_min)
+    y = (y - y_min) / (y_max - y_min)
     cols: list[np.ndarray] = []
     labels: list[tuple[int, int]] = []
     for my in range(1, side + 1):
+        sy = np.sin(np.pi * my * y)
         for mx in range(1, side + 1):
-            q = np.outer(
-                np.sin(np.pi * my * y),
-                np.sin(np.pi * mx * x),
-            ).reshape(-1)
+            q = np.outer(sy, np.sin(np.pi * mx * x)).reshape(-1)
             q /= max(float(np.linalg.norm(q)), 1e-15)
             cols.append(q)
             labels.append((mx, my))
-    return np.stack(cols, axis=1), np.asarray(labels, dtype=np.int64)
+    basis = np.stack(cols, axis=1)
+    labels_arr = np.asarray(labels, dtype=np.int64)
+    basis.setflags(write=False)
+    labels_arr.setflags(write=False)
+    return basis, labels_arr
+
+
+def sine_basis(grid: GridSpec, side: int) -> tuple[np.ndarray, np.ndarray]:
+    """Return cached Euclidean-orthonormal Dirichlet sine modes."""
+    return _cached_sine_basis(
+        grid.n_interior,
+        grid.x_min,
+        grid.x_max,
+        grid.y_min,
+        grid.y_max,
+        int(side),
+    )
+
+
+@lru_cache(maxsize=64)
+def _cached_box_energies(
+    n: int,
+    x_min: float,
+    x_max: float,
+    y_min: float,
+    y_max: float,
+    side: int,
+) -> np.ndarray:
+    _, labels = _cached_sine_basis(
+        n, x_min, x_max, y_min, y_max, side
+    )
+    hx = (x_max - x_min) / (n + 1)
+    hy = (y_max - y_min) / (n + 1)
+    mx = labels[:, 0].astype(np.float64)
+    my = labels[:, 1].astype(np.float64)
+    energies = (
+        2.0 / (hx * hx) * np.sin(np.pi * mx / (2.0 * (n + 1))) ** 2
+        + 2.0 / (hy * hy) * np.sin(np.pi * my / (2.0 * (n + 1))) ** 2
+    )
+    energies.setflags(write=False)
+    return energies
+
+
+def box_energies(grid: GridSpec, side: int) -> np.ndarray:
+    return _cached_box_energies(
+        grid.n_interior,
+        grid.x_min,
+        grid.x_max,
+        grid.y_min,
+        grid.y_max,
+        int(side),
+    )
 
 
 def spectral_coefficients(psi: np.ndarray, grid: GridSpec, side: int) -> np.ndarray:
@@ -88,8 +149,7 @@ def first_order_perturbation_fast(
     potential matrix. It needs one weighted projection per basis mode.
     """
     basis, _ = sine_basis(grid, side)
-    ham0 = build_hamiltonian(grid, np.zeros_like(potential, dtype=np.float64))
-    e = np.diag(basis.T @ (ham0.matrix @ basis))
+    e = box_energies(grid, side)
     v = np.asarray(potential, dtype=np.float64).reshape(-1)
     weighted_ground = v * basis[:, 0]
     coupling = basis.T @ weighted_ground
@@ -112,8 +172,7 @@ def first_second_order_perturbation(
 ) -> tuple[np.ndarray, np.ndarray, float, float]:
     """Return first/second-order coefficient vectors and E1/E2."""
     basis, _ = sine_basis(grid, side)
-    ham0 = build_hamiltonian(grid, np.zeros_like(potential, dtype=np.float64))
-    e = np.diag(basis.T @ (ham0.matrix @ basis))
+    e = box_energies(grid, side)
     v = np.asarray(potential, dtype=np.float64).reshape(-1)
     vmat = basis.T @ (v[:, None] * basis)
 
@@ -232,8 +291,7 @@ def physics_features(
 ) -> np.ndarray:
     """Compact operator-derived features with no exact eigenstate labels."""
     basis, _ = sine_basis(grid, side)
-    ham0 = build_hamiltonian(grid, np.zeros_like(potential, dtype=np.float64))
-    e = np.diag(basis.T @ (ham0.matrix @ basis))
+    e = box_energies(grid, side)
     v = np.asarray(potential, dtype=np.float64)
     vf = v.reshape(-1)
     vmat = basis.T @ (vf[:, None] * basis)
