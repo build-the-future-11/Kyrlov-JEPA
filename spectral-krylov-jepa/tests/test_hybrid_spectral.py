@@ -10,6 +10,8 @@ from spectral_krylov_jepa.evaluation.hybrid_spectral import (
     low_mode_mask,
     projected_ritz,
     sine_basis,
+    spectral_davidson_direction,
+    residual_expansion_direction,
     variational_monotonicity_gap,
 )
 from spectral_krylov_jepa.physics.grid import GridSpec
@@ -74,3 +76,21 @@ def test_analytic_box_energies_match_discrete_hamiltonian_projection():
     )
     offdiag = projected - np.diag(np.diag(projected))
     assert np.max(np.abs(offdiag)) < 1e-9
+
+
+def test_davidson_and_residual_directions_expand_low_ritz_space():
+    grid = GridSpec(n_interior=12)
+    v, _ = generate_potential("id_gaussian_mixture", 9012, grid=grid)
+    low_basis, _ = sine_basis(grid, 3)
+    low = projected_ritz(v, grid, low_basis, assume_orthonormal=True)
+
+    for builder in [spectral_davidson_direction, residual_expansion_direction]:
+        direction, _ = builder(v, grid, low_side=3)
+        expanded = adaptive_ritz(
+            v,
+            grid,
+            low_side=3,
+            proposal_vectors=[direction],
+        )
+        assert expanded.basis_dim == 10
+        assert expanded.energy <= low.energy + 1e-9
