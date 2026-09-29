@@ -206,16 +206,12 @@ def first_second_order_perturbation(
     return c1, c2, float(e1), float(e2)
 
 
-def projected_ritz(
+def _projected_ritz_orthonormal(
     potential: np.ndarray,
     grid: GridSpec,
-    basis: np.ndarray,
+    q: np.ndarray,
 ) -> AdaptiveRitzResult:
-    """Solve the exact Rayleigh--Ritz problem in an arbitrary basis."""
-    b = np.asarray(basis, dtype=np.float64)
-    if b.ndim != 2 or b.shape[0] != grid.n_dof:
-        raise ValueError(f"basis must have shape ({grid.n_dof}, K)")
-    q, _ = np.linalg.qr(b)
+    """Solve a projected eigenproblem for an already orthonormal basis."""
     ham = build_hamiltonian(grid, potential)
     hp = q.T @ (ham.matrix @ q)
     hp = (hp + hp.T) / 2.0
@@ -229,6 +225,21 @@ def projected_ritz(
         proposal_rank=0,
         projected_eigenvalues=vals.astype(float),
     )
+
+
+def projected_ritz(
+    potential: np.ndarray,
+    grid: GridSpec,
+    basis: np.ndarray,
+    *,
+    assume_orthonormal: bool = False,
+) -> AdaptiveRitzResult:
+    """Solve the exact Rayleigh--Ritz problem in an arbitrary basis."""
+    b = np.asarray(basis, dtype=np.float64)
+    if b.ndim != 2 or b.shape[0] != grid.n_dof:
+        raise ValueError(f"basis must have shape ({grid.n_dof}, K)")
+    q = b if assume_orthonormal else np.linalg.qr(b)[0]
+    return _projected_ritz_orthonormal(potential, grid, q)
 
 
 def adaptive_ritz(
@@ -257,7 +268,12 @@ def adaptive_ritz(
         cols.append(v)
         proposal_rank += 1
 
-    result = projected_ritz(potential, grid, np.stack(cols, axis=1))
+    result = projected_ritz(
+        potential,
+        grid,
+        np.stack(cols, axis=1),
+        assume_orthonormal=True,
+    )
     return AdaptiveRitzResult(
         energy=result.energy,
         wavefunction=result.wavefunction,
