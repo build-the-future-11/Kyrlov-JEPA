@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import importlib.util
+import sys
 from pathlib import Path
 
 import numpy as np
@@ -11,6 +12,7 @@ SCRIPT = Path(__file__).resolve().parents[1] / "scripts" / "20_run_research100_s
 SPEC = importlib.util.spec_from_file_location("research100_suite", SCRIPT)
 assert SPEC is not None and SPEC.loader is not None
 mod = importlib.util.module_from_spec(SPEC)
+sys.modules[SPEC.name] = mod
 SPEC.loader.exec_module(mod)
 
 
