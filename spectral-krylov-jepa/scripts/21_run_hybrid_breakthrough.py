@@ -280,7 +280,12 @@ def pt2_matrix(samples: list[Sample], grid: GridSpec) -> np.ndarray:
 
 def fixed_ritz(sample: Sample, grid: GridSpec, side: int):
     basis, _ = sine_basis(grid, side)
-    return projected_ritz(sample.potential, grid, basis)
+    return projected_ritz(
+        sample.potential,
+        grid,
+        basis,
+        assume_orthonormal=True,
+    )
 
 
 def adaptive_from_coeff(
@@ -1150,6 +1155,31 @@ def main() -> int:
     }
     write_json(convergence, out / "krylov_convergence.json")
 
+    thresholds = [1e-1, 1e-2, 1e-3]
+    iterations_to_threshold = {}
+    for name, curve in convergence.items():
+        iterations_to_threshold[name] = {}
+        for threshold in thresholds:
+            hit = next(
+                (i for i, residual in enumerate(curve) if residual <= threshold),
+                None,
+            )
+            iterations_to_threshold[name][str(threshold)] = hit
+    write_json(
+        iterations_to_threshold,
+        out / "iterations_to_threshold.json",
+    )
+
+    basis_accuracy_curve = {
+        "fixed_ritz_9": get_agg("fixed_ritz_9", 0, "test_ID"),
+        "fixed_ritz_16": get_agg("fixed_ritz_16", 0, "test_ID"),
+        "fixed_ritz_25": fixed25,
+        "fixed_ritz_49": fixed49,
+        "pt1_adaptive_10": pt1,
+        "pt2_adaptive_10": pt2,
+    }
+    write_json(basis_accuracy_curve, out / "basis_accuracy_curve.json")
+
     def benchmark_time(fn, repeats: int = 2) -> float:
         start_time = time.perf_counter()
         count = 0
@@ -1237,6 +1267,8 @@ def main() -> int:
         "timing": timing,
         "success": success,
         "convergence": convergence,
+        "iterations_to_threshold": iterations_to_threshold,
+        "basis_accuracy_curve": basis_accuracy_curve,
         "ood_highlights": ood_highlights,
         "elapsed_sec": time.time() - t0,
         "claim_boundary": (
@@ -1298,6 +1330,18 @@ def main() -> int:
     ]
     for key, value in timing.items():
         lines.append(f"- {key}: {value:.6f} s/sample")
+    lines += [
+        "",
+        "## Krylov iterations to residual threshold",
+        "",
+        "| Warm start | <=1e-1 | <=1e-2 | <=1e-3 |",
+        "|---|---:|---:|---:|",
+    ]
+    for name, values in iterations_to_threshold.items():
+        lines.append(
+            f"| {name} | {values['0.1']} | {values['0.01']} | "
+            f"{values['0.001']} |"
+        )
     lines += [
         "",
         "## Claim boundary",
