@@ -46,6 +46,8 @@ def evaluate_checkpoint(
         img_size=img_size,
         size=cfg.get("model_size", "default"),
         cell_area=ca,
+        decoder_type=str(cfg.get("decoder_type", "pixel")),
+        sine_modes=int(cfg.get("sine_modes", 25)),
         **cfg.get("encoder_overrides", {}),
     ).to(device)
     load_checkpoint(checkpoint, model, map_location=device)
