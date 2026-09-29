@@ -252,28 +252,33 @@ def adaptive_ritz(
 ) -> AdaptiveRitzResult:
     """Augment a fixed low-mode sine basis with potential-dependent directions."""
     low_basis, _ = sine_basis(grid, low_side)
-    cols = [low_basis[:, j].copy() for j in range(low_basis.shape[1])]
-    proposal_rank = 0
+    orth_proposals: list[np.ndarray] = []
 
     for proposal in proposal_vectors:
         v = np.asarray(proposal, dtype=np.float64).reshape(-1).copy()
         if v.size != grid.n_dof:
             raise ValueError(f"proposal has {v.size} entries; expected {grid.n_dof}")
-        for q in cols:
-            v -= float(np.dot(q, v)) * q
+        v -= low_basis @ (low_basis.T @ v)
+        if orth_proposals:
+            extra = np.stack(orth_proposals, axis=1)
+            v -= extra @ (extra.T @ v)
         nrm = float(np.linalg.norm(v))
         if nrm <= orthogonal_tol:
             continue
-        v /= nrm
-        cols.append(v)
-        proposal_rank += 1
+        orth_proposals.append(v / nrm)
+
+    if orth_proposals:
+        q = np.column_stack([low_basis, *orth_proposals])
+    else:
+        q = low_basis
 
     result = projected_ritz(
         potential,
         grid,
-        np.stack(cols, axis=1),
+        q,
         assume_orthonormal=True,
     )
+    proposal_rank = len(orth_proposals)
     return AdaptiveRitzResult(
         energy=result.energy,
         wavefunction=result.wavefunction,
