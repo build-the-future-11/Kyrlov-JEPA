@@ -380,6 +380,77 @@ def perturbation_high_mode_direction(
     return coefficient_direction(coeff, grid, side=side, low_side=low_side)
 
 
+
+def spectral_davidson_direction(
+    potential: np.ndarray,
+    grid: GridSpec,
+    *,
+    low_side: int = 3,
+    full_side: int = 7,
+    use_projected_diagonal: bool = True,
+    denominator_floor: float = 1e-8,
+) -> tuple[np.ndarray, AdaptiveRitzResult]:
+    """Construct one Davidson-style correction in the sine spectral basis.
+
+    The starting Ritz vector is solved exactly in the low sine subspace. Its
+    Galerkin residual is projected onto higher sine modes and divided by an
+    approximate diagonal of H-theta I.
+    """
+    if full_side <= low_side:
+        raise ValueError("full_side must exceed low_side")
+
+    low_basis, _ = sine_basis(grid, low_side)
+    low = projected_ritz(
+        potential,
+        grid,
+        low_basis,
+        assume_orthonormal=True,
+    )
+    full_basis, _ = sine_basis(grid, full_side)
+    mask = low_mode_mask(full_side, low_side)
+    high_basis = full_basis[:, ~mask]
+
+    q = np.asarray(low.wavefunction, dtype=np.float64).reshape(-1).copy()
+    q /= max(float(np.linalg.norm(q)), 1e-15)
+    ham = build_hamiltonian(grid, potential)
+    residual = ham.matvec(q) - low.energy * q
+    r_high = high_basis.T @ residual
+
+    diagonal = box_energies(grid, full_side)[~mask].copy()
+    if use_projected_diagonal:
+        v = np.asarray(potential, dtype=np.float64).reshape(-1)
+        diagonal += np.sum(high_basis * (v[:, None] * high_basis), axis=0)
+
+    denom = diagonal - low.energy
+    safe = np.where(
+        np.abs(denom) < denominator_floor,
+        np.where(denom >= 0.0, denominator_floor, -denominator_floor),
+        denom,
+    )
+    coeff = -r_high / safe
+    direction = high_basis @ coeff
+    return direction, low
+
+
+def residual_expansion_direction(
+    potential: np.ndarray,
+    grid: GridSpec,
+    *,
+    low_side: int = 3,
+) -> tuple[np.ndarray, AdaptiveRitzResult]:
+    """Unpreconditioned Ritz residual direction control."""
+    low_basis, _ = sine_basis(grid, low_side)
+    low = projected_ritz(
+        potential,
+        grid,
+        low_basis,
+        assume_orthonormal=True,
+    )
+    q = np.asarray(low.wavefunction, dtype=np.float64).reshape(-1).copy()
+    q /= max(float(np.linalg.norm(q)), 1e-15)
+    ham = build_hamiltonian(grid, potential)
+    return ham.matvec(q) - low.energy * q, low
+
 def variational_monotonicity_gap(
     small: AdaptiveRitzResult,
     large: AdaptiveRitzResult,
