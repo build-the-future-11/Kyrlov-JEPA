@@ -49,7 +49,7 @@ def sine_basis(grid: GridSpec, side: int) -> tuple[np.ndarray, np.ndarray]:
 
 def spectral_coefficients(psi: np.ndarray, grid: GridSpec, side: int) -> np.ndarray:
     basis, _ = sine_basis(grid, side)
-    q = np.asarray(psi, dtype=np.float64).reshape(-1)
+    q = np.asarray(psi, dtype=np.float64).reshape(-1).copy()
     q /= max(float(np.linalg.norm(q)), 1e-15)
     coeff = basis.T @ q
     if coeff[0] < 0:
@@ -73,6 +73,36 @@ def low_mode_mask(side: int, low_side: int) -> np.ndarray:
         [mx <= low_side and my <= low_side for mx, my in labels],
         dtype=bool,
     )
+
+
+
+
+def first_order_perturbation_fast(
+    potential: np.ndarray,
+    grid: GridSpec,
+    side: int,
+) -> tuple[np.ndarray, float]:
+    """First-order box perturbation using only ground-to-mode couplings.
+
+    Unlike the second-order routine, this does not construct the full projected
+    potential matrix. It needs one weighted projection per basis mode.
+    """
+    basis, _ = sine_basis(grid, side)
+    ham0 = build_hamiltonian(grid, np.zeros_like(potential, dtype=np.float64))
+    e = np.diag(basis.T @ (ham0.matrix @ basis))
+    v = np.asarray(potential, dtype=np.float64).reshape(-1)
+    weighted_ground = v * basis[:, 0]
+    coupling = basis.T @ weighted_ground
+
+    coeff = np.zeros(basis.shape[1], dtype=np.float64)
+    coeff[0] = 1.0
+    e0 = float(e[0])
+    for n in range(1, len(coeff)):
+        denom = e0 - float(e[n])
+        if abs(denom) >= 1e-14:
+            coeff[n] = float(coupling[n]) / denom
+    energy = e0 + float(coupling[0])
+    return coeff, float(energy)
 
 
 def first_second_order_perturbation(
@@ -264,8 +294,10 @@ def perturbation_high_mode_direction(
     low_side: int,
     order: int = 2,
 ) -> np.ndarray:
-    c1, c2, _, _ = first_second_order_perturbation(potential, grid, side)
-    coeff = c1 if order == 1 else c2
+    if order == 1:
+        coeff, _ = first_order_perturbation_fast(potential, grid, side)
+    else:
+        _, coeff, _, _ = first_second_order_perturbation(potential, grid, side)
     return coefficient_direction(coeff, grid, side=side, low_side=low_side)
 
 
