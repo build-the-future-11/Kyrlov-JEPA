@@ -630,6 +630,8 @@ def main() -> int:
 
     target_train = target_matrix(train, grid)
     target_val = target_matrix(validation, grid)
+    pt1_train = pt1_matrix(train, grid)
+    pt1_val = pt1_matrix(validation, grid)
     pt2_train = pt2_matrix(train, grid)
     pt2_val = pt2_matrix(validation, grid)
 
