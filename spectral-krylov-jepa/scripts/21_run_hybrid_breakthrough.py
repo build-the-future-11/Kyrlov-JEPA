@@ -1126,25 +1126,91 @@ def main() -> int:
         adaptive_from_coeff(s, grid, a + b).wavefunction.reshape(-1)
         for s, a, b in zip(test_id, c_pt2, c_res)
     ]
+    pt1_test = pt1_matrix(test_id, grid)
+    pt1_starts = [
+        adaptive_from_coeff(s, grid, c).wavefunction.reshape(-1)
+        for s, c in zip(test_id, pt1_test)
+    ]
+    pt2_starts = [
+        adaptive_from_coeff(s, grid, c).wavefunction.reshape(-1)
+        for s, c in zip(test_id, c_pt2)
+    ]
     ritz9_starts = [
         fixed_ritz(s, grid, 3).wavefunction.reshape(-1)
         for s in test_id
     ]
     rng = np.random.default_rng(909)
-    random_starts = [
-        rng.normal(size=grid.n_dof)
-        for _ in test_id
-    ]
+    random_starts = [rng.normal(size=grid.n_dof) for _ in test_id]
     convergence = {
-        "hybrid10": convergence_curve(test_id, grid, hybrid_starts),
+        "learned_hybrid10": convergence_curve(test_id, grid, hybrid_starts),
+        "pt1_adaptive10": convergence_curve(test_id, grid, pt1_starts),
+        "pt2_adaptive10": convergence_curve(test_id, grid, pt2_starts),
         "ritz9": convergence_curve(test_id, grid, ritz9_starts),
         "random": convergence_curve(test_id, grid, random_starts),
     }
     write_json(convergence, out / "krylov_convergence.json")
 
+    def benchmark_time(fn, repeats: int = 2) -> float:
+        start_time = time.perf_counter()
+        count = 0
+        for _ in range(repeats):
+            for sample in test_id:
+                fn(sample)
+                count += 1
+        return float((time.perf_counter() - start_time) / max(count, 1))
+
+    timing = {
+        "fixed_ritz_25_sec_per_sample": benchmark_time(
+            lambda sample: fixed_ritz(sample, grid, 5)
+        ),
+        "fixed_ritz_49_sec_per_sample": benchmark_time(
+            lambda sample: fixed_ritz(sample, grid, 7)
+        ),
+        "pt1_adaptive_10_sec_per_sample": benchmark_time(
+            lambda sample: adaptive_from_coeff(
+                sample,
+                grid,
+                first_order_perturbation_fast(
+                    sample.potential,
+                    grid,
+                    FULL_SIDE,
+                )[0],
+            )
+        ),
+        "pt2_adaptive_10_sec_per_sample": benchmark_time(
+            lambda sample: adaptive_from_coeff(
+                sample,
+                grid,
+                first_second_order_perturbation(
+                    sample.potential,
+                    grid,
+                    FULL_SIDE,
+                )[1],
+            )
+        ),
+    }
+    write_json(timing, out / "timing.json")
+
+    ood_highlights = {}
+    for split_name in splits:
+        if split_name == "test_ID":
+            continue
+        ood_highlights[split_name] = {
+            "pt1_adaptive_10": get_agg("pt1_adaptive_10", 0, split_name),
+            "pt2_adaptive_10": get_agg("pt2_adaptive_10", 0, split_name),
+            "fixed_ritz_25": get_agg("fixed_ritz_25", 0, split_name),
+            "krylov_pt2_residual_adaptive_10": get_agg(
+                "krylov_pt2_residual_adaptive_10",
+                PRIMARY_LABEL_BUDGET,
+                split_name,
+            ),
+        }
+    write_json(ood_highlights, out / "ood_highlights.json")
+
     summary = {
         "status": "ok",
         "protocol": {
+            "version": 2,
             "grid": 16,
             "low_basis_dim": 9,
             "adaptive_dim": 10,
@@ -1155,47 +1221,83 @@ def main() -> int:
             "primary_label_budget": PRIMARY_LABEL_BUDGET,
             "fresh_seed_ranges": FRESH_SEEDS,
             "ridge_alphas": RIDGE_ALPHAS,
+            "note": (
+                "Protocol v2 uses fresh seed ranges after protocol v1 exposed a "
+                "normalization-reporting bug and motivated the predeclared cheap PT1 control."
+            ),
         },
-        "primary": primary,
-        "fixed25": fixed25,
-        "scratch10": scratch10,
+        "pt1_adaptive10": pt1,
         "pt2_adaptive10": pt2,
+        "fixed25": fixed25,
+        "fixed49": fixed49,
+        "learned_krylov_pt2": learned,
+        "matched_scratch_pt2": scratch_matched,
         "comparisons": comparisons,
+        "cost_proxy": cost_proxy,
+        "timing": timing,
         "success": success,
         "convergence": convergence,
+        "ood_highlights": ood_highlights,
         "elapsed_sec": time.time() - t0,
         "claim_boundary": (
-            "This is a fresh finite synthetic benchmark. A breakthrough gate only "
-            "means the adaptive 10D solver passed its preregistered comparisons on "
-            "this protocol; it does not establish universal superiority."
+            "This is a second fresh finite synthetic benchmark. PT1 is the compute-oriented "
+            "primary hybrid because it uses only ground-to-mode couplings; PT2 is an accuracy "
+            "control whose proposal construction uses the full 49-mode projected potential. "
+            "No result establishes universal superiority."
         ),
     }
     write_json(summary, out / "summary.json")
 
     lines = [
-        "# Hybrid spectral breakthrough study",
+        "# Hybrid spectral breakthrough study, protocol v2",
         "",
-        "The learned component proposes high-frequency directions; all reported final "
-        "eigenpairs come from exact Rayleigh--Ritz solves inside the selected subspace.",
+        "Every reported final state is the result of an exact Rayleigh--Ritz eigensolve. "
+        "The adaptive methods only choose one extra direction beyond the fixed 9-mode basis.",
         "",
-        "## Primary comparison",
+        "## Fresh ID comparison",
         "",
-        "| Method | Basis dim | Fidelity | Residual @ true E | Relative energy error |",
-        "|---|---:|---:|---:|---:|",
+        "| Method | Labels | Basis dim | Fidelity | Residual @ true E | Rel. energy error |",
+        "|---|---:|---:|---:|---:|---:|",
     ]
-    for r in [primary, scratch10, pt2, fixed25]:
+    for item, labels in [
+        (pt1, 0),
+        (pt2, 0),
+        (fixed25, 0),
+        (fixed49, 0),
+        (learned, PRIMARY_LABEL_BUDGET),
+        (scratch_matched, PRIMARY_LABEL_BUDGET),
+    ]:
         lines.append(
-            f"| {r['method']} | {r['basis_dim_mean']:.0f} | "
-            f"{r['fidelity_mean']:.6f} | {r['residual_true_e_mean']:.6f} | "
-            f"{r['rel_energy_error_mean']:.6f} |"
+            f"| {item['method']} | {labels} | {item['basis_dim_mean']:.0f} | "
+            f"{item['fidelity_mean']:.8f} | {item['residual_true_e_mean']:.6f} | "
+            f"{item['rel_energy_error_mean']:.8f} |"
         )
     lines += [
         "",
-        "## Gates",
+        "## Predeclared gates",
         "",
     ]
     for key, value in success.items():
         lines.append(f"- {key}: **{value}**")
+    lines += [
+        "",
+        "## Cost proxy",
+        "",
+        "| Method | Final eigensolve dim | Projected-potential terms |",
+        "|---|---:|---:|",
+    ]
+    for key, value in cost_proxy.items():
+        lines.append(
+            f"| {key} | {value['projected_eigensolve_dim']} | "
+            f"{value['projected_potential_terms']} |"
+        )
+    lines += [
+        "",
+        "## Measured runtime",
+        "",
+    ]
+    for key, value in timing.items():
+        lines.append(f"- {key}: {value:.6f} s/sample")
     lines += [
         "",
         "## Claim boundary",
