@@ -31,6 +31,7 @@ from spectral_krylov_jepa.evaluation.bootstrap import paired_bootstrap_ci
 from spectral_krylov_jepa.evaluation.hybrid_spectral import (
     adaptive_ritz,
     coefficient_direction,
+    first_order_perturbation_fast,
     first_second_order_perturbation,
     high_mode_target,
     low_mode_mask,
@@ -56,11 +57,11 @@ RIDGE_ALPHAS = [1e-5, 1e-3, 1e-1, 10.0]
 LOW_SIDE = 3
 FULL_SIDE = 7
 FRESH_SEEDS = {
-    "unlabeled": 410_000,
-    "train": 430_000,
-    "validation": 450_000,
-    "test_id": 470_000,
-    "ood": 490_000,
+    "unlabeled": 610_000,
+    "train": 630_000,
+    "validation": 650_000,
+    "test_id": 670_000,
+    "ood": 690_000,
 }
 PRIMARY_LABEL_BUDGET = 20
 
@@ -245,6 +246,21 @@ def target_matrix(samples: list[Sample], grid: GridSpec) -> np.ndarray:
         ],
         axis=0,
     )
+
+
+def pt1_matrix(samples: list[Sample], grid: GridSpec) -> np.ndarray:
+    mask = low_mode_mask(FULL_SIDE, LOW_SIDE)
+    rows = []
+    for sample in samples:
+        c1, _ = first_order_perturbation_fast(
+            sample.potential,
+            grid,
+            FULL_SIDE,
+        )
+        c1 = c1.copy()
+        c1[mask] = 0.0
+        rows.append(c1)
+    return np.stack(rows, axis=0)
 
 
 def pt2_matrix(samples: list[Sample], grid: GridSpec) -> np.ndarray:
