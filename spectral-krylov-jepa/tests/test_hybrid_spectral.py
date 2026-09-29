@@ -4,6 +4,7 @@ import numpy as np
 
 from spectral_krylov_jepa.evaluation.hybrid_spectral import (
     adaptive_ritz,
+    first_order_perturbation_fast,
     first_second_order_perturbation,
     low_mode_mask,
     projected_ritz,
@@ -47,3 +48,12 @@ def test_low_mode_mask_selects_square_block():
     mask = low_mode_mask(side=7, low_side=3)
     assert mask.shape == (49,)
     assert int(mask.sum()) == 9
+
+
+def test_fast_first_order_matches_full_first_order():
+    grid = GridSpec(n_interior=12)
+    v, _ = generate_potential("id_gaussian_mixture", 5678, grid=grid)
+    c_fast, e_fast = first_order_perturbation_fast(v, grid, side=5)
+    c_full, _, e_full, _ = first_second_order_perturbation(v, grid, side=5)
+    assert np.allclose(c_fast, c_full, atol=1e-11, rtol=1e-11)
+    assert abs(e_fast - e_full) < 1e-11
