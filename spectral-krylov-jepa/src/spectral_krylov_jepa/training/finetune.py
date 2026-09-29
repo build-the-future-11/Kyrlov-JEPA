@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import math
 import time
 from pathlib import Path
 from typing import Any
@@ -52,17 +53,23 @@ def evaluate_loader(
     lambda_psi: float = 1.0,
     lambda_e: float = 1.0,
     lambda_psi_mse: float = 0.1,
+    lambda_residual: float = 0.0,
+    lambda_rayleigh: float = 0.0,
+    residual_mode: str = "scaled",
+    grid_spacing: float | None = None,
 ) -> dict[str, float]:
     model.eval()
     fidelities = []
     energy_errs = []
     losses = []
+    raw_residuals = []
+    rayleigh_losses = []
     for batch in loader:
         v = batch["potential"].to(device)
         psi = batch["psi0"].to(device)
         e = batch["energy"].to(device)
         out = model(v)
-        loss, _ = downstream_loss(
+        loss, loss_stats = downstream_loss(
             out.energy,
             e,
             out.psi,
@@ -73,21 +80,38 @@ def evaluate_loader(
             lambda_psi_mse=lambda_psi_mse,
             energy_mean=model.energy_head.energy_mean if model.energy_head.use_standardization else None,
             energy_std=model.energy_head.energy_std if model.energy_head.use_standardization else None,
+            potential=v,
+            lambda_residual=lambda_residual,
+            lambda_rayleigh=lambda_rayleigh,
+            residual_mode=residual_mode,
+            grid_spacing=grid_spacing,
         )
         f = wavefunction_fidelity(out.psi, psi, cell_area_val)
         rel = (out.energy - e).abs() / (e.abs() + 1e-6)
         fidelities.extend(f.cpu().tolist())
         energy_errs.extend(rel.cpu().tolist())
         losses.append(float(loss.item()))
+        if math.isfinite(loss_stats["residual_raw"]):
+            raw_residuals.append(loss_stats["residual_raw"])
+        rayleigh_losses.append(loss_stats["loss_rayleigh"])
+
     fid_mean = float(np.mean(fidelities)) if fidelities else float("nan")
     e_err = float(np.mean(energy_errs)) if energy_errs else float("nan")
+    mean_loss = float(np.mean(losses)) if losses else float("nan")
+    physics_active = lambda_residual != 0.0 or lambda_rayleigh != 0.0
+    selection_score = mean_loss if physics_active else (1.0 - fid_mean) + 0.5 * e_err
     return {
-        "loss": float(np.mean(losses)) if losses else float("nan"),
+        "loss": mean_loss,
         "fidelity_mean": fid_mean,
         "fidelity_std": float(np.std(fidelities)) if fidelities else float("nan"),
         "rel_energy_error_mean": e_err,
-        # Selection score: prefer high fidelity and low energy error (a priori weights)
-        "selection_score": (1.0 - fid_mean) + 0.5 * e_err,
+        "residual_raw_mean": (
+            float(np.mean(raw_residuals)) if raw_residuals else float("nan")
+        ),
+        "rayleigh_consistency_loss_mean": (
+            float(np.mean(rayleigh_losses)) if rayleigh_losses else float("nan")
+        ),
+        "selection_score": selection_score,
     }
 
 
@@ -101,7 +125,7 @@ def finetune(
     run_dir: str | Path | None = None,
     config: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
-    """Fine-tune (or train from scratch) a downstream ground-state model."""
+    """Fine-tune or train from scratch a downstream ground-state model."""
     cfg = dict(config or {})
     seed = int(cfg.get("seed", 0))
     seed_everything(seed)
@@ -121,10 +145,14 @@ def finetune(
     ca = cell_area(grid)
 
     size = cfg.get("model_size", "default")
+    decoder_type = str(cfg.get("decoder_type", "pixel"))
+    sine_modes = int(cfg.get("sine_modes", 25))
     model = DownstreamGroundStateModel(
         img_size=img_size,
         size=size,
         cell_area=ca,
+        decoder_type=decoder_type,
+        sine_modes=sine_modes,
         **cfg.get("encoder_overrides", {}),
     ).to(device)
 
@@ -158,7 +186,6 @@ def finetune(
         num_workers=0,
     )
 
-    # Differential LRs: slightly lower for pretrained encoder
     lr = float(cfg.get("lr", 1e-3))
     enc_lr = float(cfg.get("encoder_lr", lr * 0.3 if encoder_path else lr))
     from torch.optim import AdamW
@@ -192,6 +219,8 @@ def finetune(
             "n_train": len(train_ds),
             "n_val": len(val_ds),
             "train_stats": stats,
+            "decoder_type": decoder_type,
+            "sine_modes": sine_modes if decoder_type == "sine" else None,
         },
         run_path / "config_snapshot.json",
     )
@@ -199,6 +228,10 @@ def finetune(
     lambda_psi = float(cfg.get("lambda_psi", 1.0))
     lambda_e = float(cfg.get("lambda_e", 1.0))
     lambda_psi_mse = float(cfg.get("lambda_psi_mse", 0.1))
+    lambda_residual = float(cfg.get("lambda_residual", 0.0))
+    lambda_rayleigh = float(cfg.get("lambda_rayleigh", 0.0))
+    residual_mode = str(cfg.get("residual_mode", "scaled"))
+
     patience = int(cfg.get("early_stopping_patience", 15))
     best_score = float("inf")
     best_epoch = -1
@@ -209,6 +242,15 @@ def finetune(
     e_std = model.energy_head.energy_std
     use_z = model.energy_head.use_standardization
 
+    log.info(
+        "Objective: decoder=%s sine_modes=%d lambda_residual=%.4g lambda_rayleigh=%.4g mode=%s",
+        decoder_type,
+        sine_modes,
+        lambda_residual,
+        lambda_rayleigh,
+        residual_mode,
+    )
+
     for epoch in range(epochs):
         model.train()
         train_losses = []
@@ -217,7 +259,7 @@ def finetune(
             psi = batch["psi0"].to(device)
             e = batch["energy"].to(device)
             out = model(v)
-            loss, stats_b = downstream_loss(
+            loss, _ = downstream_loss(
                 out.energy,
                 e,
                 out.psi,
@@ -228,6 +270,11 @@ def finetune(
                 lambda_psi_mse=lambda_psi_mse,
                 energy_mean=e_mean if use_z else None,
                 energy_std=e_std if use_z else None,
+                potential=v,
+                lambda_residual=lambda_residual,
+                lambda_rayleigh=lambda_rayleigh,
+                residual_mode=residual_mode,
+                grid_spacing=grid.h,
             )
             if not torch.isfinite(loss):
                 raise RuntimeError(f"Non-finite loss at epoch {epoch}")
@@ -247,6 +294,10 @@ def finetune(
             lambda_psi=lambda_psi,
             lambda_e=lambda_e,
             lambda_psi_mse=lambda_psi_mse,
+            lambda_residual=lambda_residual,
+            lambda_rayleigh=lambda_rayleigh,
+            residual_mode=residual_mode,
+            grid_spacing=grid.h,
         )
         row = {
             "epoch": epoch,
@@ -255,11 +306,12 @@ def finetune(
         }
         history.append(row)
         log.info(
-            "epoch=%d train_loss=%.4f val_fid=%.4f val_Eerr=%.4f score=%.4f",
+            "epoch=%d train_loss=%.4f val_fid=%.4f val_Eerr=%.4f val_R=%.4f score=%.4f",
             epoch,
             row["train_loss"],
             val_metrics["fidelity_mean"],
             val_metrics["rel_energy_error_mean"],
+            val_metrics["residual_raw_mean"],
             val_metrics["selection_score"],
         )
 
@@ -292,6 +344,10 @@ def finetune(
         lambda_psi=lambda_psi,
         lambda_e=lambda_e,
         lambda_psi_mse=lambda_psi_mse,
+        lambda_residual=lambda_residual,
+        lambda_rayleigh=lambda_rayleigh,
+        residual_mode=residual_mode,
+        grid_spacing=grid.h,
     )
     metrics = {
         "best_epoch": best_epoch,

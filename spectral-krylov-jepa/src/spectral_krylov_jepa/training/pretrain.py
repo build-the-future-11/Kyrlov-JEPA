@@ -77,6 +77,8 @@ def build_pretrain_model(
             context_steps=int(cfg.get("context_steps", 2)),
             ema_momentum=ema,
             lambda_coeff=float(cfg.get("lambda_coeff", 0.0)),
+            lambda_projected_ritz=float(cfg.get("lambda_projected_ritz", 0.0)),
+            projected_modes=int(cfg.get("projected_modes", 9)),
             remove_v=bool(cfg.get("remove_v", False)),
             normalize_latents=bool(cfg.get("normalize_latents", True)),
             **overrides,

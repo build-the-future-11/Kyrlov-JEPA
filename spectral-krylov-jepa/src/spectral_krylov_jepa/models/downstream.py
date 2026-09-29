@@ -1,4 +1,4 @@
-"""Downstream ground-state predictor: V → (E0, ψ0)."""
+"""Downstream ground-state predictor: V -> (E0, psi0)."""
 
 from __future__ import annotations
 
@@ -8,19 +8,24 @@ import torch
 from torch import nn
 
 from spectral_krylov_jepa.models.encoders import PotentialEncoder, default_encoder_kwargs
-from spectral_krylov_jepa.models.heads import EnergyHead, WavefunctionDecoder, normalize_wavefunction_torch
+from spectral_krylov_jepa.models.heads import (
+    EnergyHead,
+    SineBasisWavefunctionDecoder,
+    WavefunctionDecoder,
+    normalize_wavefunction_torch,
+)
 
 
 @dataclass
 class DownstreamOutput:
     energy: torch.Tensor
-    psi: torch.Tensor  # normalized
+    psi: torch.Tensor
     z: torch.Tensor
     tokens: torch.Tensor | None = None
 
 
 class DownstreamGroundStateModel(nn.Module):
-    """Shared downstream architecture for all methods."""
+    """Shared downstream architecture with switchable wavefunction decoder."""
 
     def __init__(
         self,
@@ -28,6 +33,8 @@ class DownstreamGroundStateModel(nn.Module):
         size: str = "default",
         cell_area: float = 1.0 / (33 * 33),
         encoder: PotentialEncoder | None = None,
+        decoder_type: str = "pixel",
+        sine_modes: int = 25,
         **encoder_overrides,
     ) -> None:
         super().__init__()
@@ -37,10 +44,26 @@ class DownstreamGroundStateModel(nn.Module):
         dim = self.encoder.embed_dim
         patch_size = self.encoder.patch.patch_size
         self.energy_head = EnergyHead(dim)
-        self.psi_decoder = WavefunctionDecoder(dim, img_size=img_size, patch_size=patch_size)
+
+        if decoder_type == "pixel":
+            self.psi_decoder = WavefunctionDecoder(
+                dim,
+                img_size=img_size,
+                patch_size=patch_size,
+            )
+        elif decoder_type == "sine":
+            self.psi_decoder = SineBasisWavefunctionDecoder(
+                dim,
+                img_size=img_size,
+                n_modes=int(sine_modes),
+            )
+        else:
+            raise ValueError(f"Unknown decoder_type={decoder_type!r}; expected pixel or sine")
+
+        self.decoder_type = decoder_type
+        self.sine_modes = int(sine_modes)
         self.cell_area = cell_area
         self.img_size = img_size
-        # Optional input standardization of V (identity until set)
         self.register_buffer("v_center", torch.tensor(0.0))
         self.register_buffer("v_scale", torch.tensor(1.0))
 
@@ -53,6 +76,7 @@ class DownstreamGroundStateModel(nn.Module):
 
     def _prep_v(self, v: torch.Tensor) -> torch.Tensor:
         return (v - self.v_center) / self.v_scale.clamp_min(1e-6)
+
     def forward(self, v: torch.Tensor) -> DownstreamOutput:
         z, tokens = self.encoder(self._prep_v(v))
         energy = self.energy_head(z)

@@ -1,7 +1,8 @@
-"""Spectral Krylov-JEPA: predict next Lanczos state latent from (V, q0..q_{k-1})."""
+"""Spectral Krylov-JEPA with optional low-energy projected-Ritz supervision."""
 
 from __future__ import annotations
 
+import math
 from dataclasses import dataclass
 
 import torch
@@ -22,17 +23,19 @@ class KrylovJEPAOutput:
     loss: torch.Tensor
     loss_jepa: torch.Tensor
     loss_coeff: torch.Tensor
+    loss_projected_ritz: torch.Tensor
     z_pred: torch.Tensor
     z_target: torch.Tensor
 
 
 class KrylovJEPA(nn.Module):
-    """(V, q0, ..., q_{k-1}) → z(q_k) with optional α/β auxiliary loss.
+    """Predict later Lanczos-state latents from a potential and Krylov context.
 
-    ``context_steps`` is the number of input Lanczos states (K in ablations):
-      K1: (V, q0) → z(q1)
-      K2: (V, q0, q1) → z(q2)
-      K3: (V, q0, q1, q2) → z(q3)
+    The optional projected-Ritz auxiliary task is label-free. It constructs a
+    small fixed Dirichlet sine basis, projects the Hamiltonian into that basis,
+    and asks the potential encoder alone to predict the lowest projected energy
+    and its coefficient vector. This directly pressures the transferable
+    potential encoder to preserve low-energy spectral information.
     """
 
     def __init__(
@@ -44,6 +47,8 @@ class KrylovJEPA(nn.Module):
         fuse_depth: int = 2,
         ema_momentum: float = 0.996,
         lambda_coeff: float = 0.0,
+        lambda_projected_ritz: float = 0.0,
+        projected_modes: int = 9,
         remove_v: bool = False,
         normalize_latents: bool = True,
         **encoder_overrides,
@@ -57,6 +62,7 @@ class KrylovJEPA(nn.Module):
         self.context_steps = context_steps
         self.ema_momentum = ema_momentum
         self.lambda_coeff = lambda_coeff
+        self.lambda_projected_ritz = lambda_projected_ritz
         self.remove_v = remove_v
         self.normalize_latents = normalize_latents
         self.img_size = img_size
@@ -72,7 +78,6 @@ class KrylovJEPA(nn.Module):
             ]
         )
         self.fuse_norm = nn.LayerNorm(dim)
-        # type: 0 = V, 1..context_steps = qi
         self.type_embed = nn.Parameter(torch.zeros(1 + context_steps, 1, dim))
         nn.init.trunc_normal_(self.type_embed, std=0.02)
         self.step_embed = nn.Parameter(torch.zeros(context_steps, 1, dim))
@@ -84,15 +89,54 @@ class KrylovJEPA(nn.Module):
             n_heads=kwargs.get("n_heads", 4),
             mlp_ratio=kwargs.get("mlp_ratio", 4.0),
         )
-        # Predict α_{k-1} and β_k for the step that produces q_k
         self.coeff_head = CoefficientHead(dim, n_coeff=2)
         self.embed_dim = dim
 
-    def fuse_context(self, v: torch.Tensor, qs: list[torch.Tensor]) -> tuple[torch.Tensor, torch.Tensor]:
+        side = int(round(math.sqrt(projected_modes)))
+        if side * side != int(projected_modes):
+            raise ValueError(f"projected_modes must be a perfect square, got {projected_modes}")
+        self.projected_modes = int(projected_modes)
+        coords = torch.arange(1, img_size + 1, dtype=torch.float32) / float(img_size + 1)
+        basis = []
+        kinetic = []
+        h = 1.0 / float(img_size + 1)
+        for my in range(1, side + 1):
+            sy = torch.sin(math.pi * my * coords)
+            for mx in range(1, side + 1):
+                sx = torch.sin(math.pi * mx * coords)
+                mode = torch.outer(sy, sx)
+                mode = mode / torch.linalg.vector_norm(mode).clamp_min(1e-12)
+                basis.append(mode.reshape(-1))
+                lam = (2.0 / (h * h)) * (
+                    math.sin(math.pi * mx / (2.0 * (img_size + 1))) ** 2
+                    + math.sin(math.pi * my / (2.0 * (img_size + 1))) ** 2
+                )
+                kinetic.append(lam)
+        self.register_buffer("projected_basis", torch.stack(basis, dim=0))
+        self.register_buffer("projected_kinetic", torch.tensor(kinetic, dtype=torch.float32))
+        self.ritz_energy_head = nn.Sequential(
+            nn.LayerNorm(dim),
+            nn.Linear(dim, max(dim, 64)),
+            nn.GELU(),
+            nn.Linear(max(dim, 64), 1),
+        )
+        self.ritz_coeff_head = nn.Sequential(
+            nn.LayerNorm(dim),
+            nn.Linear(dim, max(dim, 64)),
+            nn.GELU(),
+            nn.Linear(max(dim, 64), self.projected_modes),
+        )
+
+    def fuse_context(
+        self,
+        v: torch.Tensor,
+        qs: list[torch.Tensor],
+    ) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor | None]:
         if len(qs) != self.context_steps:
             raise ValueError(f"Expected {self.context_steps} context states, got {len(qs)}")
         token_list: list[torch.Tensor] = []
         cls_list: list[torch.Tensor] = []
+        v_cls: torch.Tensor | None = None
         if not self.remove_v:
             v_cls, v_tok = self.potential_enc(v)
             v_tok = v_tok + self.type_embed[0]
@@ -109,7 +153,23 @@ class KrylovJEPA(nn.Module):
         for blk in self.fuse:
             x = blk(x)
         x = self.fuse_norm(x)
-        return x[:, 0], x[:, 1:]
+        return x[:, 0], x[:, 1:], v_cls
+
+    def _projected_ritz_targets(self, v: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
+        """Return lowest energy and coefficient vector in the fixed sine basis."""
+        b = self.projected_basis.to(dtype=v.dtype, device=v.device)
+        v_flat = v.reshape(v.shape[0], -1)
+        v_proj = torch.einsum("mp,bp,np->bmn", b, v_flat, b)
+        h_proj = v_proj + torch.diag(self.projected_kinetic.to(dtype=v.dtype, device=v.device))
+        evals, evecs = torch.linalg.eigh(h_proj)
+        energy = evals[:, 0]
+        coeff = evecs[:, :, 0]
+        sign = torch.where(
+            coeff[:, :1] < 0,
+            -torch.ones_like(coeff[:, :1]),
+            torch.ones_like(coeff[:, :1]),
+        )
+        return energy, coeff * sign
 
     def forward(
         self,
@@ -119,35 +179,53 @@ class KrylovJEPA(nn.Module):
         alpha: torch.Tensor | None = None,
         beta: torch.Tensor | None = None,
     ) -> KrylovJEPAOutput:
-        """
-        q_context: (B, context_steps, n_dof)
-        q_target: (B, n_dof)  — q_{context_steps}
-        alpha, beta: full depth vectors; uses index context_steps-1
-        """
         qs = [q_context[:, i] for i in range(self.context_steps)]
-        cls, tokens = self.fuse_context(v, qs)
+        cls, tokens, v_cls = self.fuse_context(v, qs)
         z_pred = self.predictor(cls, tokens)
         with torch.no_grad():
             z_tgt, _ = self.target_state(q_target)
             if self.normalize_latents:
                 z_tgt = nn.functional.layer_norm(z_tgt, (z_tgt.shape[-1],))
-        z_pred_n = (nn.functional.layer_norm(z_pred, (z_pred.shape[-1],))
-                    if self.normalize_latents else z_pred)
+        z_pred_n = (
+            nn.functional.layer_norm(z_pred, (z_pred.shape[-1],))
+            if self.normalize_latents
+            else z_pred
+        )
         loss_jepa = torch.mean((z_pred_n - z_tgt.detach()) ** 2)
 
         loss_coeff = torch.zeros((), device=v.device, dtype=v.dtype)
         if self.lambda_coeff > 0 and alpha is not None and beta is not None:
-            # Coefficients for step j = context_steps - 1
             j = self.context_steps - 1
             coeff_true = torch.stack([alpha[:, j], beta[:, j]], dim=-1)
             coeff_hat = self.coeff_head(cls)
             loss_coeff = torch.mean((coeff_hat - coeff_true) ** 2)
 
-        loss = loss_jepa + self.lambda_coeff * loss_coeff
+        loss_projected_ritz = torch.zeros((), device=v.device, dtype=v.dtype)
+        if self.lambda_projected_ritz > 0:
+            if v_cls is None:
+                raise ValueError("projected-Ritz auxiliary task requires the potential input")
+            with torch.no_grad():
+                e_target, c_target = self._projected_ritz_targets(v)
+            e_pred = self.ritz_energy_head(v_cls).squeeze(-1)
+            c_pred = self.ritz_coeff_head(v_cls)
+            e_scale = e_target.abs().clamp_min(1.0)
+            loss_e = torch.mean(((e_pred - e_target) / e_scale) ** 2)
+            c_pred = nn.functional.normalize(c_pred, dim=-1)
+            c_target = nn.functional.normalize(c_target, dim=-1)
+            overlap = torch.sum(c_pred * c_target, dim=-1)
+            loss_c = torch.mean(1.0 - overlap.pow(2))
+            loss_projected_ritz = loss_e + loss_c
+
+        loss = (
+            loss_jepa
+            + self.lambda_coeff * loss_coeff
+            + self.lambda_projected_ritz * loss_projected_ritz
+        )
         return KrylovJEPAOutput(
             loss=loss,
             loss_jepa=loss_jepa,
             loss_coeff=loss_coeff,
+            loss_projected_ritz=loss_projected_ritz,
             z_pred=z_pred_n,
             z_target=z_tgt,
         )
