@@ -653,6 +653,24 @@ def main() -> int:
                     )
                 )
 
+            c1, _ = first_order_perturbation_fast(
+                sample.potential,
+                grid,
+                FULL_SIDE,
+            )
+            pt1 = adaptive_from_coeff(sample, grid, c1)
+            rows.append(
+                metric_row(
+                    "pt1_adaptive_10",
+                    sample,
+                    pt1,
+                    grid,
+                    seed=None,
+                    n_labels=0,
+                    split=split_name,
+                )
+            )
+
             _, c2, _, _ = first_second_order_perturbation(
                 sample.potential,
                 grid,
