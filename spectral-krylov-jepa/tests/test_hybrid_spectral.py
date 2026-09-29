@@ -6,12 +6,14 @@ from spectral_krylov_jepa.evaluation.hybrid_spectral import (
     adaptive_ritz,
     first_order_perturbation_fast,
     first_second_order_perturbation,
+    box_energies,
     low_mode_mask,
     projected_ritz,
     sine_basis,
     variational_monotonicity_gap,
 )
 from spectral_krylov_jepa.physics.grid import GridSpec
+from spectral_krylov_jepa.physics.hamiltonian import build_hamiltonian
 from spectral_krylov_jepa.physics.potentials import generate_box_potential, generate_potential
 
 
@@ -57,3 +59,18 @@ def test_fast_first_order_matches_full_first_order():
     c_full, _, e_full, _ = first_second_order_perturbation(v, grid, side=5)
     assert np.allclose(c_fast, c_full, atol=1e-11, rtol=1e-11)
     assert abs(e_fast - e_full) < 1e-11
+
+
+def test_analytic_box_energies_match_discrete_hamiltonian_projection():
+    grid = GridSpec(n_interior=12)
+    basis, _ = sine_basis(grid, 5)
+    ham = build_hamiltonian(grid, np.zeros((grid.ny, grid.nx)))
+    projected = basis.T @ (ham.matrix @ basis)
+    assert np.allclose(
+        np.diag(projected),
+        box_energies(grid, 5),
+        atol=1e-10,
+        rtol=1e-10,
+    )
+    offdiag = projected - np.diag(np.diag(projected))
+    assert np.max(np.abs(offdiag)) < 1e-9
