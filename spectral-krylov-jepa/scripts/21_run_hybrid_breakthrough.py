@@ -971,29 +971,49 @@ def main() -> int:
     write_csv(out / "encoder_diagnostics.csv", encoder_diag)
 
     comparisons = {
-        "krylov10_vs_fixed25_residual": bootstrap_comparison(
+        "pt1_vs_fixed25_residual": bootstrap_comparison(
             rows,
-            "krylov_pt2_residual_adaptive_10",
+            "pt1_adaptive_10",
             "fixed_ritz_25",
-            PRIMARY_LABEL_BUDGET,
+            0,
             "test_ID",
             "residual_true_e",
+            n_labels_b=0,
         ),
-        "krylov10_vs_scratch10_residual": bootstrap_comparison(
+        "pt2_vs_fixed25_residual": bootstrap_comparison(
+            rows,
+            "pt2_adaptive_10",
+            "fixed_ritz_25",
+            0,
+            "test_ID",
+            "residual_true_e",
+            n_labels_b=0,
+        ),
+        "pt2_vs_fixed49_residual": bootstrap_comparison(
+            rows,
+            "pt2_adaptive_10",
+            "fixed_ritz_49",
+            0,
+            "test_ID",
+            "residual_true_e",
+            n_labels_b=0,
+        ),
+        "krylov_pt2_vs_scratch_pt2_residual": bootstrap_comparison(
             rows,
             "krylov_pt2_residual_adaptive_10",
-            "scratch_adaptive_10",
+            "scratch_pt2_residual_adaptive_10",
             PRIMARY_LABEL_BUDGET,
             "test_ID",
             "residual_true_e",
         ),
-        "krylov10_vs_pt2_10_residual": bootstrap_comparison(
+        "krylov_pt2_vs_zero_label_pt2_residual": bootstrap_comparison(
             rows,
             "krylov_pt2_residual_adaptive_10",
             "pt2_adaptive_10",
             PRIMARY_LABEL_BUDGET,
             "test_ID",
             "residual_true_e",
+            n_labels_b=0,
         ),
     }
 
@@ -1009,32 +1029,71 @@ def main() -> int:
             raise KeyError((method, n_labels, split))
         return matches[0]
 
-    primary = get_agg(
+    pt1 = get_agg("pt1_adaptive_10", 0, "test_ID")
+    pt2 = get_agg("pt2_adaptive_10", 0, "test_ID")
+    fixed25 = get_agg("fixed_ritz_25", 0, "test_ID")
+    fixed49 = get_agg("fixed_ritz_49", 0, "test_ID")
+    learned = get_agg(
         "krylov_pt2_residual_adaptive_10",
         PRIMARY_LABEL_BUDGET,
         "test_ID",
     )
-    fixed25 = get_agg("fixed_ritz_25", 0, "test_ID")
-    scratch10 = get_agg("scratch_adaptive_10", PRIMARY_LABEL_BUDGET, "test_ID")
-    pt2 = get_agg("pt2_adaptive_10", 0, "test_ID")
+    scratch_matched = get_agg(
+        "scratch_pt2_residual_adaptive_10",
+        PRIMARY_LABEL_BUDGET,
+        "test_ID",
+    )
+
+    cost_proxy = {
+        "fixed_ritz_25": {
+            "basis_dim": 25,
+            "projected_potential_terms": 25 * 25,
+            "projected_eigensolve_dim": 25,
+        },
+        "fixed_ritz_49": {
+            "basis_dim": 49,
+            "projected_potential_terms": 49 * 49,
+            "projected_eigensolve_dim": 49,
+        },
+        "pt1_adaptive_10": {
+            "basis_dim": 10,
+            "projected_potential_terms": 49,
+            "projected_eigensolve_dim": 10,
+        },
+        "pt2_adaptive_10": {
+            "basis_dim": 10,
+            "projected_potential_terms": 49 * 49,
+            "projected_eigensolve_dim": 10,
+        },
+    }
 
     success = {
-        "basis_efficiency_breakthrough": bool(
-            primary["basis_dim_mean"] < fixed25["basis_dim_mean"]
-            and primary["residual_true_e_mean"] < fixed25["residual_true_e_mean"]
+        "cheap_pt1_beats_fixed25": bool(
+            pt1["residual_true_e_mean"] < fixed25["residual_true_e_mean"]
         ),
-        "krylov_representation_advantage": bool(
-            primary["residual_true_e_mean"]
-            < scratch10["residual_true_e_mean"]
+        "cheap_pt1_paired_ci_beats_fixed25": bool(
+            comparisons["pt1_vs_fixed25_residual"]["ci_high"] < 0
         ),
-        "learned_correction_beats_pt2": bool(
-            primary["residual_true_e_mean"] < pt2["residual_true_e_mean"]
+        "pt2_accuracy_beats_fixed25": bool(
+            pt2["residual_true_e_mean"] < fixed25["residual_true_e_mean"]
         ),
-        "paired_ci_beats_fixed25": bool(
-            comparisons["krylov10_vs_fixed25_residual"]["ci_high"] < 0
+        "pt2_paired_ci_beats_fixed25": bool(
+            comparisons["pt2_vs_fixed25_residual"]["ci_high"] < 0
         ),
-        "paired_ci_beats_scratch10": bool(
-            comparisons["krylov10_vs_scratch10_residual"]["ci_high"] < 0
+        "pt2_matches_fixed49_with_smaller_eigensolve": bool(
+            pt2["residual_true_e_mean"]
+            <= 1.10 * fixed49["residual_true_e_mean"]
+            and pt2["basis_dim_mean"] < fixed49["basis_dim_mean"]
+        ),
+        "matched_krylov_features_beat_scratch_features": bool(
+            learned["residual_true_e_mean"]
+            < scratch_matched["residual_true_e_mean"]
+        ),
+        "matched_krylov_ci_beats_scratch": bool(
+            comparisons["krylov_pt2_vs_scratch_pt2_residual"]["ci_high"] < 0
+        ),
+        "learned_residual_beats_zero_label_pt2": bool(
+            learned["residual_true_e_mean"] < pt2["residual_true_e_mean"]
         ),
     }
 
