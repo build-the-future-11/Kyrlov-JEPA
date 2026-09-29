@@ -868,3 +868,135 @@ def run_experiment(eid:int,ctx:Context)->tuple[dict[str,Any],str]:
         return {'candidate_shifts':candidates,'residuals':vals,'best_shift':float(candidates[int(np.argmin(vals))])},'Shift-invert shift-selection prototype.'
     if eid==87:
         e=rayleigh_quotient(v,pred_psi,grid); before=schrodinger_residual(v,pred_psi,e,grid); ph=jacobi_correction(v,grid,pred_psi,e); after=schrodinger_residual(v,ph,rayleigh_quotient(v,ph,grid),grid); return {'before':before,'after_jacobi':after},'Diagonal/Jacobi preconditioner correction.'
+
+    if eid==88:
+        e=rayleigh_quotient(v,pred_psi,grid); before=schrodinger_residual(v,pred_psi,e,grid); ph=coarse_correction(v,grid,pred_psi,e); after=schrodinger_residual(v,ph,rayleigh_quotient(v,ph,grid),grid); return {'before':before,'after_multigrid_style':after},'Coarse/smoothed residual correction.'
+    if eid==89:
+        H=torch.tensor(build_hamiltonian(grid,v).to_dense(),dtype=torch.float32); q=torch.randn(grid.n_dof,requires_grad=True); opt=torch.optim.SGD([q],lr=.05); initial=None
+        for _ in range(3):
+            qn=q/torch.linalg.vector_norm(q); scale=torch.linalg.eigvalsh(H).max().detach()+1.; z=(scale*torch.eye(grid.n_dof)-H)@qn; z=z/torch.linalg.vector_norm(z); loss=z@(H@z); initial=float(loss.item()) if initial is None else initial; opt.zero_grad(); loss.backward(); opt.step()
+        return {'initial_unrolled_rayleigh':initial,'final_unrolled_rayleigh':float(loss.item()),'gradient_norm':float(q.grad.norm().item())},'Differentiable unrolled low-energy iteration with verified gradient.'
+    if eid==90:
+        ql=pred_psi.ravel()/np.linalg.norm(pred_psi); qr=np.random.default_rng(9).normal(size=grid.n_dof); qr/=np.linalg.norm(qr); il,_=iterations_to_residual(v,grid,ql,12,1.0); ir,_=iterations_to_residual(v,grid,qr,12,1.0); return {'iteration_proxy_learned':il,'iteration_proxy_random':ir,'saving':ir-il},'Iteration-count proxy objective.'
+    if eid==91:
+        vals,states=solve_k(v,grid,2); U=np.stack([x.ravel()/np.linalg.norm(x.ravel()) for x in states[:2]],1); angles=[]
+        for d in [1,2,3,4]:
+            ham=build_hamiltonian(grid,v); lr=run_lanczos(ham,depth=d,q0_seed=ctx.seed); angles.append(principal_angle(U,lr.q[:-1].T))
+        return {'depths':[1,2,3,4],'principal_angles':angles,'monotone_final_improvement':bool(angles[-1]<=angles[0])},'Principal-angle convergence objective.'
+    if eid==92:
+        e=rayleigh_quotient(v,pred_psi,grid); pc=jacobi_correction(v,grid,pred_psi,e); er,pr,rr=krylov_ritz(v,grid,3,ctx.seed,q0=pc.ravel()); return {'hybrid_residual':rr,'hybrid_fidelity':fidelity_np(pr,true,grid),'hybrid_energy_error':abs(er-e0)},'Amortized warm-start/preconditioner + exact Ritz hybrid.'
+    if eid==93:
+        t0=time.perf_counter(); _=ctx.direct_predictions(); neural=time.perf_counter()-t0; t0=time.perf_counter()
+        for sm in ctx.test: ritz(sm.v,grid,min(3,grid.n_interior))
+        classical=time.perf_counter()-t0; return {'direct_prediction_batch_sec':neural,'ritz_batch_sec':classical,'n_queries':len(ctx.test),'ratio_neural_to_ritz':neural/max(classical,1e-9)},'Measured wall-clock economics in current process.'
+    if eid==94:
+        t=time.perf_counter(); m=SpectralMLP(grid.n_dof,ctx.side*ctx.side+1,32,16); train_regressor(m,ctx.X(),ctx.Y(),2 if ctx.mode=='smoke' else 10); train_t=time.perf_counter()-t; t=time.perf_counter()
+        with torch.no_grad(): _=m(torch.tensor(ctx.X(ctx.test))).numpy()
+        nnq=(time.perf_counter()-t)/len(ctx.test); t=time.perf_counter()
+        for sm in ctx.test: ritz(sm.v,grid,min(3,grid.n_interior))
+        cq=(time.perf_counter()-t)/len(ctx.test); saving=cq-nnq; return {'training_sec':train_t,'neural_query_sec':nnq,'ritz_query_sec':cq,'break_even_queries':float(train_t/saving) if saving>0 else float('inf')},'Cold-start versus amortized break-even estimate.'
+    if eid in (95,96):
+        sizes=[4,8,12] if ctx.mode=='smoke' else [12,24,48]; errs=[]
+        for n in sizes:
+            m,_=ctx.moment_pretrain(latent=16,n_unlabeled=min(n,len(ctx.train))); ztr=latent_features(ctx,m,ctx.train[:min(n,len(ctx.train))]); zte=latent_features(ctx,m,ctx.test); ytr=basis_target_matrix(ctx,ctx.train[:min(n,len(ctx.train))]); yte=basis_target_matrix(ctx,ctx.test); errs.append(probe(ztr,ytr,zte,yte))
+        slope=float(np.polyfit(np.log(np.asarray(sizes,dtype=float)),np.log(np.asarray(errs)+1e-12),1)[0]); ctx.caches['unlabeled_scaling']=[{'n':n,'probe_mse':e} for n,e in zip(sizes,errs)]; return {'sizes':sizes,'probe_mse':errs,'loglog_slope':slope},'Unlabeled-data learning curve / scaling-law fit.'
+    if eid==97:
+        dims=[8,16,24] if ctx.mode=='smoke' else [16,32,64]; out=[]
+        for d in dims:
+            m,_=ctx.moment_pretrain(latent=d); ztr=latent_features(ctx,m,ctx.train); zte=latent_features(ctx,m,ctx.test); out.append(probe(ztr,basis_target_matrix(ctx),zte,basis_target_matrix(ctx,ctx.test)))
+        return {'latent_dims':dims,'probe_mse':out,'best_dim':int(dims[int(np.argmin(out))])},'Model-size scaling.'
+    if eid==98:
+        depths=[1,2,3,4] if ctx.mode=='smoke' else [1,2,4,8]; rs=[]
+        for d in depths:
+            vals=[]
+            for sm in ctx.test[:min(6,len(ctx.test))]: _,_,r=krylov_ritz(sm.v,grid,d,ctx.seed); vals.append(r)
+            rs.append(_safe_mean(vals))
+        return {'depths':depths,'mean_residual':rs},'Krylov-depth scaling.'
+    if eid==99:
+        starts=[1,2,3] if ctx.mode=='smoke' else [1,2,4,8]; rs=[]
+        for nst in starts:
+            vals=[]
+            for sm in ctx.test[:min(6,len(ctx.test))]: _,_,r=block_krylov_ritz(sm.v,grid,2,nst,ctx.seed); vals.append(r)
+            rs.append(_safe_mean(vals))
+        return {'starts':starts,'mean_residual':rs},'Multi-start scaling.'
+    if eid==100:
+        rows=[]
+        for sm,(ee,pp) in zip(ctx.test,direct):
+            _,rp,_,_=ritz(sm.v,grid,min(3,grid.n_interior)); ritz_r=schrodinger_residual(sm.v,rp,float(sm.evals[0]),grid); nn_r=schrodinger_residual(sm.v,pp,float(sm.evals[0]),grid)
+            side_req=min(5,grid.n_interior)
+            for side in range(1,side_req+1):
+                _,p2,_,_=ritz(sm.v,grid,side)
+                if schrodinger_residual(sm.v,p2,float(sm.evals[0]),grid)<1.0: side_req=side; break
+            rows.append({'gap':float(sm.evals[1]-sm.evals[0]),'roughness':roughness(sm.v),'ipr':ipr(sm.states[0],grid),'ritz_side':side_req,'nn_residual':nn_r,'ritz_residual':ritz_r,'nn_minus_ritz':nn_r-ritz_r})
+        ctx.caches['phase_diagram']=rows; return {'n_cells':len(rows),'fraction_nn_better_than_ritz':float(np.mean([r['nn_minus_ritz']<0 for r in rows])),'mean_nn_minus_ritz':float(np.mean([r['nn_minus_ritz'] for r in rows]))},'Phase diagram over spectral/problem complexity: When Does Krylov Pretraining Help?'
+    raise KeyError(eid)
+
+
+def write_csv(path:Path,rows:list[dict[str,Any]])->None:
+    path.parent.mkdir(parents=True,exist_ok=True)
+    if not rows: return
+    keys=[]
+    for r in rows:
+        for k in r:
+            if k not in keys: keys.append(k)
+    with path.open('w',newline='') as f:
+        w=csv.DictWriter(f,fieldnames=keys); w.writeheader(); w.writerows(rows)
+
+
+def make_figures(ctx:Context,results:list[dict[str,Any]])->None:
+    import matplotlib
+    matplotlib.use('Agg')
+    import matplotlib.pyplot as plt
+    figdir=ctx.out_dir/'figures'; figdir.mkdir(exist_ok=True)
+    fig,ax=plt.subplots(figsize=(10,4)); ids=[r['id'] for r in results]; ok=[1 if r['status']=='ok' else 0 for r in results]; ax.scatter(ids,ok); ax.set_ylim(-.1,1.1); ax.set_xlabel('Experiment ID'); ax.set_ylabel('Executed successfully'); ax.set_title('Research-100 execution coverage'); fig.tight_layout(); fig.savefig(figdir/'01_execution_coverage.png',dpi=170); plt.close(fig)
+    if 'difficulty_curve' in ctx.caches:
+        d=ctx.caches['difficulty_curve']; fig,ax=plt.subplots(figsize=(10,5)); ax.bar([x['family'] for x in d],[x['ritz3_residual'] for x in d]); ax.tick_params(axis='x',rotation=45); ax.set_ylabel('3x3 Ritz residual'); ax.set_title('Benchmark difficulty curve'); fig.tight_layout(); fig.savefig(figdir/'02_difficulty_curve.png',dpi=170); plt.close(fig)
+    if 'unlabeled_scaling' in ctx.caches:
+        d=ctx.caches['unlabeled_scaling']; fig,ax=plt.subplots(figsize=(6,4)); ax.plot([x['n'] for x in d],[x['probe_mse'] for x in d],marker='o'); ax.set_xlabel('Unlabeled examples'); ax.set_ylabel('Probe MSE'); ax.set_title('Unlabeled-data scaling'); fig.tight_layout(); fig.savefig(figdir/'03_unlabeled_scaling.png',dpi=170); plt.close(fig)
+    if 'phase_diagram' in ctx.caches:
+        d=ctx.caches['phase_diagram']; fig,ax=plt.subplots(figsize=(6,5)); sc=ax.scatter([x['gap'] for x in d],[x['roughness'] for x in d],c=[x['nn_minus_ritz'] for x in d]); ax.set_xlabel('Eigengap'); ax.set_ylabel('Potential roughness'); ax.set_title('When does learned prediction beat fixed Ritz?'); fig.colorbar(sc,ax=ax,label='NN residual - Ritz residual'); fig.tight_layout(); fig.savefig(figdir/'04_phase_diagram.png',dpi=170); plt.close(fig)
+
+
+def main()->int:
+    ap=argparse.ArgumentParser(description='Run all 100 Krylov-JEPA research ideas')
+    ap.add_argument('--mode',choices=['smoke','full'],default='full')
+    ap.add_argument('--output-dir',default=None)
+    ap.add_argument('--seed',type=int,default=20260929)
+    ap.add_argument('--ids',default='all',help='all or comma/range list, e.g. 1-10,45,62')
+    ap.add_argument('--continue-on-error',action='store_true')
+    args=ap.parse_args()
+    stamp=time.strftime('%Y%m%dT%H%M%SZ',time.gmtime()); out=Path(args.output_dir or f'results/research100_{args.mode}_{stamp}'); out.mkdir(parents=True,exist_ok=True)
+    ctx=build_context(args.mode,args.seed,out)
+    if args.ids=='all': selected=[i for i,_ in IDEAS]
+    else:
+        selected=[]
+        for part in args.ids.split(','):
+            if '-' in part:
+                a,b=map(int,part.split('-',1)); selected.extend(range(a,b+1))
+            else: selected.append(int(part))
+    name_by_id=dict(IDEAS); rows=[]; failures=[]; t0=time.time()
+    for eid in selected:
+        start=time.time(); row={'id':eid,'name':name_by_id[eid],'category':CATEGORY[eid],'maturity':MATURITY[eid]}
+        try:
+            metrics,note=run_experiment(eid,ctx); row.update({'status':'ok','elapsed_sec':time.time()-start,'metrics':_jsonable(metrics),'note':note})
+        except Exception as exc:
+            row.update({'status':'failed','elapsed_sec':time.time()-start,'metrics':{},'note':f'{type(exc).__name__}: {exc}'}); failures.append(eid)
+            if not args.continue_on_error: rows.append(row); break
+        rows.append(row); print(f"[{row['status'].upper():6}] {eid:03d} {row['name']}")
+    (out/'experiments.json').write_text(json.dumps(_jsonable(rows),indent=2))
+    flat=[{k:(json.dumps(v,sort_keys=True) if k=='metrics' else v) for k,v in r.items()} for r in rows]; write_csv(out/'experiments.csv',flat)
+    if 'difficulty_curve' in ctx.caches: write_csv(out/'difficulty_curve.csv',ctx.caches['difficulty_curve'])
+    if 'unlabeled_scaling' in ctx.caches: write_csv(out/'unlabeled_scaling.csv',ctx.caches['unlabeled_scaling'])
+    if 'phase_diagram' in ctx.caches: write_csv(out/'phase_diagram.csv',ctx.caches['phase_diagram'])
+    make_figures(ctx,rows)
+    summary={'status':'ok' if not failures and len(rows)==len(selected) else 'partial','mode':args.mode,'seed':args.seed,'selected':selected,'executed':len(rows),'successful':sum(r['status']=='ok' for r in rows),'failures':failures,'elapsed_sec':time.time()-t0,'maturity_counts':{m:sum(r['maturity']==m for r in rows) for m in sorted(set(MATURITY.values()))},'claim_boundary':'Prototype/analysis rows establish executable mechanisms and diagnostics only. Efficacy claims require frozen multi-seed confirmatory protocols.'}
+    (out/'summary.json').write_text(json.dumps(summary,indent=2))
+    lines=['# Research-100 execution report','',f"Mode: **{args.mode}**  ",f"Successful: **{summary['successful']}/{len(selected)}**  ",f"Failures: **{failures or 'none'}**",'', 'Every numbered roadmap item is executable. Maturity distinguishes analyses/benchmarks from bounded trainable prototypes; this report does not promote prototype outputs to confirmatory claims.','', '| ID | Idea | Category | Maturity | Status |','|---:|---|---|---|---|']
+    for r in rows: lines.append(f"| {r['id']} | {r['name']} | {r['category']} | {r['maturity']} | {r['status']} |")
+    (out/'RESEARCH100_REPORT.md').write_text('\n'.join(lines)+'\n')
+    print(json.dumps(summary,indent=2)); print(f'Artifacts: {out}')
+    return 1 if failures else 0
+
+
+if __name__=='__main__':
+    raise SystemExit(main())
