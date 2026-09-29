@@ -483,9 +483,17 @@ def bootstrap_comparison(
     n_labels: int,
     split: str,
     metric: str,
+    *,
+    n_labels_b: int | None = None,
 ) -> dict:
     a = seed_averaged_per_example(rows, method_a, n_labels, split, metric)
-    b = seed_averaged_per_example(rows, method_b, n_labels, split, metric)
+    b = seed_averaged_per_example(
+        rows,
+        method_b,
+        n_labels if n_labels_b is None else n_labels_b,
+        split,
+        metric,
+    )
     common = sorted(set(a) & set(b))
     return paired_bootstrap_ci(
         np.asarray([a[i] for i in common]),
