@@ -1,0 +1,37 @@
+name: Hybrid resolution scaling
+
+on:
+  pull_request:
+    paths:
+      - 'spectral-krylov-jepa/scripts/22_run_hybrid_resolution.py'
+      - 'spectral-krylov-jepa/src/spectral_krylov_jepa/evaluation/hybrid_spectral.py'
+      - '.github/workflows/hybrid-resolution.yml'
+  workflow_dispatch:
+
+jobs:
+  hybrid-resolution:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install -e './spectral-krylov-jepa[dev]'
+      - name: Run fresh 16-32-64 study
+        run: >
+          python spectral-krylov-jepa/scripts/22_run_hybrid_resolution.py
+          --output-dir hybrid_resolution_artifacts
+        env:
+          OMP_NUM_THREADS: '1'
+          MKL_NUM_THREADS: '1'
+          MPLBACKEND: Agg
+      - name: Print summary
+        if: always()
+        run: cat hybrid_resolution_artifacts/summary.json || true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: hybrid-resolution
+          path: hybrid_resolution_artifacts
+          if-no-files-found: warn
