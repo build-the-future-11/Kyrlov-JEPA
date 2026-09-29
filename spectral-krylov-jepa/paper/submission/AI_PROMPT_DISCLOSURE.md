@@ -1,6 +1,6 @@
 # AI assistance disclosure
 
-Codex, model family GPT-6 (exact serving revision unavailable), 2026-09-27.
+OpenAI Codex (exact serving revision unavailable), 2026-09-27.
 Used for code audit, control implementation, analysis scripts, and manuscript drafting.
 All reported results are from preserved computation. Human authors must review and
 accept responsibility, supply the author list, and disclose earlier AI use if any.
@@ -183,3 +183,21 @@ You are done only when the repository has been pushed as far as the available ev
 
 
 ---
+
+
+## 29 September 2026 manuscript revision
+
+OpenAI ChatGPT, GPT-5.6 Sol, was used to assess CJSJ submission readiness,
+revise and compress the manuscript to the journal's verified format, check
+claims against preserved repository artifacts, and prepare the final submission
+package. It did not supply experimental observations or replace missing runs.
+
+Verbatim user prompts that materially directed the manuscript revision:
+
+1. `hmm hmm okay how can I improve the paper. draft the final one for me alll rn`
+2. `finish it allll off`
+
+The final CJSJ manuscript is intentionally framed as a bounded baseline audit.
+It does not upgrade the unexecuted full experiment or supplemental controls into
+completed evidence. The human author remains responsible for final verification,
+authorship, eligibility, consent, originality, and submission.
