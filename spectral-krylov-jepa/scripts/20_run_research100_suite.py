@@ -435,3 +435,222 @@ def train_regressor(model: nn.Module, X: np.ndarray, Y: np.ndarray, epochs: int,
         if anchor is not None and anchor_weight>0:
             reg=torch.zeros((),dtype=loss.dtype)
             for name,p in model.named_parameters(): reg=reg+torch.mean((p-anchor[name])**2)
+
+            loss=loss+anchor_weight*reg
+        opt.zero_grad(); loss.backward(); opt.step(); hist.append(float(loss.item()))
+    return hist
+
+
+def cka(X: np.ndarray, Y: np.ndarray) -> float:
+    X=X-X.mean(0); Y=Y-Y.mean(0); hs=np.linalg.norm(X.T@Y,'fro')**2; den=np.linalg.norm(X.T@X,'fro')*np.linalg.norm(Y.T@Y,'fro'); return float(hs/max(den,1e-15))
+
+
+def svcca(X: np.ndarray, Y: np.ndarray, rank:int=8) -> float:
+    X=X-X.mean(0); Y=Y-Y.mean(0); ux,sx,_=np.linalg.svd(X,full_matrices=False); uy,sy,_=np.linalg.svd(Y,full_matrices=False); rx=min(rank,ux.shape[1],uy.shape[1]); A=ux[:,:rx]; B=uy[:,:rx]; s=np.linalg.svd(A.T@B,compute_uv=False); return float(np.mean(s))
+
+
+def fit_failure_detector(features: np.ndarray, bad: np.ndarray) -> tuple[np.ndarray,float]:
+    W,b=linear_ridge(features,bad[:,None].astype(float),alpha=1e-2); return W[:,0],float(b[0])
+
+
+def classification_accuracy(W:np.ndarray,b:float,X:np.ndarray,y:np.ndarray)->float:
+    return float(np.mean(((X@W+b)>=.5)==y))
+
+
+def spectral_moments(v: np.ndarray, grid: GridSpec, q: np.ndarray, order:int=4) -> np.ndarray:
+    ham=build_hamiltonian(grid,v); cur=q.copy(); out=[]
+    for _ in range(order):
+        cur=ham.matvec(cur); out.append(float(q@cur))
+    return np.asarray(out)
+
+
+def iterations_to_residual(v:np.ndarray,grid:GridSpec,q0:np.ndarray,max_depth:int=16,tol:float=1.0)->tuple[int,float]:
+    for d in range(1,max_depth+1):
+        try:
+            _,_,r=krylov_ritz(v,grid,d,123,q0=q0)
+        except RuntimeError:
+            continue
+        if r<=tol: return d,r
+    return max_depth+1,float(r if 'r' in locals() else np.inf)
+
+
+def jacobi_correction(v:np.ndarray,grid:GridSpec,psi:np.ndarray,energy:float,omega:float=.5)->np.ndarray:
+    ham=build_hamiltonian(grid,v); q=psi.ravel(); r=ham.matvec(q)-energy*q; d=ham.matrix.diagonal()-energy; step=np.divide(r,d,out=np.zeros_like(r),where=np.abs(d)>1e-10); q2=q-omega*step; return normalize_wavefunction(q2.reshape(grid.ny,grid.nx),grid)
+
+
+def coarse_correction(v:np.ndarray,grid:GridSpec,psi:np.ndarray,energy:float)->np.ndarray:
+    ham=build_hamiltonian(grid,v); r=(ham.matvec(psi.ravel())-energy*psi.ravel()).reshape(grid.ny,grid.nx)
+    smooth=gaussian_filter(r,sigma=max(1,grid.nx/8)); q=psi-.02*smooth; return normalize_wavefunction(q,grid)
+
+
+def inverse_iteration(v:np.ndarray,grid:GridSpec,q0:np.ndarray,shift:float,steps:int=3)->tuple[np.ndarray,float]:
+    ham=build_hamiltonian(grid,v); A=ham.matrix-shift*sparse.eye(ham.n_dof,format='csr'); q=q0.ravel(); q=q/max(np.linalg.norm(q),1e-15)
+    for _ in range(steps):
+        q=spsolve(A,q); q=q/max(np.linalg.norm(q),1e-15)
+    psi=normalize_wavefunction(q.reshape(grid.ny,grid.nx),grid); e=rayleigh_quotient(v,psi,grid); return psi,e
+
+
+def d4_transforms(a:np.ndarray)->list[np.ndarray]:
+    return [a,np.rot90(a,1),np.rot90(a,2),np.rot90(a,3),np.fliplr(a),np.flipud(a),np.transpose(a),np.fliplr(np.transpose(a))]
+
+
+def potential_features(v:np.ndarray)->np.ndarray:
+    f=np.fft.rfft2(v); mag=np.abs(f[:4,:4]).ravel(); return np.concatenate([[v.mean(),v.std(),v.min(),v.max(),roughness(v)],mag])
+
+
+def sign_align(pred:np.ndarray,true:np.ndarray)->np.ndarray:
+    return pred if np.dot(pred.ravel(),true.ravel())>=0 else -pred
+
+
+@dataclass
+class Sample:
+    v: np.ndarray
+    evals: np.ndarray
+    states: np.ndarray
+    family: str
+    seed: int
+
+
+@dataclass
+class Context:
+    mode: str
+    seed: int
+    out_dir: Path
+    grid: GridSpec
+    train: list[Sample]
+    test: list[Sample]
+    families: dict[str, list[Sample]]
+    side: int
+    epochs: int
+    caches: dict[str, Any] = field(default_factory=dict)
+
+    def X(self, samples:list[Sample]|None=None)->np.ndarray:
+        s=samples or self.train; return np.stack([x.v.ravel() for x in s]).astype(np.float32)
+    def Y(self,samples:list[Sample]|None=None)->np.ndarray:
+        s=samples or self.train; return np.stack([np.concatenate([spectral_coeff(x.states[0],self.grid,self.side),[x.evals[0]]]) for x in s]).astype(np.float32)
+    def direct_model(self)->SpectralMLP:
+        if 'direct_model' not in self.caches:
+            m=SpectralMLP(self.grid.n_dof,self.side*self.side+1,hidden=48 if self.mode=='smoke' else 96,latent=24 if self.mode=='smoke' else 48)
+            train_regressor(m,self.X(),self.Y(),self.epochs)
+            self.caches['direct_model']=m
+        return self.caches['direct_model']
+    def direct_predictions(self,samples:list[Sample]|None=None)->list[tuple[float,np.ndarray]]:
+        s=samples or self.test; key='pred_'+str(id(s))
+        if key not in self.caches:
+            m=self.direct_model().eval(); xt=torch.tensor(self.X(s),dtype=torch.float32)
+            with torch.no_grad(): y=m(xt).numpy()
+            self.caches[key]=[(float(row[-1]),reconstruct(row[:-1],self.grid,self.side)) for row in y]
+        return self.caches[key]
+    def perturb_predictions(self,samples:list[Sample]|None=None)->list[tuple[float,np.ndarray]]:
+        s=samples or self.test; return [(perturbation_predict(x.v,self.grid,self.side)[0],perturbation_predict(x.v,self.grid,self.side)[1]) for x in s]
+    def moment_pretrain(self, latent:int=24, n_unlabeled:int|None=None)->tuple[MomentNet,list[dict[str,float]]]:
+        key=f'moment_{latent}_{n_unlabeled}'
+        if key in self.caches: return self.caches[key]
+        samples=self.train[:n_unlabeled] if n_unlabeled else self.train
+        rng=np.random.default_rng(self.seed+991); q=rng.normal(size=self.grid.n_dof); q/=np.linalg.norm(q)
+        X=self.X(samples); Y=np.stack([spectral_moments(s.v,self.grid,q,4) for s in samples]).astype(np.float32)
+        ys=Y.std(0); ys[ys<1e-6]=1; ym=Y.mean(0); Yn=(Y-ym)/ys
+        m=MomentNet(self.grid.n_dof,4,hidden=max(32,latent*2),latent=latent); xt=torch.tensor(X); yt=torch.tensor(Yn); opt=torch.optim.AdamW(m.parameters(),lr=2e-3)
+        checkpoints=[]; total=max(4,self.epochs)
+        for ep in range(total):
+            pred=m(xt); loss=((pred-yt)**2).mean(); opt.zero_grad(); loss.backward(); opt.step()
+            if ep in {0,total//2,total-1}:
+                with torch.no_grad(): z=m.encoder(xt).numpy()
+                checkpoints.append({'epoch':ep,'pretrain_loss':float(loss.item()),'rank':effective_rank(z)})
+        self.caches[key]=(m,checkpoints); return self.caches[key]
+
+
+def effective_rank(z:np.ndarray)->float:
+    z=z-z.mean(0); s=np.linalg.svd(z,compute_uv=False); p=s*s; p/=max(p.sum(),1e-30); return float(np.exp(-np.sum(p*np.log(np.clip(p,1e-30,None)))))
+
+
+def make_samples(grid:GridSpec,n:int,seed0:int,family:str)->list[Sample]:
+    out=[]
+    for i in range(n):
+        if family in {'id_gaussian_mixture','ood_narrow','ood_strong','ood_double','ood_rough'}: v,_=generate_potential(family,seed0+i,grid=grid)
+        else: v=custom_potential(family,grid,seed0+i)
+        vals,states=solve_k(v,grid,3); out.append(Sample(v=v,evals=vals,states=states,family=family,seed=seed0+i))
+    return out
+
+
+def build_context(mode:str,seed:int,out_dir:Path)->Context:
+    if mode=='smoke': n=6; n_train=12; n_test=6; epochs=8; side=3
+    else: n=12; n_train=48; n_test=18; epochs=80; side=5
+    grid=GridSpec(n_interior=n)
+    train=make_samples(grid,n_train,seed+1000,'id_gaussian_mixture'); test=make_samples(grid,n_test,seed+5000,'id_gaussian_mixture')
+    fam_names=['smooth','periodic','disorder','barrier_well','harmonic','quartic','multiscale','hard_double','ood_narrow','ood_strong','ood_double','ood_rough']
+    fam_count=2 if mode=='smoke' else 6
+    families={name:make_samples(grid,fam_count,seed+10000+100*j,name) for j,name in enumerate(fam_names)}
+    return Context(mode=mode,seed=seed,out_dir=out_dir,grid=grid,train=train,test=test,families=families,side=side,epochs=epochs)
+
+
+def prediction_metrics(ctx:Context,preds:list[tuple[float,np.ndarray]],samples:list[Sample]|None=None)->dict[str,float]:
+    s=samples or ctx.test; rows=[]
+    for sample,(e,p) in zip(s,preds): rows.append(evaluate_example(sample.v,sample.states[0],float(sample.evals[0]),p,float(e),ctx.grid))
+    return {k:float(np.mean([r[k] for r in rows])) for k in ['fidelity','rel_energy_error','residual_true_e','residual_rayleigh','sign_aligned_rel_l2']}
+
+
+def basis_target_matrix(ctx:Context,samples:list[Sample]|None=None)->np.ndarray:
+    s=samples or ctx.train; return np.stack([spectral_coeff(x.states[0],ctx.grid,ctx.side) for x in s])
+
+
+def latent_features(ctx:Context, model:MomentNet, samples:list[Sample])->np.ndarray:
+    with torch.no_grad(): return model.encoder(torch.tensor(ctx.X(samples),dtype=torch.float32)).numpy()
+
+
+def probe(lat_train:np.ndarray,y_train:np.ndarray,lat_test:np.ndarray,y_test:np.ndarray)->float:
+    mdl=linear_ridge(lat_train,y_train,alpha=1e-2); p=ridge_predict(mdl,lat_test); return float(np.mean((p-y_test)**2))
+
+
+def train_energy_model(model:nn.Module,ctx:Context,epochs:int|None=None)->float:
+    X=np.stack([s.v for s in ctx.train]).astype(np.float32); y=np.asarray([s.evals[0] for s in ctx.train],dtype=np.float32); scale=max(float(y.std()),1e-6); mean=float(y.mean()); yt=(y-mean)/scale
+    opt=torch.optim.AdamW(model.parameters(),lr=2e-3); model.train(); tx=torch.tensor(X); ty=torch.tensor(yt)
+    for _ in range(epochs or ctx.epochs):
+        p=model(tx); loss=((p-ty)**2).mean(); opt.zero_grad(); loss.backward(); opt.step()
+    model.eval(); q=torch.tensor(np.stack([s.v for s in ctx.test]).astype(np.float32)); true=np.asarray([s.evals[0] for s in ctx.test])
+    with torch.no_grad(): pred=model(q).numpy()*scale+mean
+    return float(np.mean(np.abs(pred-true)/(np.abs(true)+1e-6)))
+
+
+def variational_refine(v:np.ndarray,grid:GridSpec,psi:np.ndarray,steps:int=20,lr:float=.05)->np.ndarray:
+    ham=torch.tensor(build_hamiltonian(grid,v).to_dense(),dtype=torch.float32); q=torch.tensor(psi.ravel()/np.linalg.norm(psi.ravel()),dtype=torch.float32,requires_grad=True); opt=torch.optim.Adam([q],lr=lr)
+    for _ in range(steps):
+        qn=q/(torch.linalg.vector_norm(q)+1e-12); e=qn@(ham@qn); opt.zero_grad(); e.backward(); opt.step()
+    qn=(q.detach()/torch.linalg.vector_norm(q.detach())).numpy(); return normalize_wavefunction(qn.reshape(grid.ny,grid.nx),grid)
+
+
+def d4_augment(X:np.ndarray,Y:np.ndarray,n:int)->tuple[np.ndarray,np.ndarray]:
+    xs=[]; ys=[]
+    for x,y in zip(X,Y):
+        vf=x.reshape(n,n)
+        for t in d4_transforms(vf): xs.append(t.ravel()); ys.append(y)
+    return np.asarray(xs,dtype=np.float32),np.asarray(ys,dtype=np.float32)
+
+
+def benchmark_family(ctx:Context,name:str)->dict[str,float]:
+    samples=ctx.families[name]; free=[]; ritz3=[]; gaps=[]; iprs=[]
+    b1,_=sine_basis(ctx.grid,1); psi0=normalize_wavefunction(b1[:,0].reshape(ctx.grid.ny,ctx.grid.nx),ctx.grid)
+    for s in samples:
+        ef=rayleigh_quotient(s.v,psi0,ctx.grid); free.append(evaluate_example(s.v,s.states[0],float(s.evals[0]),psi0,ef,ctx.grid)['residual_true_e'])
+        er,pr,_,_=ritz(s.v,ctx.grid,min(3,ctx.grid.n_interior)); ritz3.append(schrodinger_residual(s.v,pr,float(s.evals[0]),ctx.grid)); gaps.append(float(s.evals[1]-s.evals[0])); iprs.append(ipr(s.states[0],ctx.grid))
+    return {'free_residual':_safe_mean(free),'ritz3_residual':_safe_mean(ritz3),'eigengap':_safe_mean(gaps),'ipr':_safe_mean(iprs),'roughness':_safe_mean([roughness(s.v) for s in samples])}
+
+
+def run_experiment(eid:int,ctx:Context)->tuple[dict[str,Any],str]:
+    s=ctx.test[0]; v=s.v; true=s.states[0]; e0=float(s.evals[0]); grid=ctx.grid
+    direct=ctx.direct_predictions(); dm=prediction_metrics(ctx,direct)
+    pred_e,pred_psi=direct[0]
+
+    if eid==1:
+        qlearn=pred_psi.ravel()/np.linalg.norm(pred_psi); qrand=np.random.default_rng(1).normal(size=grid.n_dof); qrand/=np.linalg.norm(qrand)
+        il,rl=iterations_to_residual(v,grid,qlearn,12,1.0); ir,rr=iterations_to_residual(v,grid,qrand,12,1.0)
+        return {'learned_start_steps':il,'random_start_steps':ir,'learned_final_residual':rl,'random_final_residual':rr},'Warm-start accelerator proxy using exact Lanczos/Ritz iterations.'
+    if eid==2:
+        er,pr,_,_=ritz(v,grid,min(ctx.side,4)); return evaluate_example(v,true,e0,pr,er,grid),'Exact Rayleigh-Ritz endpoint in a compact basis.'
+    if eid==3:
+        er,pr,c,_=ritz(v,grid,min(3,grid.n_interior)); base=spectral_coeff(pr,grid,ctx.side); X=ctx.X(); Y=basis_target_matrix(ctx)-np.stack([spectral_coeff(ritz(x.v,grid,min(3,grid.n_interior))[1],grid,ctx.side) for x in ctx.train]); mdl=linear_ridge(X,Y,1e-2); corr=ridge_predict(mdl,v.ravel()[None])[0]; ph=reconstruct(base+corr,grid,ctx.side); return evaluate_example(v,true,e0,ph,rayleigh_quotient(v,ph,grid),grid),'Learned correction to fixed Ritz baseline.'
+    if eid==4:
+        er,pr,_,_=ritz(v,grid,min(3,grid.n_interior)); ph=normalize_wavefunction(pr+.25*sign_align(pred_psi-pr,true),grid); return evaluate_example(v,true,e0,ph,rayleigh_quotient(v,ph,grid),grid),'Bounded residual-corrected Ritz/direct hybrid.'
+    if eid==5:
+        before=schrodinger_residual(v,pred_psi,rayleigh_quotient(v,pred_psi,grid),grid); ph,ee=inverse_iteration(v,grid,pred_psi,rayleigh_quotient(v,pred_psi,grid)-.2,1); after=schrodinger_residual(v,ph,ee,grid); return {'residual_before':before,'residual_after_one_inverse_step':after},'One exact inverse-iteration correction.'
+    if eid in (6,7):
