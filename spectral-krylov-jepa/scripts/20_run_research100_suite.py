@@ -654,3 +654,100 @@ def run_experiment(eid:int,ctx:Context)->tuple[dict[str,Any],str]:
     if eid==5:
         before=schrodinger_residual(v,pred_psi,rayleigh_quotient(v,pred_psi,grid),grid); ph,ee=inverse_iteration(v,grid,pred_psi,rayleigh_quotient(v,pred_psi,grid)-.2,1); after=schrodinger_residual(v,ph,ee,grid); return {'residual_before':before,'residual_after_one_inverse_step':after},'One exact inverse-iteration correction.'
     if eid in (6,7):
+
+        q,emin,emax=cheb_filter(v,grid,ctx.seed+eid,degree=5 if ctx.mode=='smoke' else 10,tau=.05 if eid==6 else .15); psi=normalize_wavefunction(q.reshape(grid.ny,grid.nx),grid); return {'fidelity':fidelity_np(psi,true,grid),'residual_rayleigh':schrodinger_residual(v,psi,rayleigh_quotient(v,psi,grid),grid),'spectral_min':emin,'spectral_max':emax},'Chebyshev exponential filter; larger tau is imaginary-time target.'
+    if eid==8:
+        er,pr,r=krylov_ritz(v,grid,4,ctx.seed); return {'fidelity':fidelity_np(pr,true,grid),'residual':r,'energy_error':abs(er-e0)},'Actual Lanczos-basis Ritz vector target.'
+    if eid in (9,10):
+        vals,states=solve_k(v,grid,2); ham=build_hamiltonian(grid,v); lr=run_lanczos(ham,depth=min(5,grid.n_dof-2),q0_seed=ctx.seed); U=np.stack([x.ravel()/np.linalg.norm(x.ravel()) for x in states[:2]],axis=1); V=lr.q[:-1].T; ang=principal_angle(U,V); proj_err=float(np.linalg.norm(U@U.T - np.linalg.qr(V)[0]@np.linalg.qr(V)[0].T,'fro'))
+        return {'principal_angle_rad':ang,'projector_fro_error':proj_err},'Subspace/projector geometry diagnostic.'
+    if eid==11:
+        eb,pb,rb=block_krylov_ritz(v,grid,2,3,ctx.seed); es,ps,rs=krylov_ritz(v,grid,5,ctx.seed); return {'block_residual':rb,'single_residual':rs,'block_fidelity':fidelity_np(pb,true,grid),'single_fidelity':fidelity_np(ps,true,grid)},'Block versus single-start Krylov.'
+    if eid in (12,13,14):
+        vecs=[]; energies=[]
+        for j in range(4):
+            e,p,_=krylov_ritz(v,grid,4,ctx.seed+100*j); vecs.append(p.ravel()/np.linalg.norm(p.ravel())); energies.append(e)
+        sims=[abs(float(vecs[0]@x)) for x in vecs[1:]]; consensus=np.linalg.svd(np.stack(vecs).T,full_matrices=False)[0][:,0]; cp=normalize_wavefunction(consensus.reshape(grid.ny,grid.nx),grid)
+        return {'mean_same_potential_similarity':_safe_mean(sims),'ritz_energy_std':float(np.std(energies)),'consensus_fidelity':fidelity_np(cp,true,grid)},'Multi-q0 invariance/contrastive/consensus diagnostic.'
+    if eid==15:
+        X=ctx.X(); Y=[]
+        for sm in ctx.train:
+            lr=run_lanczos(build_hamiltonian(grid,sm.v),depth=3,q0_seed=ctx.seed); Y.append(np.concatenate([lr.alpha,lr.beta]))
+        mdl=linear_ridge(X,np.asarray(Y),1e-2); yt=[]
+        for sm in ctx.test:
+            lr=run_lanczos(build_hamiltonian(grid,sm.v),depth=3,q0_seed=ctx.seed); yt.append(np.concatenate([lr.alpha,lr.beta]))
+        p=ridge_predict(mdl,ctx.X(ctx.test)); return {'coefficient_mse':float(np.mean((p-np.asarray(yt))**2))},'Potential-to-Lanczos-coefficient probe.'
+    if eid==16:
+        rng=np.random.default_rng(ctx.seed); q=rng.normal(size=grid.n_dof); q/=np.linalg.norm(q); Y=np.stack([spectral_moments(x.v,grid,q,4) for x in ctx.train]); mdl=linear_ridge(ctx.X(),Y,1e-2); yt=np.stack([spectral_moments(x.v,grid,q,4) for x in ctx.test]); return {'moment_mse':float(np.mean((ridge_predict(mdl,ctx.X(ctx.test))-yt)**2))},'Spectral-moment pretext target predictability.'
+    if eid==17:
+        ham=build_hamiltonian(grid,v); tau=.05; estimates=[]
+        for j in range(4):
+            lr=run_lanczos(ham,depth=min(6,grid.n_dof-2),q0_seed=ctx.seed+j); T=np.diag(lr.alpha)+np.diag(lr.beta[:-1],1)+np.diag(lr.beta[:-1],-1); vals,vec=np.linalg.eigh(T); estimates.append(grid.n_dof*float(np.sum((vec[0,:]**2)*np.exp(-tau*vals))))
+        dense=np.linalg.eigvalsh(ham.to_dense()); truth=float(np.sum(np.exp(-tau*dense))); return {'slq_mean':_safe_mean(estimates),'exact_trace_exp':truth,'relative_error':abs(_safe_mean(estimates)-truth)/max(abs(truth),1e-12)},'Stochastic Lanczos quadrature trace target.'
+    if eid==18:
+        approx=[]; truth=[]
+        for sm in ctx.test:
+            ham=build_hamiltonian(grid,sm.v); lr=run_lanczos(ham,depth=min(6,grid.n_dof-2),q0_seed=ctx.seed); Q=lr.q[:-1].T; T=Q.T@(ham.matrix@Q); vals=np.linalg.eigvalsh((T+T.T)/2); approx.append(vals[1]-vals[0]); truth.append(sm.evals[1]-sm.evals[0])
+        return {'gap_mae':float(np.mean(np.abs(np.asarray(approx)-truth))),'gap_corr':float(np.corrcoef(approx,truth)[0,1])},'Short-Krylov eigengap estimator.'
+    if eid==19:
+        errs=[]; gaps=[]
+        for sm,(ee,pp) in zip(ctx.test,direct): gaps.append(sm.evals[1]-sm.evals[0]); errs.append(schrodinger_residual(sm.v,pp,float(sm.evals[0]),grid))
+        rho=float(spearmanr(gaps,errs).statistic); return {'spearman_gap_vs_residual':rho,'suggested_inverse_gap_weight_cv':float(np.std(1/(np.asarray(gaps)+1e-6))/np.mean(1/(np.asarray(gaps)+1e-6)))},'Eigengap-conditioned difficulty signal.'
+    if eid in (20,21):
+        er,_,_,vals=ritz(v,grid,min(ctx.side,4)); b,_=sine_basis(grid,min(ctx.side,4)); ham=build_hamiltonian(grid,v); hp=b.T@(ham.matrix@b); _,vec=np.linalg.eigh((hp+hp.T)/2); Q,_=np.linalg.qr(b@vec[:,:min(3,vec.shape[1])]); G=Q.T@Q; return {'n_states':int(Q.shape[1]),'max_orthogonality_error':float(np.max(np.abs(G-np.eye(Q.shape[1])))),'ground_ritz_energy':float(vals[0])},'Multi-eigenstate Ritz + Gram-Schmidt/QR prototype.'
+    if eid==22:
+        e_head=pred_e; e_ray=rayleigh_quotient(v,pred_psi,grid); return {'head_rel_error':abs(e_head-e0)/(abs(e0)+1e-6),'rayleigh_rel_error':abs(e_ray-e0)/(abs(e0)+1e-6)},'Energy head removal diagnostic.'
+    if eid==23:
+        before=schrodinger_residual(v,pred_psi,rayleigh_quotient(v,pred_psi,grid),grid); ph=variational_refine(v,grid,pred_psi,steps=5 if ctx.mode=='smoke' else 30); after=schrodinger_residual(v,ph,rayleigh_quotient(v,ph,grid),grid); return {'residual_before':before,'residual_after':after,'fidelity_after':fidelity_np(ph,true,grid)},'Unsupervised Rayleigh-quotient refinement.'
+    if eid==24:
+        var=energy_variance(v,pred_psi,grid); r=schrodinger_residual(v,pred_psi,rayleigh_quotient(v,pred_psi,grid),grid); return {'energy_variance':var,'residual_squared':r*r,'relative_identity_error':abs(var-r*r)/max(abs(var),1e-12)},'Checks variance-residual identity.'
+    if eid==25: return {'h1_error':h1_error(pred_psi,true,grid),'l2_error':float(np.sqrt(np.mean((sign_align(pred_psi,true)-true)**2)))},'Sobolev/energy-norm sensitivity diagnostic.'
+    if eid==26:
+        f,pow=error_spectrum(pred_psi,true,grid,min(6,grid.n_interior)); return {'frequency_weighted_error':float(np.sum(f*pow)/max(np.sum(pow),1e-15)),'unweighted_power':float(np.sum(pow))},'Frequency-weighted error.'
+    if eid==27:
+        pp=normalize_wavefunction(np.abs(pred_psi),grid); return {'fidelity_before':fidelity_np(pred_psi,true,grid),'fidelity_after_positivity':fidelity_np(pp,true,grid),'residual_after':schrodinger_residual(v,pp,rayleigh_quotient(v,pp,grid),grid)},'Ground-state positivity projection.'
+    if eid==28:
+        return {'nodes_before':node_count(pred_psi),'nodes_after_abs':node_count(np.abs(pred_psi))},'No-node prior diagnostic.'
+    if eid==29:
+        X=ctx.X(); y=np.asarray([x.evals[0] for x in ctx.train])[:,None]; mdl=linear_ridge(X,y,1e-2); Xa,Ya=d4_augment(X,y,grid.n_interior); mdla=linear_ridge(Xa,Ya,1e-2); Xt=ctx.X(ctx.test); yt=np.asarray([x.evals[0] for x in ctx.test]); e1=np.mean(np.abs(ridge_predict(mdl,Xt)[:,0]-yt)); e2=np.mean(np.abs(ridge_predict(mdla,Xt)[:,0]-yt)); return {'energy_mae_plain':float(e1),'energy_mae_d4_augmented':float(e2)},'D4-equivariant augmentation proxy using invariant energy target.'
+    if eid in (30,31):
+        preds=ctx.perturb_predictions(); m=prediction_metrics(ctx,preds); return m,'First-order perturbation coefficient predictor/baseline.'
+    if eid==32:
+        X=ctx.X(); Y=[]
+        for sm in ctx.train:
+            _,_,c0=perturbation_predict(sm.v,grid,ctx.side); Y.append(spectral_coeff(sm.states[0],grid,ctx.side)-c0)
+        mdl=linear_ridge(X,np.asarray(Y),1e-2); preds=[]
+        for sm,corr in zip(ctx.test,ridge_predict(mdl,ctx.X(ctx.test))):
+            e,p,c0=perturbation_predict(sm.v,grid,ctx.side); ph=reconstruct(c0+corr,grid,ctx.side); preds.append((rayleigh_quotient(sm.v,ph,grid),ph))
+        return prediction_metrics(ctx,preds),'Learned higher-order residual over analytic first-order perturbation.'
+    if eid==33:
+        req=[]; feats=[]
+        max_side=min(5,grid.n_interior)
+        for sm in ctx.train:
+            found=max_side
+            for side in range(1,max_side+1):
+                er,pr,_,_=ritz(sm.v,grid,side)
+                if schrodinger_residual(sm.v,pr,float(sm.evals[0]),grid)<1.5: found=side; break
+            req.append(found); feats.append(potential_features(sm.v))
+        mdl=linear_ridge(np.asarray(feats),np.asarray(req)[:,None],1e-2); pred=ridge_predict(mdl,np.stack([potential_features(x.v) for x in ctx.test]))[:,0]; return {'predicted_basis_side_mean':float(np.mean(pred)),'train_required_side_mean':float(np.mean(req))},'Adaptive basis-size regressor.'
+    if eid==34:
+        K=min(3,ctx.train[0].states.shape[0]); Y=np.stack([np.concatenate([spectral_coeff(sm.states[j],grid,ctx.side) for j in range(K)]) for sm in ctx.train]); mdl=linear_ridge(ctx.X(),Y,1e-2); row=ridge_predict(mdl,v.ravel()[None])[0].reshape(K,-1).T; Q,_=np.linalg.qr(row); return {'dictionary_rank':int(np.linalg.matrix_rank(Q)),'orthogonality_error':float(np.max(np.abs(Q.T@Q-np.eye(Q.shape[1]))))},'Potential-conditioned basis dictionary in sine coefficient space.'
+    if eid==35:
+        b,_=sine_basis(grid,min(ctx.side,4)); hp=b.T@(build_hamiltonian(grid,v).matrix@b); return {'projected_dim':int(hp.shape[0]),'full_dim':grid.n_dof,'compression_ratio':float(hp.size/(grid.n_dof**2)),'projected_symmetry_error':float(np.max(np.abs(hp-hp.T)))},'Low-rank Hamiltonian embedding.'
+    if eid==36:
+        m=TinyGraphEnergy(grid.n_interior,12); return {'test_rel_energy_error':train_energy_model(m,ctx,4 if ctx.mode=='smoke' else 50)},'Trainable grid-message-passing/GNN energy probe.'
+    if eid==37:
+        m=TinyOperatorTransformer(grid.n_interior,d=16 if ctx.mode=='smoke' else 32,heads=4); return {'test_rel_energy_error':train_energy_model(m,ctx,2 if ctx.mode=='smoke' else 30)},'Sparse/operator-token Transformer prototype.'
+    if eid==38:
+        Ftr=np.stack([potential_features(x.v) for x in ctx.train]); Fte=np.stack([potential_features(x.v) for x in ctx.test]); y=np.asarray([x.evals[0] for x in ctx.train])[:,None]; yt=np.asarray([x.evals[0] for x in ctx.test]); mdl=linear_ridge(Ftr,y,1e-2); p=ridge_predict(mdl,Fte)[:,0]; return {'spectral_operator_feature_rel_error':float(np.mean(np.abs(p-yt)/(np.abs(yt)+1e-6))),'feature_dim':int(Ftr.shape[1])},'Fourier/operator-feature encoder with learned ridge head.'
+    if eid in (39,40):
+        coeff=spectral_coeff(true,grid,ctx.side); n2=grid.n_interior*2; g2=GridSpec(n_interior=n2); p2=reconstruct(coeff,g2,ctx.side); down=zoom(p2,grid.n_interior/n2,order=1); down=normalize_wavefunction(down,grid); return {'cross_resolution_fidelity':fidelity_np(down,true,grid),'source_grid':grid.n_interior,'target_grid':n2},'Continuous sine coefficients give mesh-independent decoding / resolution transfer.'
+    if eid==41:
+        n=min(10,grid.n_interior); X,Y=np.meshgrid(np.linspace(-1,1,n),np.linspace(-1,1,n)); mask=(X*X+Y*Y<.85)&~((X>0)&(Y>0)); L=laplacian_dense(n,'dirichlet'); ids=np.where(mask.ravel())[0]; H=(-.5*L)[np.ix_(ids,ids)]; vals=np.linalg.eigvalsh(H); return {'active_fraction':float(mask.mean()),'ground_energy':float(vals[0]),'domain_dofs':int(len(ids))},'Irregular masked-domain eigensolve.'
+    if eid==42:
+        n=min(8,grid.n_interior); out={}
+        for bc in ['dirichlet','neumann','periodic']: out[bc+'_ground_energy']=float(np.linalg.eigvalsh(-.5*laplacian_dense(n,bc))[0])
+        return out,'Dirichlet/Neumann/periodic operator comparison.'
+    if eid==43:
+        ham=build_hamiltonian(grid,v); lap=build_hamiltonian(grid,np.zeros_like(v)).matrix
+        vals=[]
