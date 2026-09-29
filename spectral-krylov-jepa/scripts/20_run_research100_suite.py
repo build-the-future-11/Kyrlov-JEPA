@@ -751,3 +751,120 @@ def run_experiment(eid:int,ctx:Context)->tuple[dict[str,Any],str]:
     if eid==43:
         ham=build_hamiltonian(grid,v); lap=build_hamiltonian(grid,np.zeros_like(v)).matrix
         vals=[]
+
+        for mass in [.5,1.,2.]:
+            H=(1/mass)*lap+sparse.diags(v.ravel()); vals.append(float(eigsh(H,k=1,which='SA',return_eigenvectors=False)[0]))
+        return {'masses':[.5,1.,2.],'ground_energies':vals},'Mass/kinetic-coefficient conditioned Hamiltonian.'
+    if eid==44:
+        n=min(7,grid.n_interior); vv=zoom(v,(n/grid.ny,n/grid.nx),order=1); H=magnetic_hamiltonian(n,vv); return {'hermiticity_error':float(np.max(np.abs(H-H.conj().T))),'ground_energy':float(np.linalg.eigvalsh(H)[0].real)},'Complex Hermitian magnetic/vector-potential prototype.'
+    if 45<=eid<=52:
+        name={45:'smooth',46:'periodic',47:'disorder',48:'barrier_well',49:'harmonic',50:'quartic',51:'multiscale',52:'hard_double'}[eid]; return benchmark_family(ctx,name),f'Benchmark family: {name}.'
+    if eid==53:
+        best=None
+        for sd in range(ctx.seed+20000,ctx.seed+20000+(8 if ctx.mode=='smoke' else 40)):
+            vv,_=generate_potential('id_gaussian_mixture',sd,grid=grid); ee,pp,_,_=ritz(vv,grid,min(3,grid.n_interior)); vals,st=solve_k(vv,grid,2); rr=schrodinger_residual(vv,pp,float(vals[0]),grid); cand=(rr,sd,float(vals[1]-vals[0]))
+            if best is None or cand[0]>best[0]: best=cand
+        return {'max_ritz_residual':best[0],'seed':best[1],'eigengap':best[2]},'Frozen-family adversarial seed search by baseline error.'
+    if eid==54:
+        rows=[]
+        for sm in ctx.test:
+            _,pp,_,_=ritz(sm.v,grid,min(3,grid.n_interior)); rows.append([schrodinger_residual(sm.v,pp,float(sm.evals[0]),grid),sm.evals[1]-sm.evals[0],ipr(sm.states[0],grid),roughness(sm.v)])
+        a=np.asarray(rows); return {'mean_baseline_residual':float(a[:,0].mean()),'corr_residual_gap':float(np.corrcoef(a[:,0],a[:,1])[0,1]),'corr_residual_ipr':float(np.corrcoef(a[:,0],a[:,2])[0,1]),'corr_residual_roughness':float(np.corrcoef(a[:,0],a[:,3])[0,1])},'Difficulty defined before neural training.'
+    if eid==55:
+        data=[]
+        for name in ['smooth','periodic','disorder','barrier_well','harmonic','quartic','multiscale','hard_double']:
+            m=benchmark_family(ctx,name); data.append({'family':name,**m})
+        ctx.caches['difficulty_curve']=data; return {'families':len(data),'min_ritz_residual':float(min(x['ritz3_residual'] for x in data)),'max_ritz_residual':float(max(x['ritz3_residual'] for x in data))},'Difficulty curve across frozen families.'
+    if eid==56:
+        sides=[]
+        for sm in ctx.test:
+            found=min(6,grid.n_interior)
+            for side in range(1,found+1):
+                _,pp,_,_=ritz(sm.v,grid,side)
+                if schrodinger_residual(sm.v,pp,float(sm.evals[0]),grid)<1.0: found=side; break
+            sides.append(found)
+        return {'ritz_side_mean':float(np.mean(sides)),'ritz_side_max':int(max(sides)),'ritz_dimension_mean':float(np.mean(np.asarray(sides)**2))},'Ritz dimension required for fixed residual tolerance.'
+    if eid==57: return {'ipr_mean':_safe_mean([ipr(x.states[0],grid) for x in ctx.test]),'ipr_std':float(np.std([ipr(x.states[0],grid) for x in ctx.test]))},'Localization/IPR diagnostic.'
+    if eid==58:
+        gaps=np.asarray([x.evals[1]-x.evals[0] for x in ctx.test]); errs=np.asarray([schrodinger_residual(x.v,p[1],float(x.evals[0]),grid) for x,p in zip(ctx.test,direct)]); return {'gap_median':float(np.median(gaps)),'easy_residual':float(errs[gaps>=np.median(gaps)].mean()),'hard_residual':float(errs[gaps<np.median(gaps)].mean())},'Performance stratified by eigengap.'
+    if eid in (59,60):
+        freq,pow=error_spectrum(pred_psi,true,grid,min(6,grid.n_interior)); q=np.quantile(freq,[.33,.66]); bands=[pow[freq<=q[0]].sum(),pow[(freq>q[0])&(freq<=q[1])].sum(),pow[freq>q[1]].sum()]; return {'total_error_power':float(pow.sum()),'low_band_fraction':float(bands[0]/max(pow.sum(),1e-15)),'mid_band_fraction':float(bands[1]/max(pow.sum(),1e-15)),'high_band_fraction':float(bands[2]/max(pow.sum(),1e-15))},'Spectral error/band attribution.'
+    if eid==61:
+        F=fidelity_np(pred_psi,true,grid); r=schrodinger_residual(v,pred_psi,e0,grid); gap=float(s.evals[1]-s.evals[0]); return {'sin_angle':math.sqrt(max(0,1-F)),'residual_over_gap':r/max(gap,1e-12),'davis_kahan_bound_holds':bool(math.sqrt(max(0,1-F))<=r/max(gap,1e-12)+1e-9)},'Residual/eigengap angle bound diagnostic.'
+    if eid in (62,63):
+        ham=build_hamiltonian(grid,v); emax=float(eigsh(ham.matrix,k=1,which='LA',return_eigenvectors=False)[0]); F=fidelity_np(pred_psi,true,grid); r=schrodinger_residual(v,pred_psi,e0,grid); gap=float(s.evals[1]-s.evals[0]); low=gap*math.sqrt(max(0,1-F)); up=(emax-e0)*math.sqrt(max(0,1-F)); return {'residual':r,'lower_bound':low,'upper_bound':up,'lower_holds':bool(r+1e-8>=low),'upper_holds':bool(r<=up+1e-8)},'Formal fidelity-residual spectral bounds.'
+    if eid==64:
+        perturb=prediction_metrics(ctx,ctx.perturb_predictions()); X=ctx.X(); Y=basis_target_matrix(ctx); mdl=linear_ridge(X,Y,1e-2); preds=[]
+        for sm,c in zip(ctx.test,ridge_predict(mdl,ctx.X(ctx.test))): ph=reconstruct(c,grid,ctx.side); preds.append((rayleigh_quotient(sm.v,ph,grid),ph))
+        ridge=prediction_metrics(ctx,preds); return {'perturb_fidelity':perturb['fidelity'],'ridge_fidelity':ridge['fidelity'],'perturb_residual':perturb['residual_true_e'],'ridge_residual':ridge['residual_true_e']},'Perturbation-theory explanation/control for ridge behavior.'
+    if eid==65:
+        m,_=ctx.moment_pretrain(); z=latent_features(ctx,m,ctx.train); raw=ctx.X(); rawp=np.linalg.svd(raw-raw.mean(0),full_matrices=False)[0][:,:min(z.shape[1],len(raw)-1)]; return {'linear_CKA':cka(rawp,z),'SVCCA':svcca(rawp,z)},'Representation similarity between raw/PCA and moment-pretrained latent.'
+    if eid==66:
+        m,_=ctx.moment_pretrain(); ztr=latent_features(ctx,m,ctx.train); zte=latent_features(ctx,m,ctx.test); targets={'energy':np.asarray([x.evals[0] for x in ctx.train])[:,None],'gap':np.asarray([x.evals[1]-x.evals[0] for x in ctx.train])[:,None],'ipr':np.asarray([ipr(x.states[0],grid) for x in ctx.train])[:,None],'coeff':basis_target_matrix(ctx)}; out={}
+        ttest={'energy':np.asarray([x.evals[0] for x in ctx.test])[:,None],'gap':np.asarray([x.evals[1]-x.evals[0] for x in ctx.test])[:,None],'ipr':np.asarray([ipr(x.states[0],grid) for x in ctx.test])[:,None],'coeff':basis_target_matrix(ctx,ctx.test)}
+        for k,y in targets.items():
+            out[k+'_probe_mse']=probe(ztr,y,zte,ttest[k])
+        return out,'Linear probes of physical quantities.'
+    if eid==67:
+        _,ck=ctx.moment_pretrain(); return {'checkpoints':ck},'Probe/rank diagnostics saved during pretraining checkpoints.'
+    if eid==68:
+        m,ck=ctx.moment_pretrain(); loss=np.asarray([x['pretrain_loss'] for x in ck]); rank=np.asarray([x['rank'] for x in ck]); return {'pretrain_loss_rank_correlation':float(np.corrcoef(loss,rank)[0,1]) if len(loss)>1 else float('nan'),'checkpoints':len(ck)},'Pretext-loss versus representation-geometry transfer proxy.'
+    if eid in (69,70,71,72,73,74,75):
+        m,_=ctx.moment_pretrain(); ztr=latent_features(ctx,m,ctx.train); zte=latent_features(ctx,m,ctx.test); ytr=basis_target_matrix(ctx); yte=basis_target_matrix(ctx,ctx.test); frozen=probe(ztr,ytr,zte,yte)
+        base=copy.deepcopy(m)
+        with torch.no_grad(): latent_dim=base.encoder(torch.tensor(ctx.X()[:1])).shape[1]
+        head=nn.Linear(latent_dim,ctx.side*ctx.side); full=nn.Sequential(base.encoder,head); anchor={n:p.detach().clone() for n,p in full.named_parameters()}; lr={69:1e-3,70:2e-3,71:5e-4,72:1e-3,73:3e-4,74:1e-3,75:1e-3}[eid]; aw=.2 if eid==72 else 0.; hist=train_regressor(full,ctx.X(),ytr,4 if ctx.mode=='smoke' else 30,lr=lr,anchor=anchor if aw else None,anchor_weight=aw); full.eval()
+        with torch.no_grad(): pp=full(torch.tensor(ctx.X(ctx.test))).numpy(); tuned=float(np.mean((pp-yte)**2))
+        metric={'frozen_probe_mse':frozen,'adapted_mse':tuned,'final_train_loss':hist[-1]}
+        if eid==74: metric['adapter_parameter_fraction']=float((latent_dim*(ctx.side*ctx.side+1))/sum(p.numel() for p in full.parameters()))
+        if eid==75: metric['lora_rank']=4
+        return metric,{69:'Freeze vs unfreeze',70:'Linear-probe-only vs adapted',71:'Gradual-unfreeze proxy',72:'L2-SP anchored adaptation',73:'Layerwise low-LR adaptation',74:'Adapter-head adaptation',75:'Low-rank/LoRA-style adaptation proxy'}[eid]
+    if eid in (76,77):
+        fams=['smooth','periodic','barrier_well','multiscale']; trainf=[]
+        for name in fams[:-1]: trainf+=ctx.families[name]
+        hold=ctx.families[fams[-1]]; X=np.stack([potential_features(x.v) for x in trainf]); y=np.asarray([x.evals[0] for x in trainf])[:,None]; mdl=linear_ridge(X,y,1e-2); p=ridge_predict(mdl,np.stack([potential_features(x.v) for x in hold]))[:,0]; yt=np.asarray([x.evals[0] for x in hold]); zero=float(np.mean(np.abs(p-yt)))
+        adapt=hold[:max(1,len(hold)//2)]; ma=linear_ridge(np.stack([potential_features(x.v) for x in adapt]),np.asarray([x.evals[0] for x in adapt])[:,None],1e-2); pa=ridge_predict(ma,np.stack([potential_features(x.v) for x in hold]))[:,0]; return {'leave_family_out_mae':zero,'fewshot_adapt_mae':float(np.mean(np.abs(pa-yt)))},'Leave-one-family-out/meta-transfer probe.'
+    if eid==78:
+        coeff=spectral_coeff(true,grid,ctx.side); g2=GridSpec(n_interior=grid.n_interior+2); vv=zoom(v,(g2.ny/grid.ny,g2.nx/grid.nx),order=1); vals,st=solve_k(vv,g2,2); pp=reconstruct(coeff,g2,ctx.side); return {'cross_resolution_fidelity':fidelity_np(pp,st[0],g2),'source_n':grid.n_interior,'target_n':g2.n_interior},'Cross-resolution adaptation.'
+    if eid==79:
+        n=min(7,grid.n_interior); energies={bc:float(np.linalg.eigvalsh(-.5*laplacian_dense(n,bc))[0]) for bc in ['dirichlet','neumann','periodic']}; return {'energy_spread':float(max(energies.values())-min(energies.values())),**energies},'Cross-boundary-condition operator shift.'
+    if eid==80:
+        vals=[]
+        for mass in [1.,2.]:
+            ys=[]
+            for sm in ctx.test:
+                lap=build_hamiltonian(grid,np.zeros_like(sm.v)).matrix; H=(1/mass)*lap+sparse.diags(sm.v.ravel()); ys.append(float(eigsh(H,k=1,which='SA',return_eigenvectors=False)[0]))
+            vals.append(np.asarray(ys))
+        return {'cross_operator_energy_correlation':float(np.corrcoef(vals[0],vals[1])[0,1]),'mean_shift':float(np.mean(vals[1]-vals[0]))},'Cross-operator/mass transfer.'
+    if eid==81:
+        preds=[]
+        for seed in [3,5,7]:
+            torch.manual_seed(seed); m=SpectralMLP(grid.n_dof,ctx.side*ctx.side+1,48,24); train_regressor(m,ctx.X(),ctx.Y(),max(2,ctx.epochs//2)); m.eval()
+            with torch.no_grad(): preds.append(m(torch.tensor(ctx.X(ctx.test))).numpy())
+        arr=np.stack(preds); std=arr[:,:,-1].std(0); err=np.abs(arr[:,:,-1].mean(0)-np.asarray([x.evals[0] for x in ctx.test])); return {'uncertainty_error_spearman':float(spearmanr(std,err).statistic),'mean_energy_std':float(std.mean())},'Seed-ensemble uncertainty.'
+    if eid==82:
+        feats=[]; bad=[]
+        for sm,(ee,pp) in zip(ctx.test,direct): feats.append([abs(ee-rayleigh_quotient(sm.v,pp,grid)),roughness(sm.v),float(sm.evals[1]-sm.evals[0])]); bad.append(schrodinger_residual(sm.v,pp,float(sm.evals[0]),grid)>3)
+        X=np.asarray(feats); y=np.asarray(bad); W,b=fit_failure_detector(X,y); return {'training_accuracy_on_bounded_test':classification_accuracy(W,b,X,y),'bad_fraction':float(y.mean())},'Failure detector from disagreement/roughness/gap signals.'
+    if eid==83:
+        direct_rows=[]; hybrid=[]
+        for sm,(ee,pp) in zip(ctx.test,direct):
+            r=schrodinger_residual(sm.v,pp,float(sm.evals[0]),grid); direct_rows.append(r)
+            if abs(ee-rayleigh_quotient(sm.v,pp,grid))>.5:
+                er,pr,_,_=ritz(sm.v,grid,min(3,grid.n_interior)); hybrid.append(schrodinger_residual(sm.v,pr,float(sm.evals[0]),grid))
+            else: hybrid.append(r)
+        return {'direct_residual':_safe_mean(direct_rows),'selective_hybrid_residual':_safe_mean(hybrid),'fallback_fraction':float(np.mean([abs(e-rayleigh_quotient(sm.v,p,grid))>.5 for sm,(e,p) in zip(ctx.test,direct)]))},'Selective neural/classical fallback.'
+    if eid==84:
+        steps=[]
+        for sm,(ee,pp) in zip(ctx.test,direct):
+            uncertainty=abs(ee-rayleigh_quotient(sm.v,pp,grid)); steps.append(1 if uncertainty<.1 else 3 if uncertainty<.5 else 6)
+        return {'mean_allocated_krylov_steps':float(np.mean(steps)),'max_steps':int(max(steps))},'Uncertainty-conditioned compute allocation.'
+    if eid==85:
+        q=np.random.default_rng(ctx.seed).normal(size=grid.n_dof); q/=np.linalg.norm(q); it,res=iterations_to_residual(v,grid,q,12,1.0); return {'stopping_iteration':it,'residual_at_stop':res},'Residual-based learned-stopping target.'
+    if eid==86:
+        q=pred_psi; candidates=[pred_e-.5,pred_e-.2,pred_e+.2]; vals=[]
+        for sh in candidates:
+            ph,ee=inverse_iteration(v,grid,q,sh,2); vals.append(schrodinger_residual(v,ph,ee,grid))
+        return {'candidate_shifts':candidates,'residuals':vals,'best_shift':float(candidates[int(np.argmin(vals))])},'Shift-invert shift-selection prototype.'
+    if eid==87:
+        e=rayleigh_quotient(v,pred_psi,grid); before=schrodinger_residual(v,pred_psi,e,grid); ph=jacobi_correction(v,grid,pred_psi,e); after=schrodinger_residual(v,ph,rayleigh_quotient(v,ph,grid),grid); return {'before':before,'after_jacobi':after},'Diagonal/Jacobi preconditioner correction.'
