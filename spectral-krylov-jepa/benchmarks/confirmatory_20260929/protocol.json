@@ -1,0 +1,45 @@
+{
+  "protocol_id": "krylov_confirmatory_benchmark_2026-09-29_v1",
+  "status": "FROZEN_BEFORE_CONFIRMATORY_OUTCOMES",
+  "parent_main_sha": "6a0928883dce3f8b02513f8c78f0e7907e8c5b21",
+  "scope": "confirmatory benchmark infrastructure only; no solver-implementation claim",
+  "neural_source_runner": "spectral-krylov-jepa/scripts/19_run_confirmatory_calibration.py",
+  "grid": {"n_interior": 16},
+  "data": {
+    "n_unlabeled": 240,
+    "n_train": 60,
+    "n_val": 20,
+    "n_test_id": 24,
+    "n_ood_each": 16,
+    "unlabeled_base_seed": 100000,
+    "id_base_seed": 120000,
+    "ood_base_seed": 140000,
+    "split_seed": 92929
+  },
+  "training": {
+    "seeds": [11, 23, 47],
+    "label_budgets": [5, 10, 20, 40],
+    "pretrain_steps": 120,
+    "finetune_epoch_cap": 35,
+    "checkpoint_selection": "validation selection only as implemented by finetune(); test metrics never select checkpoints"
+  },
+  "methods": {
+    "scratch_physics": {"source": "existing runner 19", "uses_labels": true, "uses_query_hamiltonian": false},
+    "krylov_physics": {"source": "existing runner 19", "uses_labels": true, "uses_unlabeled_pretraining": true, "uses_query_hamiltonian": false},
+    "krylov_projected_physics": {"source": "existing runner 19", "uses_labels": true, "uses_unlabeled_pretraining": true, "uses_query_hamiltonian": false},
+    "pt2_3x3": {"source": "benchmark_core.py", "perturb_side": 3},
+    "fixed_ritz_3x3": {"source": "benchmark_core.py", "ritz_side": 3},
+    "pt2_to_krylov_ritz_d3": {"source": "benchmark_core.py", "perturb_side": 3, "krylov_depth": 3}
+  },
+  "selection_rules": [
+    "No method, seed, label budget, basis side, perturbation order, or Krylov depth may be changed after confirmatory test outcomes are inspected.",
+    "All neural checkpoints are selected only by validation behavior in the existing finetune implementation.",
+    "Report every declared method; failed or missing cells remain explicit rather than being dropped.",
+    "Report ID at every label budget for neural methods and OOD only at the maximum label budget, matching runner 19.",
+    "Classical methods are label-free and are evaluated once per test example on every declared split.",
+    "Compute accounting is stratified into offline training, reusable setup, and online query work; wall time alone is not treated as FLOP equality."
+  ],
+  "primary_metrics": ["fidelity", "residual_true_e", "rel_energy_error"],
+  "secondary_metrics": ["rel_rayleigh_energy_error", "residual_rayleigh", "elapsed_sec"],
+  "claim_boundary": "This bounded synthetic 16x16 benchmark can compare declared methods under a frozen local protocol. It cannot establish universal superiority, real-molecule validity, quantum advantage, or strict FLOP equivalence."
+}
