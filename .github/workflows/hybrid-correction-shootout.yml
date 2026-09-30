@@ -1,0 +1,37 @@
+name: Hybrid correction shootout
+
+on:
+  pull_request:
+    paths:
+      - 'spectral-krylov-jepa/scripts/23_run_correction_shootout.py'
+      - 'spectral-krylov-jepa/src/spectral_krylov_jepa/evaluation/hybrid_spectral.py'
+      - '.github/workflows/hybrid-correction-shootout.yml'
+  workflow_dispatch:
+
+jobs:
+  correction-shootout:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install -e './spectral-krylov-jepa[dev]'
+      - name: Run fresh correction shootout
+        run: >
+          python spectral-krylov-jepa/scripts/23_run_correction_shootout.py
+          --output-dir correction_shootout_artifacts
+        env:
+          OMP_NUM_THREADS: '1'
+          MKL_NUM_THREADS: '1'
+          MPLBACKEND: Agg
+      - name: Print summary
+        if: always()
+        run: cat correction_shootout_artifacts/summary.json || true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: correction-shootout
+          path: correction_shootout_artifacts
+          if-no-files-found: warn

@@ -1,0 +1,41 @@
+name: Hybrid spectral breakthrough
+
+on:
+  pull_request:
+    paths:
+      - 'spectral-krylov-jepa/src/spectral_krylov_jepa/evaluation/hybrid_spectral.py'
+      - 'spectral-krylov-jepa/scripts/21_run_hybrid_breakthrough.py'
+      - 'spectral-krylov-jepa/tests/test_hybrid_spectral.py'
+      - '.github/workflows/hybrid-breakthrough.yml'
+  workflow_dispatch:
+
+jobs:
+  hybrid-breakthrough:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install -e './spectral-krylov-jepa[dev]'
+      - name: Hybrid mathematical tests
+        run: python -m pytest spectral-krylov-jepa/tests/test_hybrid_spectral.py -q
+      - name: Run fresh hybrid study
+        run: >
+          python spectral-krylov-jepa/scripts/21_run_hybrid_breakthrough.py
+          --output-dir hybrid_breakthrough_artifacts
+          --pretrain-steps 140
+        env:
+          OMP_NUM_THREADS: '1'
+          MKL_NUM_THREADS: '1'
+          MPLBACKEND: Agg
+      - name: Print summary
+        if: always()
+        run: cat hybrid_breakthrough_artifacts/summary.json || true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: hybrid-breakthrough
+          path: hybrid_breakthrough_artifacts
+          if-no-files-found: warn
