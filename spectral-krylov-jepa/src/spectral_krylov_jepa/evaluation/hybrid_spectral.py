@@ -258,10 +258,14 @@ def adaptive_ritz(
         v = np.asarray(proposal, dtype=np.float64).reshape(-1).copy()
         if v.size != grid.n_dof:
             raise ValueError(f"proposal has {v.size} entries; expected {grid.n_dof}")
-        v -= low_basis @ (low_basis.T @ v)
-        if orth_proposals:
-            extra = np.stack(orth_proposals, axis=1)
-            v -= extra @ (extra.T @ v)
+        # Modified Gram--Schmidt with one reorthogonalization pass. A single
+        # pass can lose orthogonality for nearly dependent proposal vectors,
+        # which invalidates the assume_orthonormal=True projected solve below.
+        for _ in range(2):
+            v -= low_basis @ (low_basis.T @ v)
+            if orth_proposals:
+                extra = np.stack(orth_proposals, axis=1)
+                v -= extra @ (extra.T @ v)
         nrm = float(np.linalg.norm(v))
         if nrm <= orthogonal_tol:
             continue
