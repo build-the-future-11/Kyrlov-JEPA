@@ -4,7 +4,6 @@ on:
   pull_request:
     paths:
       - 'spectral-krylov-jepa/scripts/19_run_confirmatory_calibration.py'
-      - 'spectral-krylov-jepa/src/**'
       - '.github/workflows/krylov-confirmatory.yml'
   workflow_dispatch:
 
