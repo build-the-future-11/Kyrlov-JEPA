@@ -44,6 +44,7 @@ QUERY_SEEDS = tuple(range(70_100, 70_132))
 POTENTIAL_FAMILY = "id_gaussian_mixture"
 GRID_INTERIOR = 16
 CANONICAL_DECIMALS = 12
+DIAGNOSTIC_RESIDUAL_NORM_DECIMALS = 11
 
 
 def _canonical_json(payload: dict) -> bytes:
@@ -104,7 +105,7 @@ def main() -> int:
                         float(result.residual_relative_to_hx), CANONICAL_DECIMALS
                     ),
                     "residual_norm": round(
-                        float(result.residual_norm), CANONICAL_DECIMALS
+                        float(result.residual_norm), DIAGNOSTIC_RESIDUAL_NORM_DECIMALS
                     ),
                     "operator_applications": result.budget.operator_applications,
                     "reduced_dimension": result.budget.reduced_dimension,
@@ -122,6 +123,7 @@ def main() -> int:
         "candidate_ranks": list(CANDIDATE_RANKS),
         "max_operator_applications": MAX_OPERATOR_APPLICATIONS,
         "canonical_residual_decimals": CANONICAL_DECIMALS,
+        "diagnostic_residual_norm_decimals": DIAGNOSTIC_RESIDUAL_NORM_DECIMALS,
         "query_exact_eigensolves_performed": False,
         "protected_outcomes_opened": False,
         "records": records,
@@ -168,6 +170,7 @@ def main() -> int:
             "candidate_ranks": list(CANDIDATE_RANKS),
             "max_operator_applications": MAX_OPERATOR_APPLICATIONS,
             "canonical_residual_decimals": CANONICAL_DECIMALS,
+            "diagnostic_residual_norm_decimals": DIAGNOSTIC_RESIDUAL_NORM_DECIMALS,
             "ranking_quantile": RANKING_QUANTILE,
             "threshold_quantile": THRESHOLD_QUANTILE,
             "near_best_factor": NEAR_BEST_FACTOR,
