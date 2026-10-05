@@ -79,6 +79,7 @@ def solve_ground_state(
     ncv: int | None = None,
     residual_tol: float = 1e-5,
     reject_on_failure: bool = True,
+    v0: np.ndarray | None = None,
 ) -> EigenpairResult:
     """Compute the lowest eigenpair of a sparse symmetric Hamiltonian.
 
@@ -87,6 +88,19 @@ def solve_ground_state(
     n = ham.n_dof
     k = 1
     ncv_use = ncv if ncv is not None else min(max(2 * k + 1, 20), n)
+
+    v0_use = None
+    if v0 is not None:
+        v0_use = np.asarray(v0, dtype=np.float64).reshape(-1).copy()
+        if v0_use.size != n:
+            raise ValueError(f"v0 has {v0_use.size} entries; expected {n}")
+        if not np.all(np.isfinite(v0_use)):
+            raise ValueError("v0 must contain only finite values")
+        v0_norm = float(np.linalg.norm(v0_use))
+        if v0_norm <= 1e-15:
+            raise ValueError("v0 must be nonzero")
+        v0_use /= v0_norm
+
     try:
         evals, evecs = eigsh(
             ham.matrix,
@@ -95,6 +109,7 @@ def solve_ground_state(
             tol=tol,
             maxiter=maxiter,
             ncv=ncv_use,
+            v0=v0_use,
             return_eigenvectors=True,
         )
     except Exception as exc:  # noqa: BLE001 — surface solver failures
