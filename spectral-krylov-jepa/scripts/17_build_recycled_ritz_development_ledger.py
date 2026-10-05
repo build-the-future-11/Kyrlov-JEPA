@@ -61,9 +61,13 @@ def main() -> int:
     # Legal recycle information: exact eigenvectors from development warm-up
     # Hamiltonians only. None of the query Hamiltonians are solved exactly.
     warmup_vectors: list[np.ndarray] = []
+    deterministic_v0 = np.linspace(1.0, 2.0, grid.n_dof, dtype=np.float64)
     for seed in WARMUP_SEEDS:
         potential, _ = generate_potential(POTENTIAL_FAMILY, seed, grid=grid)
-        result = solve_ground_state(build_hamiltonian(grid, potential))
+        result = solve_ground_state(
+            build_hamiltonian(grid, potential),
+            v0=deterministic_v0,
+        )
         warmup_vectors.append(np.asarray(result.wavefunction, dtype=np.float64).reshape(-1))
 
     bases = {
