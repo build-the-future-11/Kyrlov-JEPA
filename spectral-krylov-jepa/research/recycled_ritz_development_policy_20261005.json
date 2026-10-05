@@ -1,6 +1,6 @@
 {
   "claim_boundary": "This freezes only the classical recycled-Ritz development policy. It is not a protected comparison and does not establish efficacy for recycled Ritz or Krylov-JEPA.",
-  "development_ledger_sha256": "8d33e18c5e425a7806bd88456b15b6feea5bb5f1e072ba01492f16c5a3174da4",
+  "development_ledger_sha256": "d048a7505a0167c84656d045ac7fa527ba53b679b7053a1a6c59b0e14baf2021",
   "development_protocol": {
     "candidate_ranks": [
       1,
@@ -9,7 +9,7 @@
       8
     ],
     "canonical_residual_decimals": 12,
-    "diagnostic_residual_norm_decimals": 11,
+    "diagnostic_residual_norm_decimals": 9,
     "grid_n_interior": 16,
     "max_operator_applications": 8,
     "near_best_factor": 1.1,
