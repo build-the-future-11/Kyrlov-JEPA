@@ -1,0 +1,87 @@
+name: Recycled Ritz development policy freeze
+
+on:
+  pull_request:
+    paths:
+      - 'spectral-krylov-jepa/scripts/17_build_recycled_ritz_development_ledger.py'
+      - 'spectral-krylov-jepa/scripts/18_freeze_recycled_ritz_policy.py'
+      - 'spectral-krylov-jepa/src/spectral_krylov_jepa/evaluation/recycled_policy.py'
+      - 'spectral-krylov-jepa/src/spectral_krylov_jepa/evaluation/recycled_subspace.py'
+      - 'spectral-krylov-jepa/tests/test_recycled_policy.py'
+      - 'spectral-krylov-jepa/tests/test_recycled_subspace.py'
+      - '.github/workflows/recycled-ritz-development.yml'
+      - 'spectral-krylov-jepa/research/recycled_ritz_development_policy_20261005.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  freeze-development-policy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+          cache-dependency-path: spectral-krylov-jepa/pyproject.toml
+
+      - name: Install package
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e ./spectral-krylov-jepa
+
+      - name: Verify recycled-control invariants
+        working-directory: spectral-krylov-jepa
+        run: |
+          python -m pytest -q tests/test_recycled_subspace.py tests/test_recycled_policy.py
+
+      - name: Build development-only ledger and frozen policy
+        working-directory: spectral-krylov-jepa
+        run: |
+          python scripts/17_build_recycled_ritz_development_ledger.py \
+            --output-dir recycled_ritz_development
+
+      - name: Fail closed on provenance boundary
+        working-directory: spectral-krylov-jepa
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          root = Path("recycled_ritz_development")
+          ledger = json.loads((root / "development_residuals.json").read_text())
+          policy = json.loads((root / "frozen_policy.json").read_text())
+
+          assert ledger["source_role"] == "development"
+          assert ledger["protected_outcomes_opened"] is False
+          assert ledger["query_exact_eigensolves_performed"] is False
+          assert policy["protected_outcomes_opened"] is False
+          assert policy["query_exact_eigensolves_performed"] is False
+          assert policy["status"] == "frozen-development-policy"
+          assert len(ledger["records"]) == 32 * 4
+          assert policy["policy"]["rank"] in {1, 2, 4, 8}
+          assert policy["policy"]["max_operator_applications"] == 8
+          assert ledger["canonical_residual_decimals"] == 12
+          assert ledger["diagnostic_residual_norm_decimals"] == 9
+          assert policy["development_protocol"]["canonical_residual_decimals"] == 12
+          assert policy["development_protocol"]["diagnostic_residual_norm_decimals"] == 9
+          PY
+
+      - name: Upload development freeze receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: recycled-ritz-development-policy
+          path: spectral-krylov-jepa/recycled_ritz_development/
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Verify byte-exact retained policy receipt
+        working-directory: spectral-krylov-jepa
+        run: |
+          cmp \
+            recycled_ritz_development/frozen_policy.json \
+            research/recycled_ritz_development_policy_20261005.json
