@@ -1,6 +1,6 @@
 {
   "claim_boundary": "This freezes only the classical recycled-Ritz development policy. It is not a protected comparison and does not establish efficacy for recycled Ritz or Krylov-JEPA.",
-  "development_ledger_sha256": "8292c377c3a8e75fa0ffb5143f2797626f828071d647a44cf255202f0802b005",
+  "development_ledger_sha256": "82cbb3f89ae4d4216e3384f814447f830484125f9b4b845df228e559709a5e10",
   "development_protocol": {
     "candidate_ranks": [
       1,
@@ -8,6 +8,7 @@
       4,
       8
     ],
+    "canonical_residual_decimals": 12,
     "grid_n_interior": 16,
     "max_operator_applications": 8,
     "near_best_factor": 1.1,
@@ -78,22 +79,22 @@
     "ranking_residuals": [
       {
         "rank": 1,
-        "residual_quantile": 0.4051716974545152
+        "residual_quantile": 0.405171697455
       },
       {
         "rank": 2,
-        "residual_quantile": 0.43598193347212694
+        "residual_quantile": 0.435981933472
       },
       {
         "rank": 4,
-        "residual_quantile": 0.322480590789817
+        "residual_quantile": 0.32248059079
       },
       {
         "rank": 8,
-        "residual_quantile": 0.18096756190460828
+        "residual_quantile": 0.180967561905
       }
     ],
-    "refresh_threshold": 0.2807332746949071,
+    "refresh_threshold": 0.280733274695,
     "selection_rule": "choose the smallest budget-legal rank whose development residual quantile is within near_best_factor of the best legal rank; then freeze the refresh threshold as the conservative development residual quantile",
     "threshold_quantile": 0.95
   },
