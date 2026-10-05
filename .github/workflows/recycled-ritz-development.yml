@@ -67,13 +67,6 @@ jobs:
           assert policy["policy"]["max_operator_applications"] == 8
           PY
 
-      - name: Verify byte-exact retained policy receipt
-        working-directory: spectral-krylov-jepa
-        run: |
-          cmp \
-            recycled_ritz_development/frozen_policy.json \
-            research/recycled_ritz_development_policy_20261005.json
-
       - name: Upload development freeze receipt
         uses: actions/upload-artifact@v4
         with:
@@ -81,3 +74,10 @@ jobs:
           path: spectral-krylov-jepa/recycled_ritz_development/
           if-no-files-found: error
           retention-days: 30
+
+      - name: Verify byte-exact retained policy receipt
+        working-directory: spectral-krylov-jepa
+        run: |
+          cmp \
+            recycled_ritz_development/frozen_policy.json \
+            research/recycled_ritz_development_policy_20261005.json
