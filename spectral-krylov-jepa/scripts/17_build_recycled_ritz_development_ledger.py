@@ -43,6 +43,7 @@ WARMUP_SEEDS = tuple(range(70_000, 70_012))
 QUERY_SEEDS = tuple(range(70_100, 70_132))
 POTENTIAL_FAMILY = "id_gaussian_mixture"
 GRID_INTERIOR = 16
+CANONICAL_DECIMALS = 12
 
 
 def _canonical_json(payload: dict) -> bytes:
@@ -94,8 +95,17 @@ def main() -> int:
                 {
                     "case_id": case_id,
                     "rank": rank,
-                    "residual_relative_to_hx": result.residual_relative_to_hx,
-                    "residual_norm": result.residual_norm,
+                    # The explicit deterministic ARPACK start vector removes solver
+                    # randomness. Remaining ~1e-14 platform/BLAS reduction drift is
+                    # below the precision relevant to this development policy, so
+                    # retained diagnostics are canonicalized before hashing and
+                    # policy selection rather than weakening the exact artifact check.
+                    "residual_relative_to_hx": round(
+                        float(result.residual_relative_to_hx), CANONICAL_DECIMALS
+                    ),
+                    "residual_norm": round(
+                        float(result.residual_norm), CANONICAL_DECIMALS
+                    ),
                     "operator_applications": result.budget.operator_applications,
                     "reduced_dimension": result.budget.reduced_dimension,
                     "source_role": "development",
@@ -111,6 +121,7 @@ def main() -> int:
         "query_seeds": list(QUERY_SEEDS),
         "candidate_ranks": list(CANDIDATE_RANKS),
         "max_operator_applications": MAX_OPERATOR_APPLICATIONS,
+        "canonical_residual_decimals": CANONICAL_DECIMALS,
         "query_exact_eigensolves_performed": False,
         "protected_outcomes_opened": False,
         "records": records,
@@ -156,6 +167,7 @@ def main() -> int:
             "query_seeds": list(QUERY_SEEDS),
             "candidate_ranks": list(CANDIDATE_RANKS),
             "max_operator_applications": MAX_OPERATOR_APPLICATIONS,
+            "canonical_residual_decimals": CANONICAL_DECIMALS,
             "ranking_quantile": RANKING_QUANTILE,
             "threshold_quantile": THRESHOLD_QUANTILE,
             "near_best_factor": NEAR_BEST_FACTOR,
