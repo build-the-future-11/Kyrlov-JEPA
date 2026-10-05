@@ -44,7 +44,7 @@ QUERY_SEEDS = tuple(range(70_100, 70_132))
 POTENTIAL_FAMILY = "id_gaussian_mixture"
 GRID_INTERIOR = 16
 CANONICAL_DECIMALS = 12
-DIAGNOSTIC_RESIDUAL_NORM_DECIMALS = 11
+DIAGNOSTIC_RESIDUAL_NORM_DECIMALS = 9
 
 
 def _canonical_json(payload: dict) -> bytes:
