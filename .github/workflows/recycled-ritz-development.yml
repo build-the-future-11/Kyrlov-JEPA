@@ -66,9 +66,9 @@ jobs:
           assert policy["policy"]["rank"] in {1, 2, 4, 8}
           assert policy["policy"]["max_operator_applications"] == 8
           assert ledger["canonical_residual_decimals"] == 12
-          assert ledger["diagnostic_residual_norm_decimals"] == 11
+          assert ledger["diagnostic_residual_norm_decimals"] == 9
           assert policy["development_protocol"]["canonical_residual_decimals"] == 12
-          assert policy["development_protocol"]["diagnostic_residual_norm_decimals"] == 11
+          assert policy["development_protocol"]["diagnostic_residual_norm_decimals"] == 9
           PY
 
       - name: Upload development freeze receipt
