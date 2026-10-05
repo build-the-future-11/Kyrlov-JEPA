@@ -65,6 +65,8 @@ jobs:
           assert len(ledger["records"]) == 32 * 4
           assert policy["policy"]["rank"] in {1, 2, 4, 8}
           assert policy["policy"]["max_operator_applications"] == 8
+          assert ledger["canonical_residual_decimals"] == 12
+          assert policy["development_protocol"]["canonical_residual_decimals"] == 12
           PY
 
       - name: Upload development freeze receipt
