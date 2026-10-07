@@ -11,6 +11,7 @@ This is intentionally separate from result-bearing evaluation.
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass
+from numbers import Integral, Real
 from typing import Sequence
 
 import numpy as np
@@ -67,6 +68,41 @@ def _higher_quantile(values: Sequence[float], q: float) -> float:
     return float(np.quantile(array, q, method="higher"))
 
 
+def _positive_integer(value: object, name: str) -> int:
+    if isinstance(value, bool) or not isinstance(value, Integral) or value <= 0:
+        raise ValueError(f"{name} must be a positive integer without coercion")
+    return int(value)
+
+
+def development_records_from_payload(payload: object) -> list[DevelopmentResidual]:
+    """Read declarations without silently coercing or relabeling evidence.
+
+    Valid declarations do not prove the external provenance of a ledger. They
+    are necessary input checks before the separately reviewed source identity.
+    """
+    if not isinstance(payload, dict) or payload.get("source_role") != "development":
+        raise ValueError("development ledger must declare source_role=development")
+    for field in ("protected_outcomes_opened", "query_exact_eigensolves_performed"):
+        if payload.get(field) is not False:
+            raise ValueError(f"development ledger must explicitly declare {field}=false")
+    rows = payload.get("records")
+    if not isinstance(rows, list) or not rows:
+        raise ValueError("development ledger must contain a nonempty records list")
+    required = {"case_id", "rank", "residual_relative_to_hx", "operator_applications"}
+    records = []
+    for index, row in enumerate(rows):
+        if not isinstance(row, dict) or not required.issubset(row):
+            raise ValueError(f"record {index} is missing required ledger fields")
+        records.append(DevelopmentResidual(
+            case_id=row["case_id"],
+            rank=row["rank"],
+            residual_relative_to_hx=row["residual_relative_to_hx"],
+            operator_applications=row["operator_applications"],
+            source_role=row.get("source_role", payload["source_role"]),
+        ))
+    return records
+
+
 def freeze_recycled_policy(
     records: Sequence[DevelopmentResidual],
     *,
@@ -90,23 +126,20 @@ def freeze_recycled_policy(
         raise ValueError("at least one development residual record is required")
     if not candidate_ranks:
         raise ValueError("candidate_ranks must be nonempty")
-    if not 0 < ranking_quantile <= 1:
+    if isinstance(ranking_quantile, bool) or not isinstance(ranking_quantile, Real) or not 0 < ranking_quantile <= 1:
         raise ValueError("ranking_quantile must be in (0, 1]")
-    if not 0 < threshold_quantile <= 1:
+    if isinstance(threshold_quantile, bool) or not isinstance(threshold_quantile, Real) or not 0 < threshold_quantile <= 1:
         raise ValueError("threshold_quantile must be in (0, 1]")
-    if not np.isfinite(near_best_factor) or near_best_factor < 1:
+    if isinstance(near_best_factor, bool) or not isinstance(near_best_factor, Real) or not np.isfinite(near_best_factor) or near_best_factor < 1:
         raise ValueError("near_best_factor must be finite and at least 1")
 
-    ranks = tuple(sorted(set(int(rank) for rank in candidate_ranks)))
-    if any(rank <= 0 for rank in ranks):
-        raise ValueError("candidate ranks must be positive")
+    ranks = tuple(sorted(set(_positive_integer(rank, "candidate rank") for rank in candidate_ranks)))
     if len(ranks) != len(candidate_ranks):
         raise ValueError("candidate ranks must be unique")
 
     if max_operator_applications is None:
         max_operator_applications = max(ranks)
-    if max_operator_applications <= 0:
-        raise ValueError("max_operator_applications must be positive")
+    max_operator_applications = _positive_integer(max_operator_applications, "max_operator_applications")
 
     by_rank: dict[int, list[DevelopmentResidual]] = {rank: [] for rank in ranks}
     for record in records:
@@ -116,12 +149,16 @@ def freeze_recycled_policy(
                     record.source_role
                 )
             )
-        if not record.case_id.strip():
+        if not isinstance(record.case_id, str) or not record.case_id.strip():
             raise ValueError("case_id must be nonempty")
+        _positive_integer(record.rank, "record rank")
+        _positive_integer(record.operator_applications, "operator_applications")
         if record.rank not in by_rank:
             raise ValueError("record rank {} was not preregistered".format(record.rank))
         if (
-            not np.isfinite(record.residual_relative_to_hx)
+            isinstance(record.residual_relative_to_hx, bool)
+            or not isinstance(record.residual_relative_to_hx, Real)
+            or not np.isfinite(record.residual_relative_to_hx)
             or record.residual_relative_to_hx < 0
         ):
             raise ValueError("residual_relative_to_hx must be finite and non-negative")
