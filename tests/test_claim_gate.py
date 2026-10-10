@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import csv
+import json
 import sys
 from pathlib import Path
 
@@ -73,3 +75,178 @@ def test_outputs_use_stem_not_canonical_name(workdir):
     assert (tables / "test_gate.json").exists()
     assert not (tables / "claim_gate.json").exists()
     assert not (gate.PKG / "paper" / "RESULTS_AUTO.md").exists()
+
+
+def _support_rows():
+    return _rows({"scratch": [0.6, 0.61, 0.62], "mml_direct": [0.50, 0.51, 0.505], "lmop_jepa": [0.40, 0.41, 0.405]})
+
+
+def _report(workdir):
+    return json.loads((workdir[0] / "claim_gate.json").read_text())
+
+
+def test_wrong_seed_set_cannot_substitute_for_frozen_matrix(workdir):
+    rows = [{**row, "seed": row["seed"] + 1000} for row in _support_rows()]
+    assert _verdict(rows, workdir) == "INVALID_MATRIX"
+    report = _report(workdir)
+    assert not report["matrix_complete"]
+    assert report["matrix_validation"]["observed_unique_cells"] == 0
+    assert report["support_cells"] == []
+
+
+def test_duplicate_cannot_conceal_missing_scratch_cell(workdir):
+    rows = _support_rows()
+    missing = rows[0]
+    rows[0] = rows[1].copy()
+    assert _verdict(rows, workdir) == "INVALID_MATRIX"
+    report = _report(workdir)
+    assert report["observed_eval_rows"] == report["expected_eval_rows"] == 36
+    assert report["matrix_validation"]["missing_cells"] == [
+        {key: missing[key] for key in ("method", "seed", "real_label_budget", "distribution")}
+    ]
+    assert any("duplicate" in error for error in report["matrix_validation"]["errors"])
+
+
+def test_missing_cell_returns_incomplete_without_claims_or_nan(workdir):
+    rows = _support_rows()[1:]
+    assert _verdict(rows, workdir) == "INCOMPLETE_MATRIX"
+    report = _report(workdir)
+    assert report["comparisons"] == []
+    assert report["support_cells"] == []
+    json.dumps(report, allow_nan=False)
+
+
+@pytest.mark.parametrize("extra", ["duplicate", "unknown_method", "unknown_distribution"])
+def test_additional_rows_cannot_be_silently_ignored(workdir, extra):
+    rows = _support_rows()
+    row = rows[0].copy()
+    if extra == "unknown_method":
+        row["method"] = "extra_baseline"
+    elif extra == "unknown_distribution":
+        row["distribution"] = "exploratory"
+    rows.append(row)
+    assert _verdict(rows, workdir) == "INVALID_MATRIX"
+
+
+@pytest.mark.parametrize("metric", [float("nan"), float("inf"), -float("inf"), -0.1, True, "0.6", None])
+def test_invalid_primary_metric_in_secondary_reference_blocks_claim(workdir, metric):
+    # Scratch is secondary scientifically, but it is required by the frozen matrix.
+    rows = _support_rows()
+    rows[0]["relative_l2"] = metric
+    assert _verdict(rows, workdir) == "INVALID_MATRIX"
+    json.dumps(_report(workdir), allow_nan=False)
+
+
+@pytest.mark.parametrize("field,value", [("seed", 11.9), ("seed", True), ("seed", "11"), ("real_label_budget", 25.9)])
+def test_fractional_or_coerced_identity_cannot_enter_matrix(workdir, field, value):
+    rows = _support_rows()
+    rows[0][field] = value
+    assert _verdict(rows, workdir) == "INVALID_MATRIX"
+
+
+@pytest.mark.parametrize("payload", [{"mechanism_supported": "false"}, {"mechanism_supported": 1}, {"mechanism_supported": None}, [], None])
+def test_mechanism_evidence_requires_boolean(workdir, payload):
+    workdir[1].write_text(json.dumps(payload))
+    assert _verdict(_support_rows(), workdir) == "INCONCLUSIVE_MECHANISM"
+    report = _report(workdir)
+    assert not report["shuffled_control"]["mechanism_supported"]
+    assert report["shuffled_control"]["validation_error"]
+
+
+def test_invalid_shuffled_json_does_not_support_claim(workdir):
+    workdir[1].write_text("not json")
+    assert _verdict(_support_rows(), workdir) == "INCONCLUSIVE_MECHANISM"
+
+
+def test_false_boolean_mechanism_remains_inconclusive(workdir):
+    workdir[1].write_text('{"mechanism_supported": false}')
+    assert _verdict(_support_rows(), workdir) == "INCONCLUSIVE_MECHANISM"
+    assert _report(workdir)["shuffled_control"]["validation_error"] is None
+
+
+def test_valid_matrix_is_invariant_to_row_order(workdir):
+    assert _verdict(list(reversed(_support_rows())), workdir) == "SUPPORTS_HYPOTHESIS"
+    assert _report(workdir)["matrix_validation"]["observed_unique_cells"] == 36
+
+
+@pytest.mark.parametrize("seeds,subsets", [([], [25]), ([11, 11], [25]), ([11], [25, 25]), ([True], [25]), ([11], [25.5])])
+def test_invalid_protocol_axes_fail_before_publication(workdir, seeds, subsets):
+    proto = {"seeds": seeds, "data_sizes": {"confirmatory": {"subsets": subsets}}}
+    with pytest.raises(ValueError, match="Protocol"):
+        gate.write_claim_artifacts(
+            table_rows=_support_rows(), run_root=workdir[0], proto=proto,
+            shuffle_path=workdir[1], git_sha=None, write_paper_stub=False,
+        )
+    assert not (workdir[0] / "claim_gate.json").exists()
+
+
+@pytest.mark.parametrize("column", ["method", "seed", "real_label_budget", "distribution", "relative_l2"])
+def test_duplicate_csv_headers_cannot_conceal_metrics_or_cell_identity(tmp_path, column):
+    source = tmp_path / "ambiguous.csv"
+    fields = list(_support_rows()[0])
+    with source.open("w", newline="") as handle:
+        writer = csv.writer(handle)
+        writer.writerow([*fields, column])
+        for row in _support_rows():
+            writer.writerow([*(row[field] for field in fields), row[column]])
+    original = source.read_bytes()
+    with pytest.raises(ValueError, match="duplicate.*header"):
+        gate.load_rows_from_csv(source)
+    assert source.read_bytes() == original
+
+
+@pytest.mark.parametrize("kind", ["short", "long", "blank_header", "missing_metric"])
+def test_csv_structure_must_be_unambiguous_before_conversion(tmp_path, kind):
+    source = tmp_path / "malformed.csv"
+    fields = list(_support_rows()[0])
+    row = _support_rows()[0]
+    values = [row[field] for field in fields]
+    if kind == "short":
+        values.pop()
+    elif kind == "long":
+        values.append("undeclared")
+    elif kind == "blank_header":
+        fields.append("")
+        values.append("undeclared")
+    else:
+        fields.pop()
+        values.pop()
+    with source.open("w", newline="") as handle:
+        writer = csv.writer(handle)
+        writer.writerow(fields)
+        writer.writerow(values)
+    with pytest.raises(ValueError, match="CSV"):
+        gate.load_rows_from_csv(source)
+
+
+def test_valid_csv_roundtrip_retains_cells_metrics_and_verdict(tmp_path, workdir):
+    source = tmp_path / "valid.csv"
+    rows = _support_rows()
+    with source.open("w", newline="") as handle:
+        writer = csv.DictWriter(handle, fieldnames=list(rows[0]))
+        writer.writeheader()
+        writer.writerows(rows)
+    parsed = gate.load_rows_from_csv(source)
+    assert parsed == rows
+    assert _verdict(parsed, workdir) == "SUPPORTS_HYPOTHESIS"
+
+
+@pytest.mark.parametrize("payload", [
+    '{"mechanism_supported": false, "mechanism_supported": true}',
+    '{"mechanism_supported": true, "mechanism_supported": false}',
+    '{"mechanism_supported": true, "audit": {"seed": 11, "seed": 23}}',
+    '{"mechanism_supported": true, "correct_final_loss": NaN}',
+    '{"mechanism_supported": true, "shuffled_final_loss": Infinity}',
+    '{"mechanism_supported": true, "shuffled_final_loss": -Infinity}',
+    '{"mechanism_supported": true, "correct_final_loss": 1e400}',
+])
+def test_ambiguous_or_nonfinite_shuffled_json_cannot_support(workdir, payload):
+    workdir[1].write_text(payload)
+    assert _verdict(_support_rows(), workdir) == "INCONCLUSIVE_MECHANISM"
+    report = _report(workdir)
+    assert not report["shuffled_control"]["mechanism_supported"]
+    assert report["shuffled_control"]["validation_error"]
+    assert report["shuffled_control"]["correct_final_loss"] is None
+    assert report["shuffled_control"]["shuffled_final_loss"] is None
+    json.dumps(report, allow_nan=False)
+    assert workdir[1].read_text() == payload
