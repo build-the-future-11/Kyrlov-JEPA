@@ -89,5 +89,36 @@
     "Review the numerical behavior change separately from the frozen study; any new result must name this code revision.",
     "Respect the existing scientific execution gate and publish no efficacy claim without the required matched evidence.",
     "Preserve separate LMOP and CJSJ subproject state; this state applies to spectral-krylov-jepa only."
-  ]
+  ],
+  "maintenance_updates": [
+    {
+      "id": "wavefunction_metric_scale_20261010",
+      "date": "2026-10-10",
+      "phase": "PROSPECTIVE_ENGINEERING_REPAIR_VERIFIED",
+      "parent_commit": "be5aea5c658a0fb2da4d0f7cea34560ef62c0c88",
+      "development_branch": "codex/wavefunction-metric-scale-20261010",
+      "dependent_pr": 21,
+      "contribution": "Amplitude-invariant residual and Rayleigh metrics with explicit invalid-state errors",
+      "code_paths": [
+        "spectral-krylov-jepa/src/spectral_krylov_jepa/evaluation/metrics.py",
+        "spectral-krylov-jepa/tests/test_wavefunction_metric_scale.py"
+      ],
+      "development_note": "spectral-krylov-jepa/research/DEVELOPMENT_WAVEFUNCTION_METRIC_SCALE_20261010.md",
+      "verification_receipt": "spectral-krylov-jepa/research/verification/wavefunction_metric_scale_20261010/receipt.json",
+      "baseline_regressions": {
+        "failed": 23,
+        "passed": 10
+      },
+      "verified_tests": {
+        "passed": 37,
+        "failed": 0,
+        "skipped": 0
+      },
+      "scientific_checkpoint_change": "None; prior hypotheses, frozen evidence, outcomes and execution gates remain unchanged.",
+      "independent_review": "Not claimed for this revision; earlier top-level review concerns the previous maintenance entry only.",
+      "limits": "CPU-only artificial fixtures. No training, scientific dataset, protected outcomes, paid compute, or efficacy claim. Explicit error behavior requires compatibility review.",
+      "next_action": "Review the prospective numerical contract and stacked dependency; do not merge or advance a scientific gate based on these tests alone."
+    }
+  ],
+  "latest_maintenance_update_id": "wavefunction_metric_scale_20261010"
 }

@@ -1,0 +1,487 @@
+FFF...FFFF...FF.FFFFFFFFFF..FFFF.                                        [100%]
+=================================== FAILURES ===================================
+____________ test_rayleigh_is_invariant_to_state_amplitude[1e-300] _____________
+
+analytic_case = (GridSpec(n_interior=2, x_min=0.0, x_max=1.0, y_min=0.0, y_max=1.0), array([[0., 0.],
+       [0., 0.]]), array([[1., 0.],
+       [0., 0.]]))
+scale = 1e-300
+
+    @pytest.mark.parametrize("scale", [1e-300, 1e-200, 1e-20, 1., -3., 1e150, 1e300])
+    def test_rayleigh_is_invariant_to_state_amplitude(analytic_case, scale):
+        grid, potential, state = analytic_case
+>       assert rayleigh_quotient(potential, state * scale, grid) == pytest.approx(18.)
+E       assert nan == 18.0 ± 1.8e-05
+E         
+E         comparison failed
+E         Obtained: nan
+E         Expected: 18.0 ± 1.8e-05
+
+tests/test_wavefunction_metric_scale.py:25: AssertionError
+____________ test_rayleigh_is_invariant_to_state_amplitude[1e-200] _____________
+
+analytic_case = (GridSpec(n_interior=2, x_min=0.0, x_max=1.0, y_min=0.0, y_max=1.0), array([[0., 0.],
+       [0., 0.]]), array([[1., 0.],
+       [0., 0.]]))
+scale = 1e-200
+
+    @pytest.mark.parametrize("scale", [1e-300, 1e-200, 1e-20, 1., -3., 1e150, 1e300])
+    def test_rayleigh_is_invariant_to_state_amplitude(analytic_case, scale):
+        grid, potential, state = analytic_case
+>       assert rayleigh_quotient(potential, state * scale, grid) == pytest.approx(18.)
+E       assert nan == 18.0 ± 1.8e-05
+E         
+E         comparison failed
+E         Obtained: nan
+E         Expected: 18.0 ± 1.8e-05
+
+tests/test_wavefunction_metric_scale.py:25: AssertionError
+_____________ test_rayleigh_is_invariant_to_state_amplitude[1e-20] _____________
+
+analytic_case = (GridSpec(n_interior=2, x_min=0.0, x_max=1.0, y_min=0.0, y_max=1.0), array([[0., 0.],
+       [0., 0.]]), array([[1., 0.],
+       [0., 0.]]))
+scale = 1e-20
+
+    @pytest.mark.parametrize("scale", [1e-300, 1e-200, 1e-20, 1., -3., 1e150, 1e300])
+    def test_rayleigh_is_invariant_to_state_amplitude(analytic_case, scale):
+        grid, potential, state = analytic_case
+>       assert rayleigh_quotient(potential, state * scale, grid) == pytest.approx(18.)
+E       assert nan == 18.0 ± 1.8e-05
+E         
+E         comparison failed
+E         Obtained: nan
+E         Expected: 18.0 ± 1.8e-05
+
+tests/test_wavefunction_metric_scale.py:25: AssertionError
+____________ test_rayleigh_is_invariant_to_state_amplitude[1e+300] _____________
+
+analytic_case = (GridSpec(n_interior=2, x_min=0.0, x_max=1.0, y_min=0.0, y_max=1.0), array([[0., 0.],
+       [0., 0.]]), array([[1., 0.],
+       [0., 0.]]))
+scale = 1e+300
+
+    @pytest.mark.parametrize("scale", [1e-300, 1e-200, 1e-20, 1., -3., 1e150, 1e300])
+    def test_rayleigh_is_invariant_to_state_amplitude(analytic_case, scale):
+        grid, potential, state = analytic_case
+>       assert rayleigh_quotient(potential, state * scale, grid) == pytest.approx(18.)
+E       assert nan == 18.0 ± 1.8e-05
+E         
+E         comparison failed
+E         Obtained: nan
+E         Expected: 18.0 ± 1.8e-05
+
+tests/test_wavefunction_metric_scale.py:25: AssertionError
+________ test_relative_residual_is_invariant_to_state_amplitude[1e-300] ________
+
+analytic_case = (GridSpec(n_interior=2, x_min=0.0, x_max=1.0, y_min=0.0, y_max=1.0), array([[0., 0.],
+       [0., 0.]]), array([[1., 0.],
+       [0., 0.]]))
+scale = 1e-300
+
+    @pytest.mark.parametrize("scale", [1e-300, 1e-200, 1e-20, 1., -3., 1e150, 1e300])
+    def test_relative_residual_is_invariant_to_state_amplitude(analytic_case, scale):
+        grid, potential, state = analytic_case
+        expected = np.sqrt(41.5)
+>       assert schrodinger_residual(potential, state * scale, 17., grid) == pytest.approx(expected)
+E       assert 0.0 == 6.442049363362563 ± 6.4e-06
+E         
+E         comparison failed
+E         Obtained: 0.0
+E         Expected: 6.442049363362563 ± 6.4e-06
+
+tests/test_wavefunction_metric_scale.py:32: AssertionError
+________ test_relative_residual_is_invariant_to_state_amplitude[1e-200] ________
+
+analytic_case = (GridSpec(n_interior=2, x_min=0.0, x_max=1.0, y_min=0.0, y_max=1.0), array([[0., 0.],
+       [0., 0.]]), array([[1., 0.],
+       [0., 0.]]))
+scale = 1e-200
+
+    @pytest.mark.parametrize("scale", [1e-300, 1e-200, 1e-20, 1., -3., 1e150, 1e300])
+    def test_relative_residual_is_invariant_to_state_amplitude(analytic_case, scale):
+        grid, potential, state = analytic_case
+        expected = np.sqrt(41.5)
+>       assert schrodinger_residual(potential, state * scale, 17., grid) == pytest.approx(expected)
+E       assert 0.0 == 6.442049363362563 ± 6.4e-06
+E         
+E         comparison failed
+E         Obtained: 0.0
+E         Expected: 6.442049363362563 ± 6.4e-06
+
+tests/test_wavefunction_metric_scale.py:32: AssertionError
+________ test_relative_residual_is_invariant_to_state_amplitude[1e-20] _________
+
+analytic_case = (GridSpec(n_interior=2, x_min=0.0, x_max=1.0, y_min=0.0, y_max=1.0), array([[0., 0.],
+       [0., 0.]]), array([[1., 0.],
+       [0., 0.]]))
+scale = 1e-20
+
+    @pytest.mark.parametrize("scale", [1e-300, 1e-200, 1e-20, 1., -3., 1e150, 1e300])
+    def test_relative_residual_is_invariant_to_state_amplitude(analytic_case, scale):
+        grid, potential, state = analytic_case
+        expected = np.sqrt(41.5)
+>       assert schrodinger_residual(potential, state * scale, 17., grid) == pytest.approx(expected)
+E       assert 6.442049363362562e-05 == 6.442049363362563 ± 6.4e-06
+E         
+E         comparison failed
+E         Obtained: 6.442049363362562e-05
+E         Expected: 6.442049363362563 ± 6.4e-06
+
+tests/test_wavefunction_metric_scale.py:32: AssertionError
+________ test_relative_residual_is_invariant_to_state_amplitude[1e+300] ________
+
+analytic_case = (GridSpec(n_interior=2, x_min=0.0, x_max=1.0, y_min=0.0, y_max=1.0), array([[0., 0.],
+       [0., 0.]]), array([[1., 0.],
+       [0., 0.]]))
+scale = 1e+300
+
+    @pytest.mark.parametrize("scale", [1e-300, 1e-200, 1e-20, 1., -3., 1e150, 1e300])
+    def test_relative_residual_is_invariant_to_state_amplitude(analytic_case, scale):
+        grid, potential, state = analytic_case
+        expected = np.sqrt(41.5)
+>       assert schrodinger_residual(potential, state * scale, 17., grid) == pytest.approx(expected)
+E       assert nan == 6.442049363362563 ± 6.4e-06
+E         
+E         comparison failed
+E         Obtained: nan
+E         Expected: 6.442049363362563 ± 6.4e-06
+
+tests/test_wavefunction_metric_scale.py:32: AssertionError
+_____ test_exact_constant_box_mode_has_known_energy_without_an_eigensolver _____
+
+analytic_case = (GridSpec(n_interior=2, x_min=0.0, x_max=1.0, y_min=0.0, y_max=1.0), array([[0., 0.],
+       [0., 0.]]), array([[1., 0.],
+       [0., 0.]]))
+
+    def test_exact_constant_box_mode_has_known_energy_without_an_eigensolver(analytic_case):
+        grid, potential, _ = analytic_case
+        # [1,1,1,1] is an exact eigenvector of this 2x2-grid Hamiltonian, E=9.
+        state = np.ones((2, 2)) * 1e-250
+>       assert rayleigh_quotient(potential, state, grid) == pytest.approx(9.)
+E       assert nan == 9.0 ± 9.0e-06
+E         
+E         comparison failed
+E         Obtained: nan
+E         Expected: 9.0 ± 9.0e-06
+
+tests/test_wavefunction_metric_scale.py:39: AssertionError
+_________ test_rayleigh_reduction_handles_representable_extreme_energy _________
+
+analytic_case = (GridSpec(n_interior=2, x_min=0.0, x_max=1.0, y_min=0.0, y_max=1.0), array([[0., 0.],
+       [0., 0.]]), array([[1., 0.],
+       [0., 0.]]))
+
+    def test_rayleigh_reduction_handles_representable_extreme_energy(analytic_case):
+        grid, potential, state = analytic_case
+>       assert rayleigh_quotient(potential + 1e308, np.ones_like(state), grid) == pytest.approx(1e308)
+E       assert inf == 1e+308 ± 1.0e+302
+E         
+E         comparison failed
+E         Obtained: inf
+E         Expected: 1e+308 ± 1.0e+302
+
+tests/test_wavefunction_metric_scale.py:52: AssertionError
+___________ test_residual_norm_handles_representable_extreme_energy ____________
+
+analytic_case = (GridSpec(n_interior=2, x_min=0.0, x_max=1.0, y_min=0.0, y_max=1.0), array([[0., 0.],
+       [0., 0.]]), array([[1., 0.],
+       [0., 0.]]))
+
+    def test_residual_norm_handles_representable_extreme_energy(analytic_case):
+        grid, potential, state = analytic_case
+>       assert schrodinger_residual(potential, state, 1e300, grid) == pytest.approx(1e300)
+E       assert inf == 1e+300 ± 1.0e+294
+E         
+E         comparison failed
+E         Obtained: inf
+E         Expected: 1e+300 ± 1.0e+294
+
+tests/test_wavefunction_metric_scale.py:57: AssertionError
+_ test_invalid_states_do_not_become_successful_metrics[zero-rayleigh_quotient] _
+
+analytic_case = (GridSpec(n_interior=2, x_min=0.0, x_max=1.0, y_min=0.0, y_max=1.0), array([[0., 0.],
+       [0., 0.]]), array([[1., 0.],
+       [0., 0.]]))
+metric = <function rayleigh_quotient at 0x7fcf3cde9800>, kind = 'zero'
+
+    @pytest.mark.parametrize("metric", [rayleigh_quotient, schrodinger_residual])
+    @pytest.mark.parametrize("kind", ["zero", "nan", "inf", "complex", "size"])
+    def test_invalid_states_do_not_become_successful_metrics(analytic_case, metric, kind):
+        grid, potential, state = analytic_case
+        invalid = {
+            "zero": np.zeros((2, 2)),
+            "nan": np.full((2, 2), np.nan),
+            "inf": np.full((2, 2), np.inf),
+            "complex": state.astype(np.complex128) + 1j,
+            "size": np.ones(3),
+        }[kind]
+        args = (potential, invalid, 17., grid) if metric is schrodinger_residual else (potential, invalid, grid)
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_wavefunction_metric_scale.py:72: Failed
+_ test_invalid_states_do_not_become_successful_metrics[zero-schrodinger_residual] _
+
+analytic_case = (GridSpec(n_interior=2, x_min=0.0, x_max=1.0, y_min=0.0, y_max=1.0), array([[0., 0.],
+       [0., 0.]]), array([[1., 0.],
+       [0., 0.]]))
+metric = <function schrodinger_residual at 0x7fcf3cde9760>, kind = 'zero'
+
+    @pytest.mark.parametrize("metric", [rayleigh_quotient, schrodinger_residual])
+    @pytest.mark.parametrize("kind", ["zero", "nan", "inf", "complex", "size"])
+    def test_invalid_states_do_not_become_successful_metrics(analytic_case, metric, kind):
+        grid, potential, state = analytic_case
+        invalid = {
+            "zero": np.zeros((2, 2)),
+            "nan": np.full((2, 2), np.nan),
+            "inf": np.full((2, 2), np.inf),
+            "complex": state.astype(np.complex128) + 1j,
+            "size": np.ones(3),
+        }[kind]
+        args = (potential, invalid, 17., grid) if metric is schrodinger_residual else (potential, invalid, grid)
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_wavefunction_metric_scale.py:72: Failed
+_ test_invalid_states_do_not_become_successful_metrics[nan-rayleigh_quotient] __
+
+analytic_case = (GridSpec(n_interior=2, x_min=0.0, x_max=1.0, y_min=0.0, y_max=1.0), array([[0., 0.],
+       [0., 0.]]), array([[1., 0.],
+       [0., 0.]]))
+metric = <function rayleigh_quotient at 0x7fcf3cde9800>, kind = 'nan'
+
+    @pytest.mark.parametrize("metric", [rayleigh_quotient, schrodinger_residual])
+    @pytest.mark.parametrize("kind", ["zero", "nan", "inf", "complex", "size"])
+    def test_invalid_states_do_not_become_successful_metrics(analytic_case, metric, kind):
+        grid, potential, state = analytic_case
+        invalid = {
+            "zero": np.zeros((2, 2)),
+            "nan": np.full((2, 2), np.nan),
+            "inf": np.full((2, 2), np.inf),
+            "complex": state.astype(np.complex128) + 1j,
+            "size": np.ones(3),
+        }[kind]
+        args = (potential, invalid, 17., grid) if metric is schrodinger_residual else (potential, invalid, grid)
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_wavefunction_metric_scale.py:72: Failed
+_ test_invalid_states_do_not_become_successful_metrics[nan-schrodinger_residual] _
+
+analytic_case = (GridSpec(n_interior=2, x_min=0.0, x_max=1.0, y_min=0.0, y_max=1.0), array([[0., 0.],
+       [0., 0.]]), array([[1., 0.],
+       [0., 0.]]))
+metric = <function schrodinger_residual at 0x7fcf3cde9760>, kind = 'nan'
+
+    @pytest.mark.parametrize("metric", [rayleigh_quotient, schrodinger_residual])
+    @pytest.mark.parametrize("kind", ["zero", "nan", "inf", "complex", "size"])
+    def test_invalid_states_do_not_become_successful_metrics(analytic_case, metric, kind):
+        grid, potential, state = analytic_case
+        invalid = {
+            "zero": np.zeros((2, 2)),
+            "nan": np.full((2, 2), np.nan),
+            "inf": np.full((2, 2), np.inf),
+            "complex": state.astype(np.complex128) + 1j,
+            "size": np.ones(3),
+        }[kind]
+        args = (potential, invalid, 17., grid) if metric is schrodinger_residual else (potential, invalid, grid)
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_wavefunction_metric_scale.py:72: Failed
+_ test_invalid_states_do_not_become_successful_metrics[inf-rayleigh_quotient] __
+
+analytic_case = (GridSpec(n_interior=2, x_min=0.0, x_max=1.0, y_min=0.0, y_max=1.0), array([[0., 0.],
+       [0., 0.]]), array([[1., 0.],
+       [0., 0.]]))
+metric = <function rayleigh_quotient at 0x7fcf3cde9800>, kind = 'inf'
+
+    @pytest.mark.parametrize("metric", [rayleigh_quotient, schrodinger_residual])
+    @pytest.mark.parametrize("kind", ["zero", "nan", "inf", "complex", "size"])
+    def test_invalid_states_do_not_become_successful_metrics(analytic_case, metric, kind):
+        grid, potential, state = analytic_case
+        invalid = {
+            "zero": np.zeros((2, 2)),
+            "nan": np.full((2, 2), np.nan),
+            "inf": np.full((2, 2), np.inf),
+            "complex": state.astype(np.complex128) + 1j,
+            "size": np.ones(3),
+        }[kind]
+        args = (potential, invalid, 17., grid) if metric is schrodinger_residual else (potential, invalid, grid)
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_wavefunction_metric_scale.py:72: Failed
+_ test_invalid_states_do_not_become_successful_metrics[inf-schrodinger_residual] _
+
+analytic_case = (GridSpec(n_interior=2, x_min=0.0, x_max=1.0, y_min=0.0, y_max=1.0), array([[0., 0.],
+       [0., 0.]]), array([[1., 0.],
+       [0., 0.]]))
+metric = <function schrodinger_residual at 0x7fcf3cde9760>, kind = 'inf'
+
+    @pytest.mark.parametrize("metric", [rayleigh_quotient, schrodinger_residual])
+    @pytest.mark.parametrize("kind", ["zero", "nan", "inf", "complex", "size"])
+    def test_invalid_states_do_not_become_successful_metrics(analytic_case, metric, kind):
+        grid, potential, state = analytic_case
+        invalid = {
+            "zero": np.zeros((2, 2)),
+            "nan": np.full((2, 2), np.nan),
+            "inf": np.full((2, 2), np.inf),
+            "complex": state.astype(np.complex128) + 1j,
+            "size": np.ones(3),
+        }[kind]
+        args = (potential, invalid, 17., grid) if metric is schrodinger_residual else (potential, invalid, grid)
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_wavefunction_metric_scale.py:72: Failed
+_ test_invalid_states_do_not_become_successful_metrics[complex-rayleigh_quotient] _
+
+analytic_case = (GridSpec(n_interior=2, x_min=0.0, x_max=1.0, y_min=0.0, y_max=1.0), array([[0., 0.],
+       [0., 0.]]), array([[1., 0.],
+       [0., 0.]]))
+metric = <function rayleigh_quotient at 0x7fcf3cde9800>, kind = 'complex'
+
+    @pytest.mark.parametrize("metric", [rayleigh_quotient, schrodinger_residual])
+    @pytest.mark.parametrize("kind", ["zero", "nan", "inf", "complex", "size"])
+    def test_invalid_states_do_not_become_successful_metrics(analytic_case, metric, kind):
+        grid, potential, state = analytic_case
+        invalid = {
+            "zero": np.zeros((2, 2)),
+            "nan": np.full((2, 2), np.nan),
+            "inf": np.full((2, 2), np.inf),
+            "complex": state.astype(np.complex128) + 1j,
+            "size": np.ones(3),
+        }[kind]
+        args = (potential, invalid, 17., grid) if metric is schrodinger_residual else (potential, invalid, grid)
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_wavefunction_metric_scale.py:72: Failed
+_ test_invalid_states_do_not_become_successful_metrics[complex-schrodinger_residual] _
+
+analytic_case = (GridSpec(n_interior=2, x_min=0.0, x_max=1.0, y_min=0.0, y_max=1.0), array([[0., 0.],
+       [0., 0.]]), array([[1., 0.],
+       [0., 0.]]))
+metric = <function schrodinger_residual at 0x7fcf3cde9760>, kind = 'complex'
+
+    @pytest.mark.parametrize("metric", [rayleigh_quotient, schrodinger_residual])
+    @pytest.mark.parametrize("kind", ["zero", "nan", "inf", "complex", "size"])
+    def test_invalid_states_do_not_become_successful_metrics(analytic_case, metric, kind):
+        grid, potential, state = analytic_case
+        invalid = {
+            "zero": np.zeros((2, 2)),
+            "nan": np.full((2, 2), np.nan),
+            "inf": np.full((2, 2), np.inf),
+            "complex": state.astype(np.complex128) + 1j,
+            "size": np.ones(3),
+        }[kind]
+        args = (potential, invalid, 17., grid) if metric is schrodinger_residual else (potential, invalid, grid)
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_wavefunction_metric_scale.py:72: Failed
+_________________ test_residual_rejects_nonfinite_energy[nan] __________________
+
+analytic_case = (GridSpec(n_interior=2, x_min=0.0, x_max=1.0, y_min=0.0, y_max=1.0), array([[0., 0.],
+       [0., 0.]]), array([[1., 0.],
+       [0., 0.]]))
+energy = nan
+
+    @pytest.mark.parametrize("energy", [float("nan"), float("inf"), -float("inf")])
+    def test_residual_rejects_nonfinite_energy(analytic_case, energy):
+        grid, potential, state = analytic_case
+>       with pytest.raises(ValueError, match="energy"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_wavefunction_metric_scale.py:79: Failed
+_________________ test_residual_rejects_nonfinite_energy[inf] __________________
+
+analytic_case = (GridSpec(n_interior=2, x_min=0.0, x_max=1.0, y_min=0.0, y_max=1.0), array([[0., 0.],
+       [0., 0.]]), array([[1., 0.],
+       [0., 0.]]))
+energy = inf
+
+    @pytest.mark.parametrize("energy", [float("nan"), float("inf"), -float("inf")])
+    def test_residual_rejects_nonfinite_energy(analytic_case, energy):
+        grid, potential, state = analytic_case
+>       with pytest.raises(ValueError, match="energy"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_wavefunction_metric_scale.py:79: Failed
+_________________ test_residual_rejects_nonfinite_energy[-inf] _________________
+
+analytic_case = (GridSpec(n_interior=2, x_min=0.0, x_max=1.0, y_min=0.0, y_max=1.0), array([[0., 0.],
+       [0., 0.]]), array([[1., 0.],
+       [0., 0.]]))
+energy = -inf
+
+    @pytest.mark.parametrize("energy", [float("nan"), float("inf"), -float("inf")])
+    def test_residual_rejects_nonfinite_energy(analytic_case, energy):
+        grid, potential, state = analytic_case
+>       with pytest.raises(ValueError, match="energy"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_wavefunction_metric_scale.py:79: Failed
+_ test_full_evaluator_rejects_zero_prediction_before_emitting_false_zero_residual _
+
+analytic_case = (GridSpec(n_interior=2, x_min=0.0, x_max=1.0, y_min=0.0, y_max=1.0), array([[0., 0.],
+       [0., 0.]]), array([[1., 0.],
+       [0., 0.]]))
+
+    def test_full_evaluator_rejects_zero_prediction_before_emitting_false_zero_residual(analytic_case):
+        grid, potential, state = analytic_case
+>       with pytest.raises(ValueError, match="nonzero"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_wavefunction_metric_scale.py:85: Failed
+=============================== warnings summary ===============================
+tests/test_wavefunction_metric_scale.py::test_rayleigh_is_invariant_to_state_amplitude[1e+300]
+  /workspace/scratch/24ae2474e899/research_jepa/Kyrlov-JEPA/spectral-krylov-jepa/src/spectral_krylov_jepa/evaluation/metrics.py:47: RuntimeWarning: overflow encountered in dot
+    denom = float(np.dot(flat, flat))
+
+tests/test_wavefunction_metric_scale.py::test_rayleigh_is_invariant_to_state_amplitude[1e+300]
+tests/test_wavefunction_metric_scale.py::test_rayleigh_reduction_handles_representable_extreme_energy
+  /workspace/scratch/24ae2474e899/research_jepa/Kyrlov-JEPA/spectral-krylov-jepa/src/spectral_krylov_jepa/evaluation/metrics.py:50: RuntimeWarning: overflow encountered in dot
+    return float(np.dot(flat, hq) / denom)
+
+tests/test_wavefunction_metric_scale.py::test_rayleigh_is_invariant_to_state_amplitude[1e+300]
+  /workspace/scratch/24ae2474e899/research_jepa/Kyrlov-JEPA/spectral-krylov-jepa/src/spectral_krylov_jepa/evaluation/metrics.py:50: RuntimeWarning: invalid value encountered in scalar divide
+    return float(np.dot(flat, hq) / denom)
+
+tests/test_wavefunction_metric_scale.py::test_relative_residual_is_invariant_to_state_amplitude[1e+300]
+tests/test_wavefunction_metric_scale.py::test_residual_norm_handles_representable_extreme_energy
+  /opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/numpy/linalg/_linalg.py:2792: RuntimeWarning: overflow encountered in dot
+    sqnorm = x.dot(x)
+
+tests/test_wavefunction_metric_scale.py::test_relative_residual_is_invariant_to_state_amplitude[1e+300]
+  /workspace/scratch/24ae2474e899/research_jepa/Kyrlov-JEPA/spectral-krylov-jepa/src/spectral_krylov_jepa/evaluation/metrics.py:35: RuntimeWarning: invalid value encountered in scalar divide
+    return float(np.linalg.norm(r) / max(np.linalg.norm(flat), 1e-15))
+
+tests/test_wavefunction_metric_scale.py::test_invalid_states_do_not_become_successful_metrics[complex-rayleigh_quotient]
+  /workspace/scratch/24ae2474e899/research_jepa/Kyrlov-JEPA/spectral-krylov-jepa/src/spectral_krylov_jepa/evaluation/metrics.py:45: ComplexWarning: Casting complex values to real discards the imaginary part
+    flat = np.asarray(psi, dtype=np.float64).reshape(-1)
+
+tests/test_wavefunction_metric_scale.py::test_invalid_states_do_not_become_successful_metrics[complex-schrodinger_residual]
+  /workspace/scratch/24ae2474e899/research_jepa/Kyrlov-JEPA/spectral-krylov-jepa/src/spectral_krylov_jepa/evaluation/metrics.py:33: ComplexWarning: Casting complex values to real discards the imaginary part
+    flat = np.asarray(psi_hat, dtype=np.float64).reshape(-1)
+
+tests/test_wavefunction_metric_scale.py::test_residual_rejects_nonfinite_energy[inf]
+tests/test_wavefunction_metric_scale.py::test_residual_rejects_nonfinite_energy[-inf]
+  /workspace/scratch/24ae2474e899/research_jepa/Kyrlov-JEPA/spectral-krylov-jepa/src/spectral_krylov_jepa/evaluation/metrics.py:34: RuntimeWarning: invalid value encountered in multiply
+    r = ham.matvec(flat) - e_hat * flat
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
