@@ -56,3 +56,34 @@ It is not a model rerun or independent scientific replication. No training,
 protected evaluation, new benchmark, or experiment-selection decision was made.
 The gate validates table structure and required values; it does not independently
 prove that upstream data collection or provenance declarations are truthful.
+
+# Input-admission follow-up — 10 October 2026
+
+Parent: `36bf9ab7523cdf525adcbe136d5b59fad4cde045` (PR #20).
+
+The prior matrix repair validated parsed dictionaries, but standard parsers
+could erase ambiguity first. `csv.DictReader` silently retained the last value
+under a duplicated metric/identity header. `json.loads` accepted duplicated
+`mechanism_supported` members and nonstandard nonfinite numbers. A constructed
+control declaring false followed by true produced `SUPPORTS_HYPOTHESIS`.
+
+The CSV loader now rejects repeated/blank headers, absent required fields and
+row widths that differ from the header before numeric conversion. Valid optional
+columns and ordinary CSV roundtrips remain supported. The shuffled-control
+reader rejects duplicate members at every nesting level, NaN/Infinity and
+overflowing float literals. Malformed control evidence records an explicit
+validation diagnostic and cannot support the mechanism; it is not silently
+repaired.
+
+Verification: `python -m pytest -q tests/test_claim_gate.py` passes 51 cases,
+including 17 new input-contract cases. Before the repair, the initial 16 new
+cases exposed 15 failures; the valid CSV roundtrip passed. The final additional
+case checks an overflowing standard JSON float literal (`1e400`). All cases use
+constructed data in temporary directories and preserve the supplied inputs.
+
+This is an input-admission change. The frozen axes, aggregation formula, claim
+decision thresholds, model implementations, archived results and manuscripts
+are unchanged. No retained scientific table is rewritten, no confirmatory
+outcome is rerun, and no scientific conclusion is upgraded. Structural input
+validation does not independently verify provenance or the truth of a declared
+mechanism flag. The earlier verification and limitations above remain unchanged.

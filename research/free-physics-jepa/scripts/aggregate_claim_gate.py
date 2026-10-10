@@ -89,8 +89,27 @@ def _std(xs: list[float]) -> float:
 
 
 def load_rows_from_csv(path: Path) -> list[dict[str, Any]]:
-    with path.open() as f:
-        rows = list(csv.DictReader(f))
+    # DictReader uses the final value for a repeated header and stores surplus
+    # columns under None. Validate structure before either can erase evidence.
+    with path.open(encoding="utf-8-sig", newline="") as f:
+        reader = csv.DictReader(f, strict=True)
+        fields = reader.fieldnames or []
+        if len(fields) != len(set(fields)):
+            raise ValueError("CSV contains duplicate column headers")
+        if any(not field.strip() for field in fields):
+            raise ValueError("CSV column headers must not be blank")
+        required = {"method", "seed", "real_label_budget", "distribution", "relative_l2"}
+        missing = sorted(required - set(fields))
+        if missing:
+            raise ValueError(f"CSV is missing required columns: {missing}")
+        rows = []
+        try:
+            for row in reader:
+                if None in row or any(value is None for value in row.values()):
+                    raise ValueError(f"CSV line {reader.line_num} differs from the declared column count")
+                rows.append(row)
+        except csv.Error as exc:
+            raise ValueError(f"CSV is malformed near line {reader.line_num}: {exc}") from exc
     for r in rows:
         r["seed"] = int(r["seed"])
         r["real_label_budget"] = int(r["real_label_budget"])
@@ -106,6 +125,26 @@ def load_rows_from_csv(path: Path) -> list[dict[str, Any]]:
             if k in r and r[k] != "":
                 r[k] = float(r[k])
     return rows
+
+
+def _unique_json_object(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
+    result: dict[str, Any] = {}
+    for key, value in pairs:
+        if key in result:
+            raise ValueError(f"duplicate JSON member {key!r}")
+        result[key] = value
+    return result
+
+
+def _finite_json_float(raw: str) -> float:
+    value = float(raw)
+    if not math.isfinite(value):
+        raise ValueError("non-finite JSON number")
+    return value
+
+
+def _reject_json_constant(raw: str) -> Any:
+    raise ValueError(f"non-standard JSON constant {raw!r}")
 
 
 def seed_means(rows: list[dict], *, method: str, n: int, dist: str) -> list[float]:
@@ -230,9 +269,14 @@ def write_claim_artifacts(
     shuffle_error = None
     if shuffle_path.exists():
         try:
-            shuffle = json.loads(shuffle_path.read_text())
-        except json.JSONDecodeError:
-            shuffle_error = "Shuffled-control artifact is not valid JSON"
+            shuffle = json.loads(
+                shuffle_path.read_text(encoding="utf-8"),
+                object_pairs_hook=_unique_json_object,
+                parse_float=_finite_json_float,
+                parse_constant=_reject_json_constant,
+            )
+        except (ValueError, UnicodeError) as exc:
+            shuffle_error = f"Shuffled-control artifact is not valid unambiguous JSON: {exc}"
         if shuffle_error is None:
             if not isinstance(shuffle, dict) or type(shuffle.get("mechanism_supported")) is not bool:
                 shuffle_error = "mechanism_supported must be a JSON boolean"

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import csv
 import json
 import sys
 from pathlib import Path
@@ -177,3 +178,75 @@ def test_invalid_protocol_axes_fail_before_publication(workdir, seeds, subsets):
             shuffle_path=workdir[1], git_sha=None, write_paper_stub=False,
         )
     assert not (workdir[0] / "claim_gate.json").exists()
+
+
+@pytest.mark.parametrize("column", ["method", "seed", "real_label_budget", "distribution", "relative_l2"])
+def test_duplicate_csv_headers_cannot_conceal_metrics_or_cell_identity(tmp_path, column):
+    source = tmp_path / "ambiguous.csv"
+    fields = list(_support_rows()[0])
+    with source.open("w", newline="") as handle:
+        writer = csv.writer(handle)
+        writer.writerow([*fields, column])
+        for row in _support_rows():
+            writer.writerow([*(row[field] for field in fields), row[column]])
+    original = source.read_bytes()
+    with pytest.raises(ValueError, match="duplicate.*header"):
+        gate.load_rows_from_csv(source)
+    assert source.read_bytes() == original
+
+
+@pytest.mark.parametrize("kind", ["short", "long", "blank_header", "missing_metric"])
+def test_csv_structure_must_be_unambiguous_before_conversion(tmp_path, kind):
+    source = tmp_path / "malformed.csv"
+    fields = list(_support_rows()[0])
+    row = _support_rows()[0]
+    values = [row[field] for field in fields]
+    if kind == "short":
+        values.pop()
+    elif kind == "long":
+        values.append("undeclared")
+    elif kind == "blank_header":
+        fields.append("")
+        values.append("undeclared")
+    else:
+        fields.pop()
+        values.pop()
+    with source.open("w", newline="") as handle:
+        writer = csv.writer(handle)
+        writer.writerow(fields)
+        writer.writerow(values)
+    with pytest.raises(ValueError, match="CSV"):
+        gate.load_rows_from_csv(source)
+
+
+def test_valid_csv_roundtrip_retains_cells_metrics_and_verdict(tmp_path, workdir):
+    source = tmp_path / "valid.csv"
+    rows = _support_rows()
+    with source.open("w", newline="") as handle:
+        writer = csv.DictWriter(handle, fieldnames=list(rows[0]))
+        writer.writeheader()
+        writer.writerows(rows)
+    parsed = gate.load_rows_from_csv(source)
+    assert parsed == rows
+    assert _verdict(parsed, workdir) == "SUPPORTS_HYPOTHESIS"
+
+
+@pytest.mark.parametrize("payload", [
+    '{"mechanism_supported": false, "mechanism_supported": true}',
+    '{"mechanism_supported": true, "mechanism_supported": false}',
+    '{"mechanism_supported": true, "audit": {"seed": 11, "seed": 23}}',
+    '{"mechanism_supported": true, "correct_final_loss": NaN}',
+    '{"mechanism_supported": true, "shuffled_final_loss": Infinity}',
+    '{"mechanism_supported": true, "shuffled_final_loss": -Infinity}',
+    '{"mechanism_supported": true, "correct_final_loss": 1e400}',
+])
+def test_ambiguous_or_nonfinite_shuffled_json_cannot_support(workdir, payload):
+    workdir[1].write_text(payload)
+    assert _verdict(_support_rows(), workdir) == "INCONCLUSIVE_MECHANISM"
+    report = _report(workdir)
+    assert not report["shuffled_control"]["mechanism_supported"]
+    assert report["shuffled_control"]["validation_error"]
+    assert report["shuffled_control"]["correct_final_loss"] is None
+    assert report["shuffled_control"]["shuffled_final_loss"] is None
+    json.dumps(report, allow_nan=False)
+    assert workdir[1].read_text() == payload
