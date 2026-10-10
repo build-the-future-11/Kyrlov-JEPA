@@ -1,0 +1,92 @@
+{
+  "schema": "bounded-integration-closure-v1",
+  "id": "sine_parent_integration_20261010",
+  "status": "CLOSED",
+  "closed_utc": "2026-10-10T11:06:59.448509+00:00",
+  "contract_sha256": "52a6088f7aecd3d9878d410161559c3d7ee08887ff2e817721e08703aaef9e76",
+  "ordered_parents": [
+    "4f9845a46eb715c2f960f446c64a8142f7536aa3",
+    "8ed71d5272b04fa2f0c8602cfc90e1fd64298c5d"
+  ],
+  "final_selected_passed": 173,
+  "failed": 0,
+  "skipped": 0,
+  "warnings_as_errors": true,
+  "budget_use": {
+    "test_commands": 1,
+    "test_command_seconds": 11.053289435003535,
+    "new_test_cases": 0,
+    "demonstrations": 0,
+    "optimizer_steps": 0,
+    "training_runs": 0,
+    "scientific_campaigns": 0,
+    "protected_outcome_accesses": 0,
+    "paid_compute": 0,
+    "independent_review_execution": 0
+  },
+  "prior_budgets_reopened": false,
+  "retained_original_gate": {
+    "passed": 85,
+    "parent": "4f9845a46eb715c2f960f446c64a8142f7536aa3",
+    "scope": "Original gate and demonstration remain unchanged and bound to their original source. This combined gate does not relabel or replay the original demonstration."
+  },
+  "retained_donor_gates": [
+    94,
+    147
+  ],
+  "exact_donor_files": 12,
+  "unchanged_our_source_and_evidence": {
+    "spectral-krylov-jepa/src/spectral_krylov_jepa/evaluation/hybrid_spectral.py": "ad5709b3ce7193c80cbc5ac72140a7d902c81ebfa5a44b4b13f4e5b2d19dc06d",
+    "spectral-krylov-jepa/tests/test_sine_translation.py": "de2a2ec2fe61a065ca8f148859072aaef6a07f98408d43349c25393eec75400e",
+    "spectral-krylov-jepa/scripts/demo_sine_translation.py": "b73b77015f0ef1506331ce6e41f3fa1630fe10fe42a8b075bf6139ffe2800e33",
+    "spectral-krylov-jepa/research/development/sine_coordinates_20261010/closure.json": "7a9ff44d8d43a65c3efd9c06a07059fc3a447d12988a241e8c3034bb89fb0d3d"
+  },
+  "both_parent_state_histories_preserved": true,
+  "independent_review": {
+    "reviewer": "atg_ngmt_olympus independent source-only review",
+    "status": "PASS_WITH_RETAINED_INHERITED_LIMIT",
+    "execution_commands": 0,
+    "findings": [
+      "Scaled normalization branch is algebraically correct and coexists with direct-index sine bases.",
+      "Ordinary normalization arithmetic and sine basis/cache remain unchanged."
+    ],
+    "inherited_limit": "Finite norms >=1e-15 may retain partially underflowed component-square inaccuracies at extreme grid cell areas. This exact-donor integration does not claim arbitrary finite grid-area normalization accuracy.",
+    "analytic_unexecuted_witness": "For a 2 by 2 grid with hx = hy = 2^500 and four entries each 1.5 * 2^-537, component squares round from 2.25 to 2 minimum-subnormal units. The native norm is finite and above 1e-15, and weighted norm squared after normalization is approximately 9/8. This was reasoned about, not executed; it does not invalidate ordinary-grid amplitude fixtures.",
+    "scope": "Tested incoming amplitude/direction cases plus unchanged sine-coordinate implementation; no scientific efficacy.",
+    "reviewed_source_sha256": {
+      "normalizer": "4f943a9a8da15d8e6981cf86d468d450f00d243e2d443abc7c2e30101a39f44b",
+      "donor_tests": "a1ad454f0b1d50791d288323c39da1bffbb8a94b91b1b7396d73ab51d3753985",
+      "direct_index_sine": "ad5709b3ce7193c80cbc5ac72140a7d902c81ebfa5a44b4b13f4e5b2d19dc06d"
+    },
+    "future_evidence_requirement": "A separately specified correction would need an independent high-precision oracle over amplitude and cell-area scales and an explicit decision about preserving ordinary operation order. No such additional execution or behavior change is included here."
+  },
+  "engineering_result": "EXACT_PARENT_INTEGRATION_VERIFIED",
+  "scientific_checkpoint_advanced": false,
+  "scientific_status": "Original bounded negative/inconclusive disposition and unestablished learning advantage remain authoritative; no scientific checkpoint advanced.",
+  "publication": {
+    "existing_pr": 24,
+    "branch": "codex/sine-coordinate-invariance-20261010-0945",
+    "base_branch": "codex/strict-spectral-cohort-20261010",
+    "append_with_expected_head_lease": "4f9845a46eb715c2f960f446c64a8142f7536aa3",
+    "draft": true,
+    "skip_ci": true,
+    "why_skip_ci": "Inherited broad spectral workflows launch trained calibration campaigns outside the zero-training integration scope."
+  },
+  "artifact_sha256": {
+    "combined.json": "8e7f0e40ec023cb8bd92124be30f87f8787643813474548ee67e930d72723a6f",
+    "combined.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "combined.stdout.log": "207f7ab34f3b4e03c34092dfc2c0b6c211f119689c3c01f5ce68d6c6937b7c60",
+    "common_parent_state.json": "bc978f6b587422973f235abe00b62e3a165ca59f66c8ac3d7812ed88cbbc35e5",
+    "contract.json": "52a6088f7aecd3d9878d410161559c3d7ee08887ff2e817721e08703aaef9e76",
+    "donor_parent_state.json": "cdb37b29c71c7e048446d36420119bee5c1913c1ab1a89af7d9439cf903939d2",
+    "hybrid_spectral.py.before.txt": "ad5709b3ce7193c80cbc5ac72140a7d902c81ebfa5a44b4b13f4e5b2d19dc06d",
+    "independent_review.json": "6bbe6ec008d725b5ff6ca3aa681cb82eb473a72f77654fb10f82d07430adc69e",
+    "integration_static.json": "9a58a558e41039d2d09cbb94168806629474a87a95b2f15a332460cdb01f5d61",
+    "our_parent_state.json": "afe4137bb8b36529ebf65c3a9368957c6bd0f9661dd46fb55da504ec3e067999",
+    "test_sine_translation.py.before.txt": "de2a2ec2fe61a065ca8f148859072aaef6a07f98408d43349c25393eec75400e"
+  },
+  "hash_exclusions": [
+    "closure.json itself",
+    "canonical state and result note are bound by the final Git tree"
+  ]
+}
