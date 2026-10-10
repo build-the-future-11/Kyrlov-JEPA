@@ -1,0 +1,57 @@
+{
+  "rows": [
+    {
+      "label": "Krylov +20 labels",
+      "fidelity": 0.9916496889541183,
+      "residual": 40.19089036780306
+    },
+    {
+      "label": "Scratch +20 labels",
+      "fidelity": 0.9939449302733622,
+      "residual": 29.04363463159122
+    },
+    {
+      "label": "Fixed free box",
+      "fidelity": 0.9944600912683773,
+      "residual": 1.4838049612773967
+    },
+    {
+      "label": "Nine mode Ritz",
+      "fidelity": 0.999898440528011,
+      "residual": 0.7616658042403535
+    },
+    {
+      "label": "Ridge +20 labels",
+      "fidelity": 0.9999040619764022,
+      "residual": 0.5167663381877188
+    }
+  ],
+  "test_indices": [
+    4,
+    7,
+    26,
+    28,
+    31,
+    37,
+    39,
+    40,
+    42,
+    51,
+    53,
+    63
+  ],
+  "n": 12,
+  "paired_free_box_contrast": {
+    "alpha": 0.05,
+    "baseline": "free_box",
+    "ci_high": 0.00018237812186299056,
+    "ci_low": -0.006733064470284584,
+    "estimate": -0.002810402314258914,
+    "interpretation": "neural minus baseline; conditional on one fitted model; exploratory",
+    "n": 12,
+    "n_resamples": 2000,
+    "neural_metrics": "eval_krylov_n20/metrics.json",
+    "statistic": "mean_diff"
+  },
+  "scope": "neural aggregate readback plus classical per-example arithmetic; no model replay"
+}

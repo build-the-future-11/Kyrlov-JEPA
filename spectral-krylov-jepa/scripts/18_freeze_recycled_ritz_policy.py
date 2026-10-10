@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import sys
 from pathlib import Path
@@ -13,34 +14,13 @@ sys.path.insert(0, str(ROOT / "src"))
 
 from spectral_krylov_jepa.evaluation.recycled_policy import (
     DevelopmentResidual,
+    development_records_from_payload,
     freeze_recycled_policy,
 )
 
 
 def _load_records(path: Path) -> list[DevelopmentResidual]:
-    payload = json.loads(path.read_text(encoding="utf-8"))
-    if not isinstance(payload, dict):
-        raise ValueError("development ledger must be a JSON object")
-    if payload.get("source_role") != "development":
-        raise ValueError("development ledger must declare source_role=development")
-    rows = payload.get("records")
-    if not isinstance(rows, list) or not rows:
-        raise ValueError("development ledger must contain a nonempty records list")
-
-    records = []
-    for index, row in enumerate(rows):
-        if not isinstance(row, dict):
-            raise ValueError("record {} must be a JSON object".format(index))
-        records.append(
-            DevelopmentResidual(
-                case_id=str(row["case_id"]),
-                rank=int(row["rank"]),
-                residual_relative_to_hx=float(row["residual_relative_to_hx"]),
-                operator_applications=int(row["operator_applications"]),
-                source_role=str(row.get("source_role", payload["source_role"])),
-            )
-        )
-    return records
+    return development_records_from_payload(json.loads(path.read_bytes()))
 
 
 def main() -> int:
@@ -54,7 +34,11 @@ def main() -> int:
     parser.add_argument("--max-operator-applications", type=int, required=True)
     args = parser.parse_args()
 
-    records = _load_records(args.development_ledger)
+    if args.output.resolve() == args.development_ledger.resolve():
+        raise ValueError("output must not overwrite the development ledger")
+    # Parse and hash the same read so the receipt cannot bind different bytes.
+    ledger_bytes = args.development_ledger.read_bytes()
+    records = development_records_from_payload(json.loads(ledger_bytes))
     policy = freeze_recycled_policy(
         records,
         candidate_ranks=args.candidate_ranks,
@@ -67,7 +51,9 @@ def main() -> int:
     payload = {
         "status": "frozen-development-policy",
         "protected_outcomes_opened": False,
+        "query_exact_eigensolves_performed": False,
         "development_ledger": str(args.development_ledger),
+        "development_ledger_sha256": hashlib.sha256(ledger_bytes).hexdigest(),
         "policy": policy.to_dict(),
         "claim_boundary": (
             "This artifact freezes only the classical recycled-Ritz rank and residual "
@@ -76,10 +62,9 @@ def main() -> int:
         ),
     }
     args.output.parent.mkdir(parents=True, exist_ok=True)
-    args.output.write_text(
-        json.dumps(payload, indent=2, sort_keys=True) + "\n",
-        encoding="utf-8",
-    )
+    # A frozen policy is an artifact identity. Rechecks use a fresh destination.
+    with args.output.open("x", encoding="utf-8") as output:
+        output.write(json.dumps(payload, indent=2, sort_keys=True) + "\n")
     print(json.dumps(payload, indent=2, sort_keys=True))
     return 0
 
