@@ -188,7 +188,134 @@
         "decision": "Suppress automatic publication workflows with [skip ci]; leave workflow and script bytes unchanged. No hosted success claimed."
       },
       "next_action": "Publish this exact integration tree to existing PR22 using parents 0520827ad4d2e0e2063b48b21012bebb167a8485 and 878f21396edff83f3e2d9eb889f3058c65871da2, then publish the separately verified PR23 integration with this updated parent."
+    },
+    {
+      "id": "cohort_stack_integration_20261010",
+      "phase": "VERIFIED_FOR_EXISTING_DRAFT",
+      "record": "spectral-krylov-jepa/research/ENGINEERING_COHORT_STACK_INTEGRATION_20261010.json",
+      "old_head": "85d8757ce31ec280d50bb54c7f655025b38f076c",
+      "historical_disposition_unchanged": true,
+      "scientific_checkpoint_change": "None",
+      "test_budget": {
+        "maximum_pytest_commands_across_both_branches": 2,
+        "maximum_seconds_per_command": 90,
+        "maximum_total_command_seconds": 180,
+        "numeric_threads": 1,
+        "training_runs": 0,
+        "scientific_campaigns": 0,
+        "protected_outcome_accesses": 0,
+        "paid_compute": 0
+      },
+      "verification": {
+        "pytest_commands_used_for_this_branch": 1,
+        "total_pytest_commands_across_both_branches": 2,
+        "passed": 147,
+        "failed": 0,
+        "skipped": 0,
+        "warnings_as_errors": true,
+        "duration_seconds": 8.002325576992007,
+        "total_integration_command_seconds": 10.15607223699044,
+        "raw_artifacts": "spectral-krylov-jepa/research/verification/cohort_stack_integration_20261010/",
+        "ruff": "Critical E9/F821/F822/F823 on integrated normalizer, inherited metric/cohort/Ritz modules and amplitude/cohort tests: passed.",
+        "exact_donor_blobs": true,
+        "downstream_metric_and_cohort_source_unchanged": true,
+        "historical_state_preserved_additively": true,
+        "whitespace": "git diff --cached --check: passed for the complete staged patch, including exact donor files and raw outputs.",
+        "canonical_pointer_update": "Only the latest integration pointer advances from the inherited PR22 entry to the appended PR23 entry; all predecessor record entries remain intact."
+      },
+      "independent_review": {
+        "status": "COMPLETED_NO_SCOPED_BLOCKER",
+        "reviewer": "root agent",
+        "recorded_at_utc": "2026-10-10T10:16:38.946832+00:00",
+        "scope": "Source-only review of exact normalize_wavefunction donor, 13 existing donor regressions and integration record; no test rerun.",
+        "finding": "Real finite nonzero field/grid-area checks, ordinary arithmetic preservation, scaled normalization, explicit nonfinite-output rejection and the tested direction/shape contracts are consistent.",
+        "limit": "Tested amplitude/direction repair; not universal accuracy over every extreme grid-area/dimension combination. No scientific efficacy validation.",
+        "ci_review": "Actual PR-triggered script launches a new trained calibration outcome campaign; local-only integration with explicit hosted-unrun limitation and unchanged workflows is appropriate."
+      },
+      "next_action": "Publish this verified tree to existing PR23 through an expected-head lease, retain both parents, then review the complete stack without changing scientific gates.",
+      "parents": [
+        "85d8757ce31ec280d50bb54c7f655025b38f076c",
+        "6ae7a0a1081ad497e4e04b3d80298155c958ff32"
+      ],
+      "pr22_parent_tree": "109365d59d08e8c98f779ab36ccefc2995a2982b"
     }
   ],
-  "latest_integration_session_id": "wavefunction_stack_integration_20261010"
+  "latest_integration_session_id": "cohort_stack_integration_20261010",
+  "development_revisions": [
+    {
+      "id": "spectral-metrics-v2-20261010",
+      "phase": "DEVELOPMENT_EVALUATION_AUDIT_VERIFIED",
+      "base_commit": "be5aea5c658a0fb2da4d0f7cea34560ef62c0c88",
+      "observation": "Retained evaluate_example reports residual_rel=0 for an all-zero prediction while its Rayleigh metrics are NaN; summarize_metrics silently uses nanmean/nanstd.",
+      "hypothesized_cause": "A fixed norm floor admits the zero vector and per-metric NaN omission changes cohort denominators.",
+      "proposed_contract": "Explicit development-only evaluator: real finite grid-shaped physically unit-normalized states; scale-safe Euclidean unit vectors for residuals; strict finite complete-cohort summaries; retained invalid cases suppress the cohort summary.",
+      "predicted_consequence": "Invalid or zero predictions cannot receive perfect residuals or disappear from aggregates; valid analytic eigenpairs and the three existing residual definitions remain independently checkable.",
+      "discriminating_checks": "Generated analytic Dirichlet eigenstates, independent dense operator arithmetic, zero/nonfinite/nonunit fixtures, a large-domain scale witness, and actual valid/invalid JSON CLI execution with exclusive receipt creation.",
+      "scientific_claim": "None. The prior bounded negative/inconclusive disposition and frozen metric implementation remain unchanged.",
+      "budget": {
+        "fixture_only": true,
+        "training_runs": 0,
+        "protected_outcome_accesses": 0,
+        "protected_runs": 0,
+        "paid_compute": 0,
+        "numeric_threads": 1
+      },
+      "note": "spectral-krylov-jepa/research/DEVELOPMENT_STRICT_METRICS_20261010.md",
+      "verification_status": "134_PASSED_0_FAILED_0_SKIPPED",
+      "concurrent_dependency_update": {
+        "base_commit": "0520827ad4d2e0e2063b48b21012bebb167a8485",
+        "dependent_pr": 22,
+        "reason": "Concurrent PR22 independently repaired amplitude/zero-state residual and Rayleigh metrics. Reuse its public functions and publish only strict state admission, complete-cohort aggregation and retained JSON audit receipts.",
+        "preintegration_checks": "Original isolated candidate46 new tests plus48 existing numerical/physics tests passed; these are development observations, superseded by the final stacked checks.",
+        "inherited_credit": "Residual/Rayleigh amplitude repair and its33 regressions belong to PR22; numerical rank repair belongs to PR21."
+      },
+      "specification_phase_recorded_before_implementation": "SPECIFIED_BEFORE_IMPLEMENTATION",
+      "verification": {
+        "new_tests": 53,
+        "inherited_tests": 81,
+        "total_tests": 134,
+        "receipt": "spectral-krylov-jepa/research/verification/strict_metrics_v2_20261010/receipt.json",
+        "receipt_sha256": "c6dadaaa28a777b4cac118d9ef0e8cb853dc13d345657a1d2abfde4dd4f7dce6",
+        "cli_valid": {
+          "n": 2,
+          "exit_code": 0,
+          "summary_present": true
+        },
+        "cli_invalid": {
+          "n": 3,
+          "valid": 2,
+          "invalid": 1,
+          "exit_code": 2,
+          "summary_present": false
+        },
+        "independent_review": {
+          "status": "COMPLETED",
+          "reviewer": "space_research agent",
+          "focused_tests": 53,
+          "independent_witnesses": 11,
+          "scope": "Engineering only"
+        }
+      },
+      "decisions_and_failures_preserved": [
+        "Keep inherited PR22 amplitude repair unchanged and publish strict normalization/cohort/receipt work only.",
+        "Retain historical zero-state witness at exact pre-repair be5aea5c commit; do not attribute it to corrected PR22.",
+        "Retain current dependency doubled-state fidelity4 and NaN-denominator witnesses.",
+        "Independent review found rounded-center variance and mixed-list scalar erasure; both repaired with explicit regression cases and retained observations."
+      ],
+      "claim_evidence": {
+        "claim": "Strict opt-in development evaluation refuses invalid states and incomplete/nonfinite cohorts and retains invalid attempts.",
+        "evidence_scope": "Generated engineering fixtures and numerical oracles only.",
+        "raw_artifacts": "spectral-krylov-jepa/research/verification/strict_metrics_v2_20261010/",
+        "scientific_checkpoint_change": "None"
+      },
+      "unresolved_gates": [
+        "Review explicit opt-in input/error/normalization contract and stacked PR21/22 dependencies before integration.",
+        "Any future scientific evaluation requires prospectively naming this version, authenticating reference/split provenance and respecting frozen outcome access.",
+        "Original Krylov learning advantage remains unestablished; no trained comparison matrix or protected outcome was executed."
+      ],
+      "next_action": "Review the complete-cohort evaluator as prospective development maintenance; any new scientific comparison remains a separately gated study.",
+      "hosted_ci": "[skip ci] avoids inherited automatic spectral research workflows; local source-bound verification is retained and no hosted success is claimed."
+    }
+  ],
+  "latest_development_revision_id": "spectral-metrics-v2-20261010"
 }

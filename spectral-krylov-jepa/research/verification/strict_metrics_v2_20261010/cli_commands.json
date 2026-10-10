@@ -1,0 +1,34 @@
+[
+  {
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+      "-m",
+      "spectral_krylov_jepa.evaluation.metrics_v2",
+      "research/verification/strict_metrics_v2_20261010/valid_input.json",
+      "research/verification/strict_metrics_v2_20261010/valid_receipt.json"
+    ],
+    "returncode": 0,
+    "stdout": "",
+    "stderr": "",
+    "status": "VALID",
+    "n_requested": 2,
+    "n_invalid": 0,
+    "summary_present": true
+  },
+  {
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+      "-m",
+      "spectral_krylov_jepa.evaluation.metrics_v2",
+      "research/verification/strict_metrics_v2_20261010/invalid_input.json",
+      "research/verification/strict_metrics_v2_20261010/invalid_receipt.json"
+    ],
+    "returncode": 2,
+    "stdout": "",
+    "stderr": "",
+    "status": "INVALID",
+    "n_requested": 3,
+    "n_invalid": 1,
+    "summary_present": false
+  }
+]
