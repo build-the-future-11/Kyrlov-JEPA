@@ -15,7 +15,9 @@
   "scope": {
     "code_paths": [
       "spectral-krylov-jepa/src/spectral_krylov_jepa/evaluation/hybrid_spectral.py",
-      "spectral-krylov-jepa/tests/test_ritz_basis_contract.py"
+      "spectral-krylov-jepa/tests/test_ritz_basis_contract.py",
+      "spectral-krylov-jepa/src/spectral_krylov_jepa/physics/eigensolver.py",
+      "spectral-krylov-jepa/tests/test_wavefunction_scaling.py"
     ],
     "study_outcome": "No new study outcome produced"
   },
@@ -47,7 +49,8 @@
       "spectral-krylov-jepa/research/recycled_ritz_development_policy_20261005.json"
     ],
     "development_note": "spectral-krylov-jepa/research/DEVELOPMENT_RITZ_NUMERICAL_SPAN_20261010.md",
-    "verification_receipt": "spectral-krylov-jepa/research/verification/ritz_numerical_span_20261010/receipt.json"
+    "verification_receipt": "spectral-krylov-jepa/research/verification/ritz_numerical_span_20261010/receipt.json",
+    "normalization_extension": "spectral-krylov-jepa/research/verification/wavefunction_scaling_20261010.json"
   },
   "baseline_failures_preserved": {
     "new_suite_tests": 20,
@@ -68,6 +71,14 @@
       "predicted_consequence": "Dependent, zero-padded, rescaled and permuted representations of a span yield the same rank and Ritz result; invalid fast-path assumptions fail explicitly.",
       "discriminating_experiment": "Compare the new regression fixtures with the original base source, then run relevant existing checks.",
       "result": "See retained verification receipt; no efficacy result is inferred."
+    },
+    {
+      "date": "2026-10-10",
+      "observation": "Wavefunction normalization rejects tiny nonzero vectors and silently returns zero vectors after large-amplitude square overflow.",
+      "change": "Validate real finite grid-sized fields, preserve ordinary norm arithmetic, and use max-scaled normalization for overflowing/underflowing norms.",
+      "predicted_consequence": "Global finite amplitude cannot change a valid normalized direction; malformed/nonfinite fields fail explicitly.",
+      "discriminating_experiment": "13 synthetic analytic fixtures including full spectral coefficient reconstruction, compared with predecessor source.",
+      "result": "47 combined focused tests pass; new fixtures fail 9 / pass 4 on predecessor source. No scientific outcomes accessed."
     }
   ],
   "claim_evidence": [
@@ -82,7 +93,8 @@
   "independent_review": {
     "status": "COMPLETED",
     "scope": "Independent agent source and regression-test review; no human peer-review claim",
-    "date": "2026-10-10"
+    "date": "2026-10-10",
+    "normalization_extension": "Pending independent review; earlier completed review applies to previous Ritz changes."
   },
   "limitations": "Rank is a float64 numerical rank at eps*max(shape)*largest singular value. The 1e-10 absolute and 1e-8 relative Gram tolerances are declared numerical settings, not claims of exact symbolic rank.",
   "next_required_work": [

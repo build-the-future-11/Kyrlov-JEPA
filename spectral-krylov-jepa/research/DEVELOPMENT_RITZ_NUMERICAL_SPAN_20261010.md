@@ -29,3 +29,25 @@ Methods/reproducibility package complete; efficacy not established. Original ret
 - Review the numerical behavior change separately from the frozen study; any new result must name this code revision.
 - Respect the existing scientific execution gate and publish no efficacy claim without the required matched evidence.
 - Preserve separate LMOP and CJSJ subproject state; this state applies to spectral-krylov-jepa only.
+
+
+## Follow-up: wavefunction amplitude normalization
+
+The previous normalization rejected fields scaled by `1e-250` and returned an
+all-zero array for otherwise valid fields scaled by `1e250`. Their directions
+are unchanged mathematically. The normalizer now keeps the exact ordinary
+arithmetic path and uses max-scaled normalization when the squared norm cannot
+be computed reliably. It rejects zero, nonfinite, complex and wrong-size fields
+explicitly. The real-valued Hamiltonian contract is unchanged.
+
+Thirteen new analytic fixtures include positive/negative amplitude scaling,
+input immutability, weighted norm one, exact ordinary arithmetic, invalid inputs
+and a complete spectral coefficient reconstruction. They produced 9 failures /
+4 passes on the preceding normalizer and all pass after repair. Together with
+existing eigensolver, metric, hybrid-spectral and Ritz-contract tests the focused
+suite is **47 passed** with warnings treated as errors. The recorded old Ritz
+verification receipts remain unchanged and keep their original scope.
+
+No frozen experiment, result table, training matrix or submitted artifact was
+modified or replayed. This is a prospective numerical correction, with no
+change to the scientific efficacy conclusion.

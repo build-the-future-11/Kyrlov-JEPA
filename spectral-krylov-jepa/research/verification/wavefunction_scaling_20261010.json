@@ -1,0 +1,19 @@
+{
+  "date": "2026-10-10",
+  "predecessor_commit": "be5aea5c658a0fb2da4d0f7cea34560ef62c0c88",
+  "base_regressions": {
+    "failed": 9,
+    "passed": 4
+  },
+  "targeted_suite": {
+    "passed": 47,
+    "command": "PYTHONPATH=src PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 python -m pytest -q -o addopts= tests/test_wavefunction_scaling.py tests/test_eigensolver.py tests/test_metrics.py tests/test_ritz_basis_contract.py tests/test_hybrid_spectral.py -W error"
+  },
+  "scientific_runs": 0,
+  "protected_outcome_accesses": 0,
+  "files": {
+    "spectral-krylov-jepa/src/spectral_krylov_jepa/physics/eigensolver.py": "4f943a9a8da15d8e6981cf86d468d450f00d243e2d443abc7c2e30101a39f44b",
+    "spectral-krylov-jepa/tests/test_wavefunction_scaling.py": "a1ad454f0b1d50791d288323c39da1bffbb8a94b91b1b7396d73ab51d3753985"
+  },
+  "verification_scope": "Bounded analytic and existing implementation tests; no independent research-outcome reproduction."
+}
