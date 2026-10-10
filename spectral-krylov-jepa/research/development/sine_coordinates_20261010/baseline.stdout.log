@@ -1,0 +1,414 @@
+.....FFFFFFFFFFFFFF.                                                     [100%]
+=================================== FAILURES ===================================
+____ test_modes_match_independent_kronecker_definition[1000000000000.0-4-3] ____
+
+n = 4, side = 3, origin = 1000000000000.0
+
+    @pytest.mark.parametrize("n,side", [(2, 2), (4, 3), (8, 5), (16, 7)])
+    @pytest.mark.parametrize("origin", [0.0, 1e12, -1e16, 1e16])
+    def test_modes_match_independent_kronecker_definition(n, side, origin):
+        grid = GridSpec(n, origin, origin + 4.0, -origin, -origin + 8.0)
+        basis, labels = sine_basis(grid, side)
+        one_d = np.sqrt(2.0 / (n + 1)) * np.sin(np.pi * np.outer(np.arange(1, n + 1), np.arange(1, side + 1)) / (n + 1))
+        expected = np.column_stack([np.kron(one_d[:, my - 1], one_d[:, mx - 1]) for mx, my in labels])
+>       np.testing.assert_allclose(basis, expected, atol=2e-13, rtol=0)
+E       AssertionError: 
+E       Not equal to tolerance rtol=0, atol=2e-13
+E       
+E       Mismatched elements: 144 / 144 (100%)
+E       Max absolute difference among violations: 1.79705825e-05
+E       Max relative difference among violations: 9.4295306e-05
+E        ACTUAL: array([[ 0.138202,  0.223604,  0.223608,  0.223613,  0.361795,  0.361802,
+E                0.223622,  0.361809,  0.361816],
+E              [ 0.223602,  0.138199, -0.138192,  0.361792,  0.223608, -0.223596,...
+E        DESIRED: array([[ 0.138197,  0.223607,  0.223607,  0.223607,  0.361803,  0.361803,
+E                0.223607,  0.361803,  0.361803],
+E              [ 0.223607,  0.138197, -0.138197,  0.361803,  0.223607, -0.223607,...
+
+spectral-krylov-jepa/tests/test_sine_translation.py:18: AssertionError
+____ test_modes_match_independent_kronecker_definition[1000000000000.0-8-5] ____
+
+n = 8, side = 5, origin = 1000000000000.0
+
+    @pytest.mark.parametrize("n,side", [(2, 2), (4, 3), (8, 5), (16, 7)])
+    @pytest.mark.parametrize("origin", [0.0, 1e12, -1e16, 1e16])
+    def test_modes_match_independent_kronecker_definition(n, side, origin):
+        grid = GridSpec(n, origin, origin + 4.0, -origin, -origin + 8.0)
+        basis, labels = sine_basis(grid, side)
+        one_d = np.sqrt(2.0 / (n + 1)) * np.sin(np.pi * np.outer(np.arange(1, n + 1), np.arange(1, side + 1)) / (n + 1))
+        expected = np.column_stack([np.kron(one_d[:, my - 1], one_d[:, mx - 1]) for mx, my in labels])
+>       np.testing.assert_allclose(basis, expected, atol=2e-13, rtol=0)
+E       AssertionError: 
+E       Not equal to tolerance rtol=0, atol=2e-13
+E       
+E       Mismatched elements: 1596 / 1600 (99.8%)
+E       Max absolute difference among violations: 3.52981654e-05
+E       Max relative difference among violations: 3.06439094e+23
+E        ACTUAL: array([[ 2.599611e-02,  4.885808e-02,  6.582356e-02, ...,  1.895206e-01,
+E                2.155212e-01,  2.155071e-01],
+E              [ 4.885651e-02,  7.485359e-02,  6.581991e-02, ...,  1.895101e-01,...
+E        DESIRED: array([[ 2.599506e-02,  4.885474e-02,  6.582181e-02, ...,  1.895263e-01,
+E                2.155214e-01,  2.155214e-01],
+E              [ 4.885474e-02,  7.484980e-02,  6.582181e-02, ...,  1.895263e-01,...
+
+spectral-krylov-jepa/tests/test_sine_translation.py:18: AssertionError
+___ test_modes_match_independent_kronecker_definition[1000000000000.0-16-7] ____
+
+n = 16, side = 7, origin = 1000000000000.0
+
+    @pytest.mark.parametrize("n,side", [(2, 2), (4, 3), (8, 5), (16, 7)])
+    @pytest.mark.parametrize("origin", [0.0, 1e12, -1e16, 1e16])
+    def test_modes_match_independent_kronecker_definition(n, side, origin):
+        grid = GridSpec(n, origin, origin + 4.0, -origin, -origin + 8.0)
+        basis, labels = sine_basis(grid, side)
+        one_d = np.sqrt(2.0 / (n + 1)) * np.sin(np.pi * np.outer(np.arange(1, n + 1), np.arange(1, side + 1)) / (n + 1))
+        expected = np.column_stack([np.kron(one_d[:, my - 1], one_d[:, mx - 1]) for mx, my in labels])
+>       np.testing.assert_allclose(basis, expected, atol=2e-13, rtol=0)
+E       AssertionError: 
+E       Not equal to tolerance rtol=0, atol=2e-13
+E       
+E       Mismatched elements: 12544 / 12544 (100%)
+E       Max absolute difference among violations: 2.7041432e-05
+E       Max relative difference among violations: 0.00161323
+E        ACTUAL: array([[ 0.003973,  0.007811,  0.011382, ...,  0.090315,  0.101305,
+E                0.108843],
+E              [ 0.007809,  0.014563,  0.019351, ...,  0.108836,  0.090301,...
+E        DESIRED: array([[ 0.003972,  0.007809,  0.01138 , ...,  0.0903  ,  0.101293,
+E                0.108836],
+E              [ 0.007809,  0.014564,  0.019351, ...,  0.108836,  0.0903  ,...
+
+spectral-krylov-jepa/tests/test_sine_translation.py:18: AssertionError
+________ test_modes_match_independent_kronecker_definition[-1e+16-2-2] _________
+
+n = 2, side = 2, origin = -1e+16
+
+    @pytest.mark.parametrize("n,side", [(2, 2), (4, 3), (8, 5), (16, 7)])
+    @pytest.mark.parametrize("origin", [0.0, 1e12, -1e16, 1e16])
+    def test_modes_match_independent_kronecker_definition(n, side, origin):
+        grid = GridSpec(n, origin, origin + 4.0, -origin, -origin + 8.0)
+        basis, labels = sine_basis(grid, side)
+        one_d = np.sqrt(2.0 / (n + 1)) * np.sin(np.pi * np.outer(np.arange(1, n + 1), np.arange(1, side + 1)) / (n + 1))
+        expected = np.column_stack([np.kron(one_d[:, my - 1], one_d[:, mx - 1]) for mx, my in labels])
+>       np.testing.assert_allclose(basis, expected, atol=2e-13, rtol=0)
+E       AssertionError: 
+E       Not equal to tolerance rtol=0, atol=2e-13
+E       
+E       Mismatched elements: 8 / 16 (50%)
+E       Max absolute difference among violations: 0.62246468
+E       Max relative difference among violations: 1.24492936
+E        ACTUAL: array([[ 0.5     ,  0.086596,  0.5     ,  0.122465],
+E              [ 0.5     ,  0.086596,  0.5     ,  0.122465],
+E              [ 0.5     ,  0.086596, -0.5     , -0.122465],
+E              [ 0.5     ,  0.086596, -0.5     , -0.122465]])
+E        DESIRED: array([[ 0.5,  0.5,  0.5,  0.5],
+E              [ 0.5, -0.5,  0.5, -0.5],
+E              [ 0.5,  0.5, -0.5, -0.5],
+E              [ 0.5, -0.5, -0.5,  0.5]])
+
+spectral-krylov-jepa/tests/test_sine_translation.py:18: AssertionError
+________ test_modes_match_independent_kronecker_definition[-1e+16-4-3] _________
+
+n = 4, side = 3, origin = -1e+16
+
+    @pytest.mark.parametrize("n,side", [(2, 2), (4, 3), (8, 5), (16, 7)])
+    @pytest.mark.parametrize("origin", [0.0, 1e12, -1e16, 1e16])
+    def test_modes_match_independent_kronecker_definition(n, side, origin):
+        grid = GridSpec(n, origin, origin + 4.0, -origin, -origin + 8.0)
+        basis, labels = sine_basis(grid, side)
+        one_d = np.sqrt(2.0 / (n + 1)) * np.sin(np.pi * np.outer(np.arange(1, n + 1), np.arange(1, side + 1)) / (n + 1))
+        expected = np.column_stack([np.kron(one_d[:, my - 1], one_d[:, mx - 1]) for mx, my in labels])
+>       np.testing.assert_allclose(basis, expected, atol=2e-13, rtol=0)
+E       AssertionError: 
+E       Not equal to tolerance rtol=0, atol=2e-13
+E       
+E       Mismatched elements: 144 / 144 (100%)
+E       Max absolute difference among violations: 0.3618034
+E       Max relative difference among violations: 1.95411238
+E        ACTUAL: array([[ 0.000000e+00,  0.000000e+00,  0.000000e+00,  0.000000e+00,
+E                0.000000e+00,  0.000000e+00,  0.000000e+00,  0.000000e+00,
+E                0.000000e+00],...
+E        DESIRED: array([[ 0.138197,  0.223607,  0.223607,  0.223607,  0.361803,  0.361803,
+E                0.223607,  0.361803,  0.361803],
+E              [ 0.223607,  0.138197, -0.138197,  0.361803,  0.223607, -0.223607,...
+
+spectral-krylov-jepa/tests/test_sine_translation.py:18: AssertionError
+________ test_modes_match_independent_kronecker_definition[-1e+16-8-5] _________
+
+n = 8, side = 5, origin = -1e+16
+
+    @pytest.mark.parametrize("n,side", [(2, 2), (4, 3), (8, 5), (16, 7)])
+    @pytest.mark.parametrize("origin", [0.0, 1e12, -1e16, 1e16])
+    def test_modes_match_independent_kronecker_definition(n, side, origin):
+        grid = GridSpec(n, origin, origin + 4.0, -origin, -origin + 8.0)
+        basis, labels = sine_basis(grid, side)
+        one_d = np.sqrt(2.0 / (n + 1)) * np.sin(np.pi * np.outer(np.arange(1, n + 1), np.arange(1, side + 1)) / (n + 1))
+        expected = np.column_stack([np.kron(one_d[:, my - 1], one_d[:, mx - 1]) for mx, my in labels])
+>       np.testing.assert_allclose(basis, expected, atol=2e-13, rtol=0)
+E       AssertionError: 
+E       Not equal to tolerance rtol=0, atol=2e-13
+E       
+E       Mismatched elements: 1546 / 1600 (96.6%)
+E       Max absolute difference among violations: 0.49103769
+E       Max relative difference among violations: 5.30415029e+31
+E        ACTUAL: array([[ 0.000000e+00,  0.000000e+00,  0.000000e+00, ...,  0.000000e+00,
+E                0.000000e+00,  0.000000e+00],
+E              [ 0.000000e+00,  0.000000e+00,  0.000000e+00, ...,  0.000000e+00,...
+E        DESIRED: array([[ 2.599506e-02,  4.885474e-02,  6.582181e-02, ...,  1.895263e-01,
+E                2.155214e-01,  2.155214e-01],
+E              [ 4.885474e-02,  7.484980e-02,  6.582181e-02, ...,  1.895263e-01,...
+
+spectral-krylov-jepa/tests/test_sine_translation.py:18: AssertionError
+________ test_modes_match_independent_kronecker_definition[-1e+16-16-7] ________
+
+n = 16, side = 7, origin = -1e+16
+
+    @pytest.mark.parametrize("n,side", [(2, 2), (4, 3), (8, 5), (16, 7)])
+    @pytest.mark.parametrize("origin", [0.0, 1e12, -1e16, 1e16])
+    def test_modes_match_independent_kronecker_definition(n, side, origin):
+        grid = GridSpec(n, origin, origin + 4.0, -origin, -origin + 8.0)
+        basis, labels = sine_basis(grid, side)
+        one_d = np.sqrt(2.0 / (n + 1)) * np.sin(np.pi * np.outer(np.arange(1, n + 1), np.arange(1, side + 1)) / (n + 1))
+        expected = np.column_stack([np.kron(one_d[:, my - 1], one_d[:, mx - 1]) for mx, my in labels])
+>       np.testing.assert_allclose(basis, expected, atol=2e-13, rtol=0)
+E       AssertionError: 
+E       Not equal to tolerance rtol=0, atol=2e-13
+E       
+E       Mismatched elements: 12544 / 12544 (100%)
+E       Max absolute difference among violations: 0.26740115
+E       Max relative difference among violations: 37.33673409
+E        ACTUAL: array([[ 0.000000e+00,  0.000000e+00,  0.000000e+00, ...,  0.000000e+00,
+E                0.000000e+00,  0.000000e+00],
+E              [ 0.000000e+00,  0.000000e+00,  0.000000e+00, ...,  0.000000e+00,...
+E        DESIRED: array([[ 0.003972,  0.007809,  0.01138 , ...,  0.0903  ,  0.101293,
+E                0.108836],
+E              [ 0.007809,  0.014564,  0.019351, ...,  0.108836,  0.0903  ,...
+
+spectral-krylov-jepa/tests/test_sine_translation.py:18: AssertionError
+_________ test_modes_match_independent_kronecker_definition[1e+16-2-2] _________
+
+n = 2, side = 2, origin = 1e+16
+
+    @pytest.mark.parametrize("n,side", [(2, 2), (4, 3), (8, 5), (16, 7)])
+    @pytest.mark.parametrize("origin", [0.0, 1e12, -1e16, 1e16])
+    def test_modes_match_independent_kronecker_definition(n, side, origin):
+        grid = GridSpec(n, origin, origin + 4.0, -origin, -origin + 8.0)
+        basis, labels = sine_basis(grid, side)
+        one_d = np.sqrt(2.0 / (n + 1)) * np.sin(np.pi * np.outer(np.arange(1, n + 1), np.arange(1, side + 1)) / (n + 1))
+        expected = np.column_stack([np.kron(one_d[:, my - 1], one_d[:, mx - 1]) for mx, my in labels])
+>       np.testing.assert_allclose(basis, expected, atol=2e-13, rtol=0)
+E       AssertionError: 
+E       Not equal to tolerance rtol=0, atol=2e-13
+E       
+E       Mismatched elements: 8 / 16 (50%)
+E       Max absolute difference among violations: 0.62246468
+E       Max relative difference among violations: 1.24492936
+E        ACTUAL: array([[ 0.5     ,  0.086596,  0.5     ,  0.122465],
+E              [ 0.5     ,  0.086596,  0.5     ,  0.122465],
+E              [ 0.5     ,  0.086596, -0.5     , -0.122465],
+E              [ 0.5     ,  0.086596, -0.5     , -0.122465]])
+E        DESIRED: array([[ 0.5,  0.5,  0.5,  0.5],
+E              [ 0.5, -0.5,  0.5, -0.5],
+E              [ 0.5,  0.5, -0.5, -0.5],
+E              [ 0.5, -0.5, -0.5,  0.5]])
+
+spectral-krylov-jepa/tests/test_sine_translation.py:18: AssertionError
+_________ test_modes_match_independent_kronecker_definition[1e+16-4-3] _________
+
+n = 4, side = 3, origin = 1e+16
+
+    @pytest.mark.parametrize("n,side", [(2, 2), (4, 3), (8, 5), (16, 7)])
+    @pytest.mark.parametrize("origin", [0.0, 1e12, -1e16, 1e16])
+    def test_modes_match_independent_kronecker_definition(n, side, origin):
+        grid = GridSpec(n, origin, origin + 4.0, -origin, -origin + 8.0)
+        basis, labels = sine_basis(grid, side)
+        one_d = np.sqrt(2.0 / (n + 1)) * np.sin(np.pi * np.outer(np.arange(1, n + 1), np.arange(1, side + 1)) / (n + 1))
+        expected = np.column_stack([np.kron(one_d[:, my - 1], one_d[:, mx - 1]) for mx, my in labels])
+>       np.testing.assert_allclose(basis, expected, atol=2e-13, rtol=0)
+E       AssertionError: 
+E       Not equal to tolerance rtol=0, atol=2e-13
+E       
+E       Mismatched elements: 144 / 144 (100%)
+E       Max absolute difference among violations: 0.3618034
+E       Max relative difference among violations: 1.95411238
+E        ACTUAL: array([[ 0.000000e+00,  0.000000e+00,  0.000000e+00,  0.000000e+00,
+E                0.000000e+00,  0.000000e+00,  0.000000e+00,  0.000000e+00,
+E                0.000000e+00],...
+E        DESIRED: array([[ 0.138197,  0.223607,  0.223607,  0.223607,  0.361803,  0.361803,
+E                0.223607,  0.361803,  0.361803],
+E              [ 0.223607,  0.138197, -0.138197,  0.361803,  0.223607, -0.223607,...
+
+spectral-krylov-jepa/tests/test_sine_translation.py:18: AssertionError
+_________ test_modes_match_independent_kronecker_definition[1e+16-8-5] _________
+
+n = 8, side = 5, origin = 1e+16
+
+    @pytest.mark.parametrize("n,side", [(2, 2), (4, 3), (8, 5), (16, 7)])
+    @pytest.mark.parametrize("origin", [0.0, 1e12, -1e16, 1e16])
+    def test_modes_match_independent_kronecker_definition(n, side, origin):
+        grid = GridSpec(n, origin, origin + 4.0, -origin, -origin + 8.0)
+        basis, labels = sine_basis(grid, side)
+        one_d = np.sqrt(2.0 / (n + 1)) * np.sin(np.pi * np.outer(np.arange(1, n + 1), np.arange(1, side + 1)) / (n + 1))
+        expected = np.column_stack([np.kron(one_d[:, my - 1], one_d[:, mx - 1]) for mx, my in labels])
+>       np.testing.assert_allclose(basis, expected, atol=2e-13, rtol=0)
+E       AssertionError: 
+E       Not equal to tolerance rtol=0, atol=2e-13
+E       
+E       Mismatched elements: 1546 / 1600 (96.6%)
+E       Max absolute difference among violations: 0.49103769
+E       Max relative difference among violations: 5.30415029e+31
+E        ACTUAL: array([[ 0.000000e+00,  0.000000e+00,  0.000000e+00, ...,  0.000000e+00,
+E                0.000000e+00,  0.000000e+00],
+E              [ 0.000000e+00,  0.000000e+00,  0.000000e+00, ...,  0.000000e+00,...
+E        DESIRED: array([[ 2.599506e-02,  4.885474e-02,  6.582181e-02, ...,  1.895263e-01,
+E                2.155214e-01,  2.155214e-01],
+E              [ 4.885474e-02,  7.484980e-02,  6.582181e-02, ...,  1.895263e-01,...
+
+spectral-krylov-jepa/tests/test_sine_translation.py:18: AssertionError
+________ test_modes_match_independent_kronecker_definition[1e+16-16-7] _________
+
+n = 16, side = 7, origin = 1e+16
+
+    @pytest.mark.parametrize("n,side", [(2, 2), (4, 3), (8, 5), (16, 7)])
+    @pytest.mark.parametrize("origin", [0.0, 1e12, -1e16, 1e16])
+    def test_modes_match_independent_kronecker_definition(n, side, origin):
+        grid = GridSpec(n, origin, origin + 4.0, -origin, -origin + 8.0)
+        basis, labels = sine_basis(grid, side)
+        one_d = np.sqrt(2.0 / (n + 1)) * np.sin(np.pi * np.outer(np.arange(1, n + 1), np.arange(1, side + 1)) / (n + 1))
+        expected = np.column_stack([np.kron(one_d[:, my - 1], one_d[:, mx - 1]) for mx, my in labels])
+>       np.testing.assert_allclose(basis, expected, atol=2e-13, rtol=0)
+E       AssertionError: 
+E       Not equal to tolerance rtol=0, atol=2e-13
+E       
+E       Mismatched elements: 12544 / 12544 (100%)
+E       Max absolute difference among violations: 0.26740115
+E       Max relative difference among violations: 37.33673409
+E        ACTUAL: array([[ 0.000000e+00,  0.000000e+00,  0.000000e+00, ...,  0.000000e+00,
+E                0.000000e+00,  0.000000e+00],
+E              [ 0.000000e+00,  0.000000e+00,  0.000000e+00, ...,  0.000000e+00,...
+E        DESIRED: array([[ 0.003972,  0.007809,  0.01138 , ...,  0.0903  ,  0.101293,
+E                0.108836],
+E              [ 0.007809,  0.014564,  0.019351, ...,  0.108836,  0.0903  ,...
+
+spectral-krylov-jepa/tests/test_sine_translation.py:18: AssertionError
+_____ test_basis_is_identical_under_translation_and_rectangular_rescaling ______
+
+    def test_basis_is_identical_under_translation_and_rectangular_rescaling():
+        reference, labels = sine_basis(GridSpec(8), 5)
+        for grid in [GridSpec(8, 1e16, 1e16 + 4, -1e16, -1e16 + 8), GridSpec(8, -1e12, -1e12 + 0.5, 1e12, 1e12 + 4), GridSpec(8, -7, -3, 19, 27)]:
+            actual, actual_labels = sine_basis(grid, 5)
+>           np.testing.assert_array_equal(actual, reference)
+E           AssertionError: 
+E           Arrays are not equal
+E           
+E           Mismatched elements: 1600 / 1600 (100%)
+E           Max absolute difference among violations: 0.49103769
+E           Max relative difference among violations: 5.30415029e+31
+E            ACTUAL: array([[ 0.000000e+00,  0.000000e+00,  0.000000e+00, ...,  0.000000e+00,
+E                    0.000000e+00,  0.000000e+00],
+E                  [ 0.000000e+00,  0.000000e+00,  0.000000e+00, ...,  0.000000e+00,...
+E            DESIRED: array([[ 2.599506e-02,  4.885474e-02,  6.582181e-02, ...,  1.895263e-01,
+E                    2.155214e-01,  2.155214e-01],
+E                  [ 4.885474e-02,  7.484980e-02,  6.582181e-02, ...,  1.895263e-01,...
+
+spectral-krylov-jepa/tests/test_sine_translation.py:27: AssertionError
+___ test_translated_modes_diagonalize_the_actual_finite_difference_operator ____
+
+    def test_translated_modes_diagonalize_the_actual_finite_difference_operator():
+        grid = GridSpec(8, 1e16, 1e16 + 4, -1e16, -1e16 + 8)
+        potential = np.zeros((grid.ny, grid.nx))
+        basis, _ = sine_basis(grid, 5)
+        energies = box_energies(grid, 5)
+        matrix = build_hamiltonian(grid, potential).matrix
+>       np.testing.assert_allclose(matrix @ basis, basis * energies, rtol=2e-12, atol=2e-12)
+E       AssertionError: 
+E       Not equal to tolerance rtol=2e-12, atol=2e-12
+E       
+E       Mismatched elements: 1078 / 1600 (67.4%)
+E       Max absolute difference among violations: 1.58667847
+E       Max relative difference among violations: 5.41600035e+16
+E        ACTUAL: array([[ 0.000000e+00,  0.000000e+00,  0.000000e+00, ...,  0.000000e+00,
+E                0.000000e+00,  0.000000e+00],
+E              [ 0.000000e+00,  0.000000e+00,  0.000000e+00, ...,  0.000000e+00,...
+E        DESIRED: array([[ 0.000000e+00,  0.000000e+00,  0.000000e+00, ...,  0.000000e+00,
+E                0.000000e+00,  0.000000e+00],
+E              [ 0.000000e+00,  0.000000e+00,  0.000000e+00, ...,  0.000000e+00,...
+
+spectral-krylov-jepa/tests/test_sine_translation.py:37: AssertionError
+_____ test_translated_fast_path_and_adaptive_ritz_match_centered_operator ______
+
+    def test_translated_fast_path_and_adaptive_ritz_match_centered_operator():
+        centered = GridSpec(8, 0, 4, 0, 8)
+        translated = GridSpec(8, 1e16, 1e16 + 4, -1e16, -1e16 + 8)
+        potential = np.zeros((8, 8))
+        q, _ = sine_basis(centered, 3)
+        expected = projected_ritz(potential, centered, q, assume_orthonormal=True)
+>       actual = adaptive_ritz(potential, translated, low_side=3)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+spectral-krylov-jepa/tests/test_sine_translation.py:46: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+spectral-krylov-jepa/src/spectral_krylov_jepa/evaluation/hybrid_spectral.py:315: in adaptive_ritz
+    result = projected_ritz(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+potential = array([[0., 0., 0., 0., 0., 0., 0., 0.],
+       [0., 0., 0., 0., 0., 0., 0., 0.],
+       [0., 0., 0., 0., 0., 0., 0., ...   [0., 0., 0., 0., 0., 0., 0., 0.],
+       [0., 0., 0., 0., 0., 0., 0., 0.],
+       [0., 0., 0., 0., 0., 0., 0., 0.]])
+grid = GridSpec(n_interior=8, x_min=1e+16, x_max=1.0000000000000004e+16, y_min=-1e+16, y_max=-9999999999999992.0)
+basis = array([[ 0.00000000e+00,  0.00000000e+00,  0.00000000e+00,
+         0.00000000e+00,  0.00000000e+00,  0.00000000e+00,
+...        -7.49879891e-33,  5.99903913e-17, -2.24963967e-32,
+         1.12481984e-32, -8.99855870e-17,  3.37445951e-32]])
+assume_orthonormal = True
+
+    def projected_ritz(
+        potential: np.ndarray,
+        grid: GridSpec,
+        basis: np.ndarray,
+        *,
+        assume_orthonormal: bool = False,
+    ) -> AdaptiveRitzResult:
+        """Solve Rayleigh--Ritz in the numerical column span of a real basis.
+    
+        An unpivoted QR factorization completes dependent columns with arbitrary
+        directions. Those extra directions are not part of the supplied trial
+        space. Use the left singular vectors with singular values greater than
+        ``eps * max(basis.shape) * largest_singular_value`` instead. Global scaling
+        before the factorization prevents overflow without changing the span.
+    
+        The orthonormal fast path checks its assumption; silently using a scaled
+        or dependent basis would solve a different eigenproblem.
+        """
+        if np.iscomplexobj(basis):
+            raise ValueError("basis must be real")
+        b = np.asarray(basis, dtype=np.float64)
+        if b.ndim != 2 or b.shape[0] != grid.n_dof or b.shape[1] == 0:
+            raise ValueError(f"basis must have shape ({grid.n_dof}, K>0)")
+        if not np.all(np.isfinite(b)):
+            raise ValueError("basis must contain only finite values")
+        if assume_orthonormal:
+            with np.errstate(over="ignore", invalid="ignore"):
+                gram = b.T @ b
+            if not np.allclose(gram, np.eye(b.shape[1]), atol=1e-10, rtol=1e-8):
+>               raise ValueError("basis must be Euclidean-orthonormal on the fast path")
+E               ValueError: basis must be Euclidean-orthonormal on the fast path
+
+spectral-krylov-jepa/src/spectral_krylov_jepa/evaluation/hybrid_spectral.py:259: ValueError
+=========================== short test summary info ============================
+FAILED spectral-krylov-jepa/tests/test_sine_translation.py::test_modes_match_independent_kronecker_definition[1000000000000.0-4-3]
+FAILED spectral-krylov-jepa/tests/test_sine_translation.py::test_modes_match_independent_kronecker_definition[1000000000000.0-8-5]
+FAILED spectral-krylov-jepa/tests/test_sine_translation.py::test_modes_match_independent_kronecker_definition[1000000000000.0-16-7]
+FAILED spectral-krylov-jepa/tests/test_sine_translation.py::test_modes_match_independent_kronecker_definition[-1e+16-2-2]
+FAILED spectral-krylov-jepa/tests/test_sine_translation.py::test_modes_match_independent_kronecker_definition[-1e+16-4-3]
+FAILED spectral-krylov-jepa/tests/test_sine_translation.py::test_modes_match_independent_kronecker_definition[-1e+16-8-5]
+FAILED spectral-krylov-jepa/tests/test_sine_translation.py::test_modes_match_independent_kronecker_definition[-1e+16-16-7]
+FAILED spectral-krylov-jepa/tests/test_sine_translation.py::test_modes_match_independent_kronecker_definition[1e+16-2-2]
+FAILED spectral-krylov-jepa/tests/test_sine_translation.py::test_modes_match_independent_kronecker_definition[1e+16-4-3]
+FAILED spectral-krylov-jepa/tests/test_sine_translation.py::test_modes_match_independent_kronecker_definition[1e+16-8-5]
+FAILED spectral-krylov-jepa/tests/test_sine_translation.py::test_modes_match_independent_kronecker_definition[1e+16-16-7]
+FAILED spectral-krylov-jepa/tests/test_sine_translation.py::test_basis_is_identical_under_translation_and_rectangular_rescaling
+FAILED spectral-krylov-jepa/tests/test_sine_translation.py::test_translated_modes_diagonalize_the_actual_finite_difference_operator
+FAILED spectral-krylov-jepa/tests/test_sine_translation.py::test_translated_fast_path_and_adaptive_ritz_match_centered_operator
+14 failed, 6 passed in 0.90s

@@ -39,12 +39,11 @@ def _cached_sine_basis(
 ) -> tuple[np.ndarray, np.ndarray]:
     if not 1 <= side <= n:
         raise ValueError(f"side must be in [1, {n}], got {side}")
-    hx = (x_max - x_min) / (n + 1)
-    hy = (y_max - y_min) / (n + 1)
-    x = x_min + hx * np.arange(1, n + 1, dtype=np.float64)
-    y = y_min + hy * np.arange(1, n + 1, dtype=np.float64)
-    x = (x - x_min) / (x_max - x_min)
-    y = (y - y_min) / (y_max - y_min)
+    # Dirichlet modes depend on the interior index fraction, not the origin.
+    # Forming physical coordinates first can round distinct interior nodes to
+    # the same value at large offsets and destroy the trial space's orthogonality.
+    x = np.arange(1, n + 1, dtype=np.float64) / (n + 1)
+    y = x
     cols: list[np.ndarray] = []
     labels: list[tuple[int, int]] = []
     for my in range(1, side + 1):
