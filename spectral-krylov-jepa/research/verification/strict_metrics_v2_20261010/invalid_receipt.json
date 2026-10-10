@@ -1,0 +1,61 @@
+{
+  "contract": "spectral-metrics-v2",
+  "status": "INVALID",
+  "summary": null,
+  "source_sha256": {
+    "evaluation/metrics_v2.py": "3b5b8c6e2178f71d81a7e201bb66987b3c9f35429c33ad86e241695ca0b4e18a",
+    "evaluation/metrics.py": "a23482243a40fc370420a2c83d505a6cec37da2345beb449f0224e715eecd182",
+    "physics/grid.py": "9edd41841fc011a32a9e8b1d6f45c2882d23f990c29b280be5b0860bcd010120",
+    "physics/hamiltonian.py": "222f83fa7c5156f236b9c455f7e431e6b96019a5dddd3fa726bb14ea2232b270",
+    "physics/laplacian.py": "7ef52316d3943451d9f43c1b1bad6a895531a7b56f726640d449915b222a6083"
+  },
+  "environment": {
+    "python": "3.12.14",
+    "numpy": "2.3.5",
+    "scipy": "1.17.0",
+    "platform": "Linux-6.18.44-x86_64-with-glibc2.39"
+  },
+  "input_sha256": "f2cfc00a501ee73d5a261fa39ae149e33ce59295362cfd203426425cab5c55fd",
+  "input_base64": "ewogICJldmFsdWF0aW9uX21vZGUiOiAiZGV2ZWxvcG1lbnQiLAogICJncmlkIjogewogICAgIm5faW50ZXJpb3IiOiAyLAogICAgInhfbWluIjogMC4wLAogICAgInhfbWF4IjogMS4wLAogICAgInlfbWluIjogMC4wLAogICAgInlfbWF4IjogMS4wCiAgfSwKICAiY2FzZXMiOiBbCiAgICB7CiAgICAgICJjYXNlX2lkIjogImV4YWN0LWNvbnN0YW50LWJveCIsCiAgICAgICJwb3RlbnRpYWwiOiBbCiAgICAgICAgWwogICAgICAgICAgMC4wLAogICAgICAgICAgMC4wCiAgICAgICAgXSwKICAgICAgICBbCiAgICAgICAgICAwLjAsCiAgICAgICAgICAwLjAKICAgICAgICBdCiAgICAgIF0sCiAgICAgICJwc2lfdHJ1ZSI6IFsKICAgICAgICBbCiAgICAgICAgICAxLjUsCiAgICAgICAgICAxLjUKICAgICAgICBdLAogICAgICAgIFsKICAgICAgICAgIDEuNSwKICAgICAgICAgIDEuNQogICAgICAgIF0KICAgICAgXSwKICAgICAgImVfdHJ1ZSI6IDkuMCwKICAgICAgInBzaV9oYXQiOiBbCiAgICAgICAgWwogICAgICAgICAgMS41LAogICAgICAgICAgMS41CiAgICAgICAgXSwKICAgICAgICBbCiAgICAgICAgICAxLjUsCiAgICAgICAgICAxLjUKICAgICAgICBdCiAgICAgIF0sCiAgICAgICJlX2hhdCI6IDkuMAogICAgfSwKICAgIHsKICAgICAgImNhc2VfaWQiOiAiZW5lcmd5LWhlYWQtcGx1cy10aHJlZSIsCiAgICAgICJwb3RlbnRpYWwiOiBbCiAgICAgICAgWwogICAgICAgICAgMC4wLAogICAgICAgICAgMC4wCiAgICAgICAgXSwKICAgICAgICBbCiAgICAgICAgICAwLjAsCiAgICAgICAgICAwLjAKICAgICAgICBdCiAgICAgIF0sCiAgICAgICJwc2lfdHJ1ZSI6IFsKICAgICAgICBbCiAgICAgICAgICAxLjUsCiAgICAgICAgICAxLjUKICAgICAgICBdLAogICAgICAgIFsKICAgICAgICAgIDEuNSwKICAgICAgICAgIDEuNQogICAgICAgIF0KICAgICAgXSwKICAgICAgImVfdHJ1ZSI6IDkuMCwKICAgICAgInBzaV9oYXQiOiBbCiAgICAgICAgWwogICAgICAgICAgMS41LAogICAgICAgICAgMS41CiAgICAgICAgXSwKICAgICAgICBbCiAgICAgICAgICAxLjUsCiAgICAgICAgICAxLjUKICAgICAgICBdCiAgICAgIF0sCiAgICAgICJlX2hhdCI6IDEyLjAKICAgIH0sCiAgICB7CiAgICAgICJjYXNlX2lkIjogInplcm8tcHJlZGljdGlvbiIsCiAgICAgICJwb3RlbnRpYWwiOiBbCiAgICAgICAgWwogICAgICAgICAgMC4wLAogICAgICAgICAgMC4wCiAgICAgICAgXSwKICAgICAgICBbCiAgICAgICAgICAwLjAsCiAgICAgICAgICAwLjAKICAgICAgICBdCiAgICAgIF0sCiAgICAgICJwc2lfdHJ1ZSI6IFsKICAgICAgICBbCiAgICAgICAgICAxLjUsCiAgICAgICAgICAxLjUKICAgICAgICBdLAogICAgICAgIFsKICAgICAgICAgIDEuNSwKICAgICAgICAgIDEuNQogICAgICAgIF0KICAgICAgXSwKICAgICAgImVfdHJ1ZSI6IDkuMCwKICAgICAgInBzaV9oYXQiOiBbCiAgICAgICAgWwogICAgICAgICAgMC4wLAogICAgICAgICAgMC4wCiAgICAgICAgXSwKICAgICAgICBbCiAgICAgICAgICAwLjAsCiAgICAgICAgICAwLjAKICAgICAgICBdCiAgICAgIF0sCiAgICAgICJlX2hhdCI6IDkuMAogICAgfQogIF0KfQo=",
+  "evaluation_mode": "development",
+  "n_requested": 3,
+  "n_valid": 2,
+  "n_invalid": 1,
+  "cases": [
+    {
+      "case_id": "exact-constant-box",
+      "status": "VALID",
+      "metrics": {
+        "fidelity": 1.0,
+        "infidelity": 0.0,
+        "rel_energy_error": 0.0,
+        "rel_rayleigh_energy_error": 0.0,
+        "rayleigh_energy": 9.0,
+        "residual_rel": 0.0,
+        "residual_true_e": 0.0,
+        "residual_rayleigh": 0.0,
+        "sign_aligned_rel_l2": 0.0
+      }
+    },
+    {
+      "case_id": "energy-head-plus-three",
+      "status": "VALID",
+      "metrics": {
+        "fidelity": 1.0,
+        "infidelity": 0.0,
+        "rel_energy_error": 0.33333329629630043,
+        "rel_rayleigh_energy_error": 0.0,
+        "rayleigh_energy": 9.0,
+        "residual_rel": 3.0,
+        "residual_true_e": 0.0,
+        "residual_rayleigh": 0.0,
+        "sign_aligned_rel_l2": 0.0
+      }
+    },
+    {
+      "case_id": "zero-prediction",
+      "status": "INVALID",
+      "error": "psi_hat is a zero state"
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+[
+  {
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+      "-m",
+      "ruff",
+      "check",
+      "spectral-krylov-jepa/src/spectral_krylov_jepa/evaluation/metrics_v2.py",
+      "spectral-krylov-jepa/tests/test_metrics_v2.py",
+      "--select",
+      "E4,E7,E9,F,I"
+    ],
+    "returncode": 0,
+    "output": "All checks passed!\n"
+  },
+  {
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "returncode": 0,
+    "output": ""
+  },
+  {
+    "command": "compile both new Python files without emitting bytecode",
+    "returncode": 0
+  }
+]

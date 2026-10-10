@@ -120,5 +120,82 @@
       "next_action": "Review the prospective numerical contract and stacked dependency; do not merge or advance a scientific gate based on these tests alone."
     }
   ],
-  "latest_maintenance_update_id": "wavefunction_metric_scale_20261010"
+  "latest_maintenance_update_id": "wavefunction_metric_scale_20261010",
+  "development_revisions": [
+    {
+      "id": "spectral-metrics-v2-20261010",
+      "phase": "DEVELOPMENT_EVALUATION_AUDIT_VERIFIED",
+      "base_commit": "be5aea5c658a0fb2da4d0f7cea34560ef62c0c88",
+      "observation": "Retained evaluate_example reports residual_rel=0 for an all-zero prediction while its Rayleigh metrics are NaN; summarize_metrics silently uses nanmean/nanstd.",
+      "hypothesized_cause": "A fixed norm floor admits the zero vector and per-metric NaN omission changes cohort denominators.",
+      "proposed_contract": "Explicit development-only evaluator: real finite grid-shaped physically unit-normalized states; scale-safe Euclidean unit vectors for residuals; strict finite complete-cohort summaries; retained invalid cases suppress the cohort summary.",
+      "predicted_consequence": "Invalid or zero predictions cannot receive perfect residuals or disappear from aggregates; valid analytic eigenpairs and the three existing residual definitions remain independently checkable.",
+      "discriminating_checks": "Generated analytic Dirichlet eigenstates, independent dense operator arithmetic, zero/nonfinite/nonunit fixtures, a large-domain scale witness, and actual valid/invalid JSON CLI execution with exclusive receipt creation.",
+      "scientific_claim": "None. The prior bounded negative/inconclusive disposition and frozen metric implementation remain unchanged.",
+      "budget": {
+        "fixture_only": true,
+        "training_runs": 0,
+        "protected_outcome_accesses": 0,
+        "protected_runs": 0,
+        "paid_compute": 0,
+        "numeric_threads": 1
+      },
+      "note": "spectral-krylov-jepa/research/DEVELOPMENT_STRICT_METRICS_20261010.md",
+      "verification_status": "134_PASSED_0_FAILED_0_SKIPPED",
+      "concurrent_dependency_update": {
+        "base_commit": "0520827ad4d2e0e2063b48b21012bebb167a8485",
+        "dependent_pr": 22,
+        "reason": "Concurrent PR22 independently repaired amplitude/zero-state residual and Rayleigh metrics. Reuse its public functions and publish only strict state admission, complete-cohort aggregation and retained JSON audit receipts.",
+        "preintegration_checks": "Original isolated candidate46 new tests plus48 existing numerical/physics tests passed; these are development observations, superseded by the final stacked checks.",
+        "inherited_credit": "Residual/Rayleigh amplitude repair and its33 regressions belong to PR22; numerical rank repair belongs to PR21."
+      },
+      "specification_phase_recorded_before_implementation": "SPECIFIED_BEFORE_IMPLEMENTATION",
+      "verification": {
+        "new_tests": 53,
+        "inherited_tests": 81,
+        "total_tests": 134,
+        "receipt": "spectral-krylov-jepa/research/verification/strict_metrics_v2_20261010/receipt.json",
+        "receipt_sha256": "c6dadaaa28a777b4cac118d9ef0e8cb853dc13d345657a1d2abfde4dd4f7dce6",
+        "cli_valid": {
+          "n": 2,
+          "exit_code": 0,
+          "summary_present": true
+        },
+        "cli_invalid": {
+          "n": 3,
+          "valid": 2,
+          "invalid": 1,
+          "exit_code": 2,
+          "summary_present": false
+        },
+        "independent_review": {
+          "status": "COMPLETED",
+          "reviewer": "space_research agent",
+          "focused_tests": 53,
+          "independent_witnesses": 11,
+          "scope": "Engineering only"
+        }
+      },
+      "decisions_and_failures_preserved": [
+        "Keep inherited PR22 amplitude repair unchanged and publish strict normalization/cohort/receipt work only.",
+        "Retain historical zero-state witness at exact pre-repair be5aea5c commit; do not attribute it to corrected PR22.",
+        "Retain current dependency doubled-state fidelity4 and NaN-denominator witnesses.",
+        "Independent review found rounded-center variance and mixed-list scalar erasure; both repaired with explicit regression cases and retained observations."
+      ],
+      "claim_evidence": {
+        "claim": "Strict opt-in development evaluation refuses invalid states and incomplete/nonfinite cohorts and retains invalid attempts.",
+        "evidence_scope": "Generated engineering fixtures and numerical oracles only.",
+        "raw_artifacts": "spectral-krylov-jepa/research/verification/strict_metrics_v2_20261010/",
+        "scientific_checkpoint_change": "None"
+      },
+      "unresolved_gates": [
+        "Review explicit opt-in input/error/normalization contract and stacked PR21/22 dependencies before integration.",
+        "Any future scientific evaluation requires prospectively naming this version, authenticating reference/split provenance and respecting frozen outcome access.",
+        "Original Krylov learning advantage remains unestablished; no trained comparison matrix or protected outcome was executed."
+      ],
+      "next_action": "Review the complete-cohort evaluator as prospective development maintenance; any new scientific comparison remains a separately gated study.",
+      "hosted_ci": "[skip ci] avoids inherited automatic spectral research workflows; local source-bound verification is retained and no hosted success is claimed."
+    }
+  ],
+  "latest_development_revision_id": "spectral-metrics-v2-20261010"
 }

@@ -1,0 +1,117 @@
+{
+  "evaluation_mode": "development",
+  "grid": {
+    "n_interior": 2,
+    "x_min": 0.0,
+    "x_max": 1.0,
+    "y_min": 0.0,
+    "y_max": 1.0
+  },
+  "cases": [
+    {
+      "case_id": "exact-constant-box",
+      "potential": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0
+        ]
+      ],
+      "psi_true": [
+        [
+          1.5,
+          1.5
+        ],
+        [
+          1.5,
+          1.5
+        ]
+      ],
+      "e_true": 9.0,
+      "psi_hat": [
+        [
+          1.5,
+          1.5
+        ],
+        [
+          1.5,
+          1.5
+        ]
+      ],
+      "e_hat": 9.0
+    },
+    {
+      "case_id": "energy-head-plus-three",
+      "potential": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0
+        ]
+      ],
+      "psi_true": [
+        [
+          1.5,
+          1.5
+        ],
+        [
+          1.5,
+          1.5
+        ]
+      ],
+      "e_true": 9.0,
+      "psi_hat": [
+        [
+          1.5,
+          1.5
+        ],
+        [
+          1.5,
+          1.5
+        ]
+      ],
+      "e_hat": 12.0
+    },
+    {
+      "case_id": "zero-prediction",
+      "potential": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0
+        ]
+      ],
+      "psi_true": [
+        [
+          1.5,
+          1.5
+        ],
+        [
+          1.5,
+          1.5
+        ]
+      ],
+      "e_true": 9.0,
+      "psi_hat": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0
+        ]
+      ],
+      "e_hat": 9.0
+    }
+  ]
+}
