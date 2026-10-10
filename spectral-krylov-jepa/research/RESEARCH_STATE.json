@@ -101,5 +101,94 @@
     "Review the numerical behavior change separately from the frozen study; any new result must name this code revision.",
     "Respect the existing scientific execution gate and publish no efficacy claim without the required matched evidence.",
     "Preserve separate LMOP and CJSJ subproject state; this state applies to spectral-krylov-jepa only."
-  ]
+  ],
+  "maintenance_updates": [
+    {
+      "id": "wavefunction_metric_scale_20261010",
+      "date": "2026-10-10",
+      "phase": "PROSPECTIVE_ENGINEERING_REPAIR_VERIFIED",
+      "parent_commit": "be5aea5c658a0fb2da4d0f7cea34560ef62c0c88",
+      "development_branch": "codex/wavefunction-metric-scale-20261010",
+      "dependent_pr": 21,
+      "contribution": "Amplitude-invariant residual and Rayleigh metrics with explicit invalid-state errors",
+      "code_paths": [
+        "spectral-krylov-jepa/src/spectral_krylov_jepa/evaluation/metrics.py",
+        "spectral-krylov-jepa/tests/test_wavefunction_metric_scale.py"
+      ],
+      "development_note": "spectral-krylov-jepa/research/DEVELOPMENT_WAVEFUNCTION_METRIC_SCALE_20261010.md",
+      "verification_receipt": "spectral-krylov-jepa/research/verification/wavefunction_metric_scale_20261010/receipt.json",
+      "baseline_regressions": {
+        "failed": 23,
+        "passed": 10
+      },
+      "verified_tests": {
+        "passed": 37,
+        "failed": 0,
+        "skipped": 0
+      },
+      "scientific_checkpoint_change": "None; prior hypotheses, frozen evidence, outcomes and execution gates remain unchanged.",
+      "independent_review": "Not claimed for this revision; earlier top-level review concerns the previous maintenance entry only.",
+      "limits": "CPU-only artificial fixtures. No training, scientific dataset, protected outcomes, paid compute, or efficacy claim. Explicit error behavior requires compatibility review.",
+      "next_action": "Review the prospective numerical contract and stacked dependency; do not merge or advance a scientific gate based on these tests alone."
+    }
+  ],
+  "latest_maintenance_update_id": "wavefunction_metric_scale_20261010",
+  "integration_sessions": [
+    {
+      "id": "wavefunction_stack_integration_20261010",
+      "phase": "VERIFIED_FOR_EXISTING_DRAFT",
+      "record": "spectral-krylov-jepa/research/ENGINEERING_STACK_INTEGRATION_20261010.json",
+      "parents": [
+        "0520827ad4d2e0e2063b48b21012bebb167a8485",
+        "878f21396edff83f3e2d9eb889f3058c65871da2"
+      ],
+      "historical_disposition_unchanged": true,
+      "scientific_checkpoint_change": "None",
+      "test_budget": {
+        "maximum_pytest_commands_across_both_branches": 2,
+        "maximum_seconds_per_command": 90,
+        "maximum_total_command_seconds": 180,
+        "numeric_threads": 1,
+        "training_runs": 0,
+        "scientific_campaigns": 0,
+        "protected_outcome_accesses": 0,
+        "paid_compute": 0
+      },
+      "verification": {
+        "pytest_commands_used": 1,
+        "passed": 94,
+        "failed": 0,
+        "skipped": 0,
+        "warnings_as_errors": true,
+        "duration_seconds": 2.1537466599984327,
+        "raw_artifacts": "spectral-krylov-jepa/research/verification/stack_integration_20261010/",
+        "ruff": "Critical E9/F821/F822/F823 on integrated normalizer, inherited metric/Ritz modules and both amplitude test files: passed.",
+        "exact_donor_blobs": true,
+        "downstream_metric_source_unchanged": true,
+        "historical_state_preserved_additively": true,
+        "whitespace": "git diff --cached --check: passed for the complete staged patch, including exact donor files and raw outputs."
+      },
+      "independent_review": {
+        "status": "COMPLETED_NO_SCOPED_BLOCKER",
+        "reviewer": "root agent",
+        "recorded_at_utc": "2026-10-10T10:16:38.946832+00:00",
+        "scope": "Source-only review of exact normalize_wavefunction donor, 13 existing donor regressions and integration record; no test rerun.",
+        "finding": "Real finite nonzero field/grid-area checks, ordinary arithmetic preservation, scaled normalization, explicit nonfinite-output rejection and the tested direction/shape contracts are consistent.",
+        "limit": "Tested amplitude/direction repair; not universal accuracy over every extreme grid-area/dimension combination. No scientific efficacy validation.",
+        "ci_review": "Actual PR-triggered script launches a new trained calibration outcome campaign; local-only integration with explicit hosted-unrun limitation and unchanged workflows is appropriate."
+      },
+      "ci_inspection": {
+        "workflow": ".github/workflows/krylov-calibration-smoke.yml",
+        "workflow_sha256": "3456124c82c000b51b0c776c34e75b0d0c4c58a0d3581bf3d3b754f13e3dc274",
+        "script": "spectral-krylov-jepa/scripts/18_run_physics_calibration_smoke.py",
+        "script_sha256": "e13b20aa1af85d78ec242505dd18c70ea565d8149829221ca6e006f75e9ae6ad",
+        "trigger": "pull_request matching spectral-krylov-jepa/**; workflow_dispatch also present, without a dispatch-only job guard",
+        "behavior": "For seeds 11, 23, 47: generate 120 unlabeled and 88 labeled potentials; run six pretraining jobs of 80 steps, seventeen downstream fits of up to 25 epochs, seventeen test_ID evaluations with 300 bootstraps, and cross-seed success-level comparisons.",
+        "classification": "A new bounded trained calibration outcome campaign; explicitly not the final confirmatory experiment. Generated test_ID is not claimed to be the original protected matrix. This exceeds the declared training=0 engineering budget.",
+        "decision": "Suppress automatic publication workflows with [skip ci]; leave workflow and script bytes unchanged. No hosted success claimed."
+      },
+      "next_action": "Publish this exact integration tree to existing PR22 using parents 0520827ad4d2e0e2063b48b21012bebb167a8485 and 878f21396edff83f3e2d9eb889f3058c65871da2, then publish the separately verified PR23 integration with this updated parent."
+    }
+  ],
+  "latest_integration_session_id": "wavefunction_stack_integration_20261010"
 }

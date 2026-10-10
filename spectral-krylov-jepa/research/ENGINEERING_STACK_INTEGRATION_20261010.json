@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "id": "wavefunction_stack_integration_20261010",
+  "specified_at_utc": "2026-10-10T10:12:38.773189+00:00",
+  "phase": "VERIFIED_FOR_EXISTING_DRAFT",
+  "evidence_class": "Prospective engineering integration; no new scientific outcome",
+  "question": "Does the exact current PR21 normalization repair coexist with the existing PR22 metrics and PR23 strict cohort implementation without losing historical records or changing their source?",
+  "hypothesized_mechanism": "The donor preserves ordinary normalization arithmetic and scales extreme-amplitude normalization before squaring; downstream metric and cohort modules can be retained byte-for-byte.",
+  "predicted_consequence": "The donor amplitude/direction regressions and existing numerical, physics, metric and cohort regressions all pass in the integrated stack.",
+  "falsifiers_and_stop_rules": [
+    "Any selected regression fails or times out within the fixed budget.",
+    "Any exact donor source/test/evidence blob or existing downstream implementation is altered.",
+    "Any canonical predecessor field or adverse evidence cannot be preserved by an additive three-way integration.",
+    "Integration requires a new scientific assumption, protected outcome access, training, or campaign execution."
+  ],
+  "input_heads": {
+    "common": "be5aea5c658a0fb2da4d0f7cea34560ef62c0c88",
+    "pr21_donor": "878f21396edff83f3e2d9eb889f3058c65871da2",
+    "pr22_before": "0520827ad4d2e0e2063b48b21012bebb167a8485",
+    "pr23_before": "85d8757ce31ec280d50bb54c7f655025b38f076c"
+  },
+  "publication_plan": "Leased fast-forward of existing PR22 with old PR22 and current PR21 as parents, then existing PR23 with old PR23 and the published PR22 integration as parents; do not merge pull requests.",
+  "test_budget": {
+    "maximum_pytest_commands_across_both_branches": 2,
+    "maximum_seconds_per_command": 90,
+    "maximum_total_command_seconds": 180,
+    "numeric_threads": 1,
+    "training_runs": 0,
+    "scientific_campaigns": 0,
+    "protected_outcome_accesses": 0,
+    "paid_compute": 0
+  },
+  "test_plan": {
+    "pr22": [
+      "test_wavefunction_scaling.py",
+      "test_wavefunction_metric_scale.py",
+      "test_metrics.py",
+      "test_grid.py",
+      "test_laplacian.py",
+      "test_hamiltonian.py",
+      "test_eigensolver.py",
+      "test_ritz_basis_contract.py",
+      "test_hybrid_spectral.py",
+      "test_recycled_subspace.py"
+    ],
+    "pr23": "The same selected suite plus test_metrics_v2.py; generated fixtures only, warnings treated as errors."
+  },
+  "ci_policy": "Use [skip ci] on publication: inherited broad spectral-path PR workflows launch calibration research. No workflow is dispatched or changed, and no hosted CI success is claimed.",
+  "historical_disposition": "Methods/reproducibility package complete; original efficacy unestablished; bounded negative/inconclusive evidence retained.",
+  "protected_boundary": "Frozen protocols, original trained comparison matrix, protected splits, future confirmatory outcomes, result tables, LMOP and CJSJ remain unchanged and unopened.",
+  "verification": {
+    "pytest_commands_used": 1,
+    "passed": 94,
+    "failed": 0,
+    "skipped": 0,
+    "warnings_as_errors": true,
+    "duration_seconds": 2.1537466599984327,
+    "raw_artifacts": "spectral-krylov-jepa/research/verification/stack_integration_20261010/",
+    "ruff": "Critical E9/F821/F822/F823 on integrated normalizer, inherited metric/Ritz modules and both amplitude test files: passed.",
+    "exact_donor_blobs": true,
+    "downstream_metric_source_unchanged": true,
+    "historical_state_preserved_additively": true,
+    "whitespace": "git diff --cached --check: passed for the complete staged patch, including exact donor files and raw outputs."
+  },
+  "next_action": "Publish this exact integration tree to existing PR22 using parents 0520827ad4d2e0e2063b48b21012bebb167a8485 and 878f21396edff83f3e2d9eb889f3058c65871da2, then publish the separately verified PR23 integration with this updated parent.",
+  "specification_phase_recorded_before_implementation": "SPECIFIED_BEFORE_INTEGRATION",
+  "exact_donor_imports": [
+    {
+      "path": "spectral-krylov-jepa/research/DEVELOPMENT_RITZ_NUMERICAL_SPAN_20261010.md",
+      "donor": "878f21396edff83f3e2d9eb889f3058c65871da2",
+      "sha256": "4881614ea43339843672f5d16ba6fdb197cedc20cd664c110814322bb9621840"
+    },
+    {
+      "path": "spectral-krylov-jepa/research/verification/wavefunction_scaling_20261010.json",
+      "donor": "878f21396edff83f3e2d9eb889f3058c65871da2",
+      "sha256": "1f2df0a16d7941ef7933798d109d9d76c54b29740f6b8bcb60a67cd74fc63471"
+    },
+    {
+      "path": "spectral-krylov-jepa/src/spectral_krylov_jepa/physics/eigensolver.py",
+      "donor": "878f21396edff83f3e2d9eb889f3058c65871da2",
+      "sha256": "4f943a9a8da15d8e6981cf86d468d450f00d243e2d443abc7c2e30101a39f44b"
+    },
+    {
+      "path": "spectral-krylov-jepa/tests/test_wavefunction_scaling.py",
+      "donor": "878f21396edff83f3e2d9eb889f3058c65871da2",
+      "sha256": "a1ad454f0b1d50791d288323c39da1bffbb8a94b91b1b7396d73ab51d3753985"
+    }
+  ],
+  "canonical_integration": "Current donor state plus exact downstream-only fields; recursive dictionary inclusion and list-prefix preservation asserted against both predecessors.",
+  "ci_inspection": {
+    "workflow": ".github/workflows/krylov-calibration-smoke.yml",
+    "workflow_sha256": "3456124c82c000b51b0c776c34e75b0d0c4c58a0d3581bf3d3b754f13e3dc274",
+    "script": "spectral-krylov-jepa/scripts/18_run_physics_calibration_smoke.py",
+    "script_sha256": "e13b20aa1af85d78ec242505dd18c70ea565d8149829221ca6e006f75e9ae6ad",
+    "trigger": "pull_request matching spectral-krylov-jepa/**; workflow_dispatch also present, without a dispatch-only job guard",
+    "behavior": "For seeds 11, 23, 47: generate 120 unlabeled and 88 labeled potentials; run six pretraining jobs of 80 steps, seventeen downstream fits of up to 25 epochs, seventeen test_ID evaluations with 300 bootstraps, and cross-seed success-level comparisons.",
+    "classification": "A new bounded trained calibration outcome campaign; explicitly not the final confirmatory experiment. Generated test_ID is not claimed to be the original protected matrix. This exceeds the declared training=0 engineering budget.",
+    "decision": "Suppress automatic publication workflows with [skip ci]; leave workflow and script bytes unchanged. No hosted success claimed."
+  },
+  "independent_review": {
+    "status": "COMPLETED_NO_SCOPED_BLOCKER",
+    "reviewer": "root agent",
+    "recorded_at_utc": "2026-10-10T10:16:38.946832+00:00",
+    "scope": "Source-only review of exact normalize_wavefunction donor, 13 existing donor regressions and integration record; no test rerun.",
+    "finding": "Real finite nonzero field/grid-area checks, ordinary arithmetic preservation, scaled normalization, explicit nonfinite-output rejection and the tested direction/shape contracts are consistent.",
+    "limit": "Tested amplitude/direction repair; not universal accuracy over every extreme grid-area/dimension combination. No scientific efficacy validation.",
+    "ci_review": "Actual PR-triggered script launches a new trained calibration outcome campaign; local-only integration with explicit hosted-unrun limitation and unchanged workflows is appropriate."
+  }
+}

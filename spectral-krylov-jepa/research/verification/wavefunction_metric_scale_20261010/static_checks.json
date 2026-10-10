@@ -1,0 +1,44 @@
+[
+  {
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+      "-m",
+      "ruff",
+      "check",
+      "spectral-krylov-jepa/src/spectral_krylov_jepa/evaluation/metrics.py",
+      "spectral-krylov-jepa/tests/test_wavefunction_metric_scale.py",
+      "--select",
+      "E4,E7,E9,F,I"
+    ],
+    "exit_code": 0,
+    "output": "All checks passed!\n"
+  },
+  {
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "exit_code": 0,
+    "output": ""
+  },
+  {
+    "command": "compile(source_text, path, exec) for changed Python source and tests",
+    "exit_code": 0,
+    "output": "Both files compiled without writing bytecode."
+  },
+  {
+    "command": [
+      "git",
+      "diff",
+      "--cached",
+      "--check",
+      "--",
+      ".",
+      ":(exclude)**/*.log"
+    ],
+    "exit_code": 0,
+    "output": "",
+    "note": "Raw pytest output retains emitted trailing whitespace and is excluded from whitespace lint."
+  }
+]
