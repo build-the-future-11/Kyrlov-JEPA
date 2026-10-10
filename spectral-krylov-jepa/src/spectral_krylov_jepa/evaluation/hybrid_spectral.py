@@ -234,11 +234,40 @@ def projected_ritz(
     *,
     assume_orthonormal: bool = False,
 ) -> AdaptiveRitzResult:
-    """Solve the exact Rayleigh--Ritz problem in an arbitrary basis."""
+    """Solve Rayleigh--Ritz in the numerical column span of a real basis.
+
+    An unpivoted QR factorization completes dependent columns with arbitrary
+    directions. Those extra directions are not part of the supplied trial
+    space. Use the left singular vectors with singular values greater than
+    ``eps * max(basis.shape) * largest_singular_value`` instead. Global scaling
+    before the factorization prevents overflow without changing the span.
+
+    The orthonormal fast path checks its assumption; silently using a scaled
+    or dependent basis would solve a different eigenproblem.
+    """
+    if np.iscomplexobj(basis):
+        raise ValueError("basis must be real")
     b = np.asarray(basis, dtype=np.float64)
-    if b.ndim != 2 or b.shape[0] != grid.n_dof:
-        raise ValueError(f"basis must have shape ({grid.n_dof}, K)")
-    q = b if assume_orthonormal else np.linalg.qr(b)[0]
+    if b.ndim != 2 or b.shape[0] != grid.n_dof or b.shape[1] == 0:
+        raise ValueError(f"basis must have shape ({grid.n_dof}, K>0)")
+    if not np.all(np.isfinite(b)):
+        raise ValueError("basis must contain only finite values")
+    if assume_orthonormal:
+        with np.errstate(over="ignore", invalid="ignore"):
+            gram = b.T @ b
+        if not np.allclose(gram, np.eye(b.shape[1]), atol=1e-10, rtol=1e-8):
+            raise ValueError("basis must be Euclidean-orthonormal on the fast path")
+        q = b
+    else:
+        scale = float(np.max(np.abs(b)))
+        if scale == 0.0:
+            raise ValueError("basis must contain at least one nonzero direction")
+        u, singular_values, _ = np.linalg.svd(b / scale, full_matrices=False)
+        tolerance = np.finfo(b.dtype).eps * max(b.shape) * singular_values[0]
+        rank = int(np.count_nonzero(singular_values > tolerance))
+        if rank == 0:
+            raise ValueError("basis has zero numerical rank")
+        q = u[:, :rank]
     return _projected_ritz_orthonormal(potential, grid, q)
 
 
@@ -251,18 +280,29 @@ def adaptive_ritz(
     orthogonal_tol: float = 1e-10,
 ) -> AdaptiveRitzResult:
     """Augment a fixed low-mode sine basis with potential-dependent directions."""
+    if not np.isfinite(orthogonal_tol) or orthogonal_tol <= 0:
+        raise ValueError("orthogonal_tol must be finite and positive")
     low_basis, _ = sine_basis(grid, low_side)
     orth_proposals: list[np.ndarray] = []
 
     for proposal in proposal_vectors:
+        if np.iscomplexobj(proposal):
+            raise ValueError("proposal must be real")
         v = np.asarray(proposal, dtype=np.float64).reshape(-1).copy()
         if v.size != grid.n_dof:
             raise ValueError(f"proposal has {v.size} entries; expected {grid.n_dof}")
-        v -= low_basis @ (low_basis.T @ v)
-        if orth_proposals:
-            extra = np.stack(orth_proposals, axis=1)
-            v -= extra @ (extra.T @ v)
+        if not np.all(np.isfinite(v)):
+            raise ValueError("proposal must contain only finite values")
+        # A second pass removes roundoff left by cancellation of a large
+        # component in the existing space. The final solve checks Q.T @ Q.
+        for _ in range(2):
+            v -= low_basis @ (low_basis.T @ v)
+            if orth_proposals:
+                extra = np.stack(orth_proposals, axis=1)
+                v -= extra @ (extra.T @ v)
         nrm = float(np.linalg.norm(v))
+        if not np.isfinite(nrm):
+            raise ValueError("proposal residual must have finite norm")
         if nrm <= orthogonal_tol:
             continue
         orth_proposals.append(v / nrm)

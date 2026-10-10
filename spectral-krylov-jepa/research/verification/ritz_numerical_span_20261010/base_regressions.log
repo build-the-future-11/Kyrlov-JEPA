@@ -1,0 +1,116 @@
+FFFF....FFFFFFFFFFFF                                                     [100%]
+=================================== FAILURES ===================================
+_______ test_dependent_columns_do_not_invent_trial_directions[duplicate] _______
+spectral-krylov-jepa/tests/test_ritz_basis_contract.py:34: in test_dependent_columns_do_not_invent_trial_directions
+    assert result.basis_dim == 1
+E   assert 2 == 1
+E    +  where 2 = AdaptiveRitzResult(energy=89.57727475571059, wavefunction=array([[-4.2042069 , -0.53997269, -0.70321534,  0.67100958, ...65205,\n         0.54302912]]), basis_dim=2, proposal_rank=0, projected_eigenvalues=array([ 89.57727476, 106.21925808])).basis_dim
+______ test_dependent_columns_do_not_invent_trial_directions[zero_first] _______
+spectral-krylov-jepa/tests/test_ritz_basis_contract.py:34: in test_dependent_columns_do_not_invent_trial_directions
+    assert result.basis_dim == 1
+E   assert 2 == 1
+E    +  where 2 = AdaptiveRitzResult(energy=89.30429534452801, wavefunction=array([[ 4.87133288,  0.95811981,  0.40081464, -0.59580283, ...70686,\n        -0.49749471]]), basis_dim=2, proposal_rank=0, projected_eigenvalues=array([ 89.30429534, 104.22664583])).basis_dim
+_______ test_dependent_columns_do_not_invent_trial_directions[zero_last] _______
+spectral-krylov-jepa/tests/test_ritz_basis_contract.py:34: in test_dependent_columns_do_not_invent_trial_directions
+    assert result.basis_dim == 1
+E   assert 2 == 1
+E    +  where 2 = AdaptiveRitzResult(energy=87.90350975303232, wavefunction=array([[-1.37501864, -6.58929515,  0.15603375, -0.231941  , ...6139395,\n        -0.19367048]]), basis_dim=2, proposal_rank=0, projected_eigenvalues=array([87.90350975, 97.69133678])).basis_dim
+_______ test_dependent_columns_do_not_invent_trial_directions[dependent] _______
+spectral-krylov-jepa/tests/test_ritz_basis_contract.py:34: in test_dependent_columns_do_not_invent_trial_directions
+    assert result.basis_dim == 1
+E   assert 3 == 1
+E    +  where 3 = AdaptiveRitzResult(energy=79.40922723758257, wavefunction=array([[-0.37497738, -1.40397264, -0.1554689 ,  0.58183973, ...  0.48408484]]), basis_dim=3, proposal_rank=0, projected_eigenvalues=array([ 79.40922724,  93.19811651, 135.50205038])).basis_dim
+___________ test_invalid_basis_does_not_produce_an_eigenpair[empty] ____________
+spectral-krylov-jepa/tests/test_ritz_basis_contract.py:75: in test_invalid_basis_does_not_produce_an_eigenpair
+    projected_ritz(potential, grid, basis)
+../../ritz_numerical_span_base_source.py:242: in projected_ritz
+    return _projected_ritz_orthonormal(potential, grid, q)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../ritz_numerical_span_base_source.py:219: in _projected_ritz_orthonormal
+    wave = q @ vecs[:, 0]
+               ^^^^^^^^^^
+E   IndexError: index 0 is out of bounds for axis 1 with size 0
+____________ test_invalid_basis_does_not_produce_an_eigenpair[zero] ____________
+spectral-krylov-jepa/tests/test_ritz_basis_contract.py:74: in test_invalid_basis_does_not_produce_an_eigenpair
+    with pytest.raises(ValueError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE ValueError
+____________ test_invalid_basis_does_not_produce_an_eigenpair[nan] _____________
+spectral-krylov-jepa/tests/test_ritz_basis_contract.py:74: in test_invalid_basis_does_not_produce_an_eigenpair
+    with pytest.raises(ValueError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE ValueError
+__________ test_invalid_basis_does_not_produce_an_eigenpair[infinity] __________
+spectral-krylov-jepa/tests/test_ritz_basis_contract.py:74: in test_invalid_basis_does_not_produce_an_eigenpair
+    with pytest.raises(ValueError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE ValueError
+__________ test_invalid_basis_does_not_produce_an_eigenpair[complex] ___________
+spectral-krylov-jepa/tests/test_ritz_basis_contract.py:74: in test_invalid_basis_does_not_produce_an_eigenpair
+    with pytest.raises(ValueError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE ValueError
+________ test_orthonormal_fast_path_checks_its_mathematical_assumption _________
+spectral-krylov-jepa/tests/test_ritz_basis_contract.py:81: in test_orthonormal_fast_path_checks_its_mathematical_assumption
+    with pytest.raises(ValueError, match="orthonormal"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE ValueError
+____________ test_adaptive_reorthogonalizes_low_mode_contamination _____________
+spectral-krylov-jepa/tests/test_ritz_basis_contract.py:101: in test_adaptive_reorthogonalizes_low_mode_contamination
+    assert actual.energy == pytest.approx(expected, abs=1e-9)
+E   assert 10.20503863466676 == 10.205038920944345 ± 1.0e-09
+E     
+E     comparison failed
+E     Obtained: 10.20503863466676
+E     Expected: 10.205038920944345 ± 1.0e-09
+_____________ test_adaptive_tolerance_must_be_finite_positive[0.0] _____________
+spectral-krylov-jepa/tests/test_ritz_basis_contract.py:107: in test_adaptive_tolerance_must_be_finite_positive
+    with pytest.raises(ValueError, match="orthogonal_tol"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE ValueError
+____________ test_adaptive_tolerance_must_be_finite_positive[-1.0] _____________
+spectral-krylov-jepa/tests/test_ritz_basis_contract.py:107: in test_adaptive_tolerance_must_be_finite_positive
+    with pytest.raises(ValueError, match="orthogonal_tol"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE ValueError
+_____________ test_adaptive_tolerance_must_be_finite_positive[nan] _____________
+spectral-krylov-jepa/tests/test_ritz_basis_contract.py:107: in test_adaptive_tolerance_must_be_finite_positive
+    with pytest.raises(ValueError, match="orthogonal_tol"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE ValueError
+_____________ test_adaptive_tolerance_must_be_finite_positive[inf] _____________
+spectral-krylov-jepa/tests/test_ritz_basis_contract.py:107: in test_adaptive_tolerance_must_be_finite_positive
+    with pytest.raises(ValueError, match="orthogonal_tol"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE ValueError
+__________________ test_adaptive_rejects_nonfinite_proposals ___________________
+spectral-krylov-jepa/tests/test_ritz_basis_contract.py:113: in test_adaptive_rejects_nonfinite_proposals
+    with pytest.raises(ValueError, match="finite"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AssertionError: Regex pattern did not match.
+E     Expected regex: 'finite'
+E     Actual message: 'Eigenvalues did not converge'
+=============================== warnings summary ===============================
+tests/test_ritz_basis_contract.py::test_invalid_basis_does_not_produce_an_eigenpair[complex]
+  /workspace/scratch/2a0c1e6ddd92/ritz_numerical_span_base_source.py:238: ComplexWarning: Casting complex values to real discards the imaginary part
+    b = np.asarray(basis, dtype=np.float64)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED spectral-krylov-jepa/tests/test_ritz_basis_contract.py::test_dependent_columns_do_not_invent_trial_directions[duplicate]
+FAILED spectral-krylov-jepa/tests/test_ritz_basis_contract.py::test_dependent_columns_do_not_invent_trial_directions[zero_first]
+FAILED spectral-krylov-jepa/tests/test_ritz_basis_contract.py::test_dependent_columns_do_not_invent_trial_directions[zero_last]
+FAILED spectral-krylov-jepa/tests/test_ritz_basis_contract.py::test_dependent_columns_do_not_invent_trial_directions[dependent]
+FAILED spectral-krylov-jepa/tests/test_ritz_basis_contract.py::test_invalid_basis_does_not_produce_an_eigenpair[empty]
+FAILED spectral-krylov-jepa/tests/test_ritz_basis_contract.py::test_invalid_basis_does_not_produce_an_eigenpair[zero]
+FAILED spectral-krylov-jepa/tests/test_ritz_basis_contract.py::test_invalid_basis_does_not_produce_an_eigenpair[nan]
+FAILED spectral-krylov-jepa/tests/test_ritz_basis_contract.py::test_invalid_basis_does_not_produce_an_eigenpair[infinity]
+FAILED spectral-krylov-jepa/tests/test_ritz_basis_contract.py::test_invalid_basis_does_not_produce_an_eigenpair[complex]
+FAILED spectral-krylov-jepa/tests/test_ritz_basis_contract.py::test_orthonormal_fast_path_checks_its_mathematical_assumption
+FAILED spectral-krylov-jepa/tests/test_ritz_basis_contract.py::test_adaptive_reorthogonalizes_low_mode_contamination
+FAILED spectral-krylov-jepa/tests/test_ritz_basis_contract.py::test_adaptive_tolerance_must_be_finite_positive[0.0]
+FAILED spectral-krylov-jepa/tests/test_ritz_basis_contract.py::test_adaptive_tolerance_must_be_finite_positive[-1.0]
+FAILED spectral-krylov-jepa/tests/test_ritz_basis_contract.py::test_adaptive_tolerance_must_be_finite_positive[nan]
+FAILED spectral-krylov-jepa/tests/test_ritz_basis_contract.py::test_adaptive_tolerance_must_be_finite_positive[inf]
+FAILED spectral-krylov-jepa/tests/test_ritz_basis_contract.py::test_adaptive_rejects_nonfinite_proposals
+16 failed, 4 passed, 1 warning in 0.81s
