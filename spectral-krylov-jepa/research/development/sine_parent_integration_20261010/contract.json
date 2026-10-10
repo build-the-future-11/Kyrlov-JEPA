@@ -1,0 +1,145 @@
+{
+  "schema": "bounded-integration-contract-v1",
+  "id": "sine_parent_integration_20261010",
+  "specified_utc": "2026-10-10T11:04:28.865485+00:00",
+  "phase": "SPECIFIED_BEFORE_INTEGRATION",
+  "question": "Do the unchanged direct-index sine basis and the exact incoming extreme-amplitude normalizer coexist with complete-cohort metrics and existing numerical/evidence contracts?",
+  "observation": "Final independent live-ref audit found the PR23 base advanced; GitHub mergeability changed from false to true on refresh. Source coexistence at the new base is not yet verified.",
+  "parents": {
+    "our_published_head": "4f9845a46eb715c2f960f446c64a8142f7536aa3",
+    "donor_live_base": "8ed71d5272b04fa2f0c8602cfc90e1fd64298c5d",
+    "common_parent": "85d8757ce31ec280d50bb54c7f655025b38f076c"
+  },
+  "intended_ordered_commit_parents": [
+    "4f9845a46eb715c2f960f446c64a8142f7536aa3",
+    "8ed71d5272b04fa2f0c8602cfc90e1fd64298c5d"
+  ],
+  "scope": "Integrate exact donor source, tests, documentation and evidence; preserve all existing PR24 runtime/tests/artifacts and both canonical histories. No new algorithm or altered scientific hypothesis.",
+  "admitted_donor_paths": [
+    {
+      "path": "spectral-krylov-jepa/research/DEVELOPMENT_RITZ_NUMERICAL_SPAN_20261010.md",
+      "blob": "808b869bc3970af93354826e494c664981c12001",
+      "sha256": "4881614ea43339843672f5d16ba6fdb197cedc20cd664c110814322bb9621840",
+      "bytes": 3501
+    },
+    {
+      "path": "spectral-krylov-jepa/research/ENGINEERING_COHORT_STACK_INTEGRATION_20261010.json",
+      "blob": "248647248637e94c6cf15b10dd8aeec455cfc310",
+      "sha256": "0c777468d423642f029f8f59948467889ca0297e2a5329411eba3602614eb780",
+      "bytes": 7954
+    },
+    {
+      "path": "spectral-krylov-jepa/research/ENGINEERING_STACK_INTEGRATION_20261010.json",
+      "blob": "9f1da80138aa513a2c7ea3ab805af14bfe22ffcd",
+      "sha256": "550ee384461f26dad9c6c992b746d63db84f28e7c3dfb85ad77153c3c3c6e3f7",
+      "bytes": 7317
+    },
+    {
+      "path": "spectral-krylov-jepa/research/RESEARCH_STATE.json",
+      "blob": "31f3f35190b2550114e3ddbcbf6de381d919c401",
+      "sha256": "cdb37b29c71c7e048446d36420119bee5c1913c1ab1a89af7d9439cf903939d2",
+      "bytes": 21395
+    },
+    {
+      "path": "spectral-krylov-jepa/research/verification/cohort_stack_integration_20261010/attempt.json",
+      "blob": "95db4fa9bd9113943d3575befe1531a5d9000e3e",
+      "sha256": "6ada27f52d2e60e66a520eeb2ea91c735c34aba06e61913c7caf8fac7275e605",
+      "bytes": 9831
+    },
+    {
+      "path": "spectral-krylov-jepa/research/verification/cohort_stack_integration_20261010/stderr.txt",
+      "blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "spectral-krylov-jepa/research/verification/cohort_stack_integration_20261010/stdout.txt",
+      "blob": "771aad2550dc7b907e8dbec5b4053e798ad0c040",
+      "sha256": "8697017e72f78499d7318af050bcbd9ec35f8410271e1b438b9f6a9735f4a549",
+      "bytes": 260
+    },
+    {
+      "path": "spectral-krylov-jepa/research/verification/stack_integration_20261010/attempt.json",
+      "blob": "31cbcfec167e90c85c75b8a26aa1dbdf47c6c6a0",
+      "sha256": "a34837c330c59bd37a7987fc6f68b08c884c6d8a9d8a9ab6bccd14fee8b48c98",
+      "bytes": 9517
+    },
+    {
+      "path": "spectral-krylov-jepa/research/verification/stack_integration_20261010/stderr.txt",
+      "blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "spectral-krylov-jepa/research/verification/stack_integration_20261010/stdout.txt",
+      "blob": "a032137e664b395e2d0b2cb5e3a6e86ac3394f13",
+      "sha256": "0a0c1a20c5bf447c3eee771b6cdefeacc5f08a57d6082cf195308c53edeca904",
+      "bytes": 179
+    },
+    {
+      "path": "spectral-krylov-jepa/research/verification/wavefunction_scaling_20261010.json",
+      "blob": "675db51485628ebb55daa7cb526c760404be7028",
+      "sha256": "1f2df0a16d7941ef7933798d109d9d76c54b29740f6b8bcb60a67cd74fc63471",
+      "bytes": 972
+    },
+    {
+      "path": "spectral-krylov-jepa/src/spectral_krylov_jepa/physics/eigensolver.py",
+      "blob": "2853baf07d70933386bd0b7cf13072af4e172a51",
+      "sha256": "4f943a9a8da15d8e6981cf86d468d450f00d243e2d443abc7c2e30101a39f44b",
+      "bytes": 6264
+    },
+    {
+      "path": "spectral-krylov-jepa/tests/test_wavefunction_scaling.py",
+      "blob": "3123e21c2451e9e37d00e3506fabce704b2ac42d",
+      "sha256": "a1ad454f0b1d50791d288323c39da1bffbb8a94b91b1b7396d73ab51d3753985",
+      "bytes": 2558
+    }
+  ],
+  "test_paths": [
+    "spectral-krylov-jepa/tests/test_metrics_v2.py",
+    "spectral-krylov-jepa/tests/test_wavefunction_scaling.py",
+    "spectral-krylov-jepa/tests/test_wavefunction_metric_scale.py",
+    "spectral-krylov-jepa/tests/test_metrics.py",
+    "spectral-krylov-jepa/tests/test_grid.py",
+    "spectral-krylov-jepa/tests/test_laplacian.py",
+    "spectral-krylov-jepa/tests/test_hamiltonian.py",
+    "spectral-krylov-jepa/tests/test_eigensolver.py",
+    "spectral-krylov-jepa/tests/test_ritz_basis_contract.py",
+    "spectral-krylov-jepa/tests/test_hybrid_spectral.py",
+    "spectral-krylov-jepa/tests/test_recycled_subspace.py",
+    "spectral-krylov-jepa/tests/test_sine_translation.py",
+    "tests/test_research_evidence_integrity.py"
+  ],
+  "expected_selected_cases": 173,
+  "maximum_selected_cases": 200,
+  "budget": {
+    "test_commands": 1,
+    "seconds_per_command": 60,
+    "total_test_seconds": 60,
+    "new_test_cases": 0,
+    "new_demonstrations": 0,
+    "optimizer_steps": 0,
+    "training_runs": 0,
+    "scientific_campaigns": 0,
+    "protected_outcome_accesses": 0,
+    "paid_compute": 0,
+    "numeric_threads": 1,
+    "independent_review_execution": 0
+  },
+  "stop_rules": [
+    "Any source cannot be integrated byte-identically apart from additive canonical-state reconciliation.",
+    "Any selected case fails, times out, or exceeds the finite allocation. Retain failure; do not silently retry.",
+    "Any integration requires changed model behavior beyond the existing exact donor or reopening protected evaluation."
+  ],
+  "historical_evidence": "Original PR24 baseline, 85-case gate and demo remain source-bound to their old commit. Incoming 94/147-case receipts remain bound to incoming parent sources. All prior budgets stay closed.",
+  "scientific_status": "Original bounded negative/inconclusive disposition and unestablished learning advantage remain authoritative; no scientific checkpoint advanced.",
+  "publication": {
+    "existing_pr": 24,
+    "branch": "codex/sine-coordinate-invariance-20261010-0945",
+    "base_branch": "codex/strict-spectral-cohort-20261010",
+    "append_with_expected_head_lease": "4f9845a46eb715c2f960f446c64a8142f7536aa3",
+    "draft": true,
+    "skip_ci": true,
+    "why_skip_ci": "Inherited broad spectral workflows launch trained calibration campaigns outside the zero-training integration scope."
+  }
+}
