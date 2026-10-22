@@ -1,0 +1,105 @@
+{
+  "scope": "Generated hand-verifiable n=2 unit-box fixtures; no trained or protected result",
+  "historical_source_commit": "be5aea5c658a0fb2da4d0f7cea34560ef62c0c88",
+  "historical_source_sha256": "c1e31cee4e09274b9e99ff2ee7345d780c93fcb6492305ab1eefaa2b7fbf17d1",
+  "dependency_commit": "0520827ad4d2e0e2063b48b21012bebb167a8485",
+  "dependency_metrics_sha256": "a23482243a40fc370420a2c83d505a6cec37da2345beb449f0224e715eecd182",
+  "grid": {
+    "n_interior": 2,
+    "x_min": 0.0,
+    "x_max": 1.0,
+    "y_min": 0.0,
+    "y_max": 1.0
+  },
+  "physical_unit_reference": [
+    [
+      1.5,
+      1.5
+    ],
+    [
+      1.5,
+      1.5
+    ]
+  ],
+  "reference_energy": 9.0,
+  "historical_zero_prediction_metrics": {
+    "fidelity": 0.0,
+    "infidelity": 1.0,
+    "rel_energy_error": 0.0,
+    "rel_rayleigh_energy_error": "nan",
+    "rayleigh_energy": "nan",
+    "residual_rel": 0.0,
+    "residual_true_e": 0.0,
+    "residual_rayleigh": "nan",
+    "sign_aligned_rel_l2": 0.9999999999999989
+  },
+  "dependency_doubled_prediction_metrics": {
+    "fidelity": 4.0,
+    "infidelity": -3.0,
+    "rel_energy_error": 0.0,
+    "rel_rayleigh_energy_error": 0.0,
+    "rayleigh_energy": 9.0,
+    "residual_rel": 0.0,
+    "residual_true_e": 0.0,
+    "residual_rayleigh": 0.0,
+    "sign_aligned_rel_l2": 0.9999999999999989
+  },
+  "dependency_nan_cohort_summary": {
+    "n": 2,
+    "fidelity_mean": 1.0,
+    "fidelity_std": 0.0,
+    "fidelity_values": [
+      1.0,
+      1.0
+    ],
+    "infidelity_mean": 1.0,
+    "infidelity_std": 0.0,
+    "infidelity_values": [
+      1.0,
+      1.0
+    ],
+    "rel_energy_error_mean": 1.0,
+    "rel_energy_error_std": 0.0,
+    "rel_energy_error_values": [
+      1.0,
+      1.0
+    ],
+    "rel_rayleigh_energy_error_mean": 1.0,
+    "rel_rayleigh_energy_error_std": 0.0,
+    "rel_rayleigh_energy_error_values": [
+      1.0,
+      1.0
+    ],
+    "rayleigh_energy_mean": 1.0,
+    "rayleigh_energy_std": 0.0,
+    "rayleigh_energy_values": [
+      1.0,
+      1.0
+    ],
+    "residual_rel_mean": 1.0,
+    "residual_rel_std": 0.0,
+    "residual_rel_values": [
+      1.0,
+      "nan"
+    ],
+    "residual_true_e_mean": 1.0,
+    "residual_true_e_std": 0.0,
+    "residual_true_e_values": [
+      1.0,
+      1.0
+    ],
+    "residual_rayleigh_mean": 1.0,
+    "residual_rayleigh_std": 0.0,
+    "residual_rayleigh_values": [
+      1.0,
+      1.0
+    ],
+    "sign_aligned_rel_l2_mean": 1.0,
+    "sign_aligned_rel_l2_std": 0.0,
+    "sign_aligned_rel_l2_values": [
+      1.0,
+      1.0
+    ]
+  },
+  "nonfinite_encoding": "Nonfinite historical values encoded as strings to retain the failed evidence in strict JSON; these are not valid metric values."
+}

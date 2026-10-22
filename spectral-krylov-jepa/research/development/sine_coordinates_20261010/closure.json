@@ -1,0 +1,102 @@
+{
+  "artifact_hash_exclusions": [
+    "closure.json itself",
+    "canonical state (the Git publication tree binds its final bytes)"
+  ],
+  "artifact_sha256": {
+    "baseline.json": "0e475a9c632a3d2155cce2ddc84545f276dadda9d88575e3c45dd6f009be64e5",
+    "baseline.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "baseline.stdout.log": "e30b6c61feb216c2bd13b551165fac533c3e616d36c7a34a7bcaf8b5a4fed52f",
+    "baseline_tests.py.txt": "119af64cccca5299fd9135a833d36463dc262fd734cff1f6b46cac798369b3ed",
+    "candidate.json": "9364678ee70dd402d5415257609ac8b7e7545404fdc39aa38d299ad1cb86365f",
+    "candidate.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "candidate.stdout.log": "c8ac6f06a55f824b5383f0b75dff3e745d75d29603c04dc328b1ee4feffdb147",
+    "contract.json": "222ecb101613934be5eb41469353b657790d04037dc69564c2ab114297d134de",
+    "demo.json": "c467d8980f423e8a6c38be28807f3c8d6fc6473bd3a72d2b546a1f5944c82cbe",
+    "demo_command.json": "8dcd7194aae759c52c0f231f66088e8cac4636d47944f1bdb4965420878f7914",
+    "demo_command.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "demo_command.stdout.log": "f7f8a03d08f9d1d1ac4be87c93b4a97286bd07b4c225f8d1ea429cfc41c9e649",
+    "final.json": "fd7cf4e37d67d60864f5f1a1087e2aa23ad37d5d5f35783deffdd1f2a8dc2178",
+    "final.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "final.stdout.log": "787cdf6189804796997f7345f7739c5f5995a5901d4abce3216c0f7e42003aa7",
+    "lint.json": "d560844477f0ec5a55769d527cbfdb91b38f3263c6fb03c3172e4e1e97efc622",
+    "lint.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "lint.stdout.log": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+    "parent_state.json": "bc978f6b587422973f235abe00b62e3a165ca59f66c8ac3d7812ed88cbbc35e5",
+    "static_verification.json": "2dd64a9fb2b64ea1d1c0fd42f4260218f487d3dfe05293de978a9788e85bd547"
+  },
+  "budget_use": {
+    "demo_commands": 1,
+    "demo_wall_seconds": 0.8412246969965054,
+    "final_selected_passed": 85,
+    "independent_review_execution_commands": 0,
+    "lint_commands": 1,
+    "lint_wall_seconds": 0.10877205200085882,
+    "new_regression_cases": 20,
+    "paid_compute": 0,
+    "protected_outcome_accesses": 0,
+    "repair_cycles": 0,
+    "scientific_runs": 0,
+    "test_commands": 3,
+    "test_wall_seconds": 8.613979496993124
+  },
+  "closed_utc": "2026-10-10T10:15:05.015812+00:00",
+  "demo": {
+    "record": "demo_command.json",
+    "report": "demo.json",
+    "status": "COMPLETED"
+  },
+  "documentation": "spectral-krylov-jepa/research/SINE_COORDINATES_20261010.md",
+  "engineering_result": "NUMERICAL_CORRECTION_VERIFIED",
+  "historical_disposition_preserved": true,
+  "implementation_and_test_sha256": {
+    "spectral-krylov-jepa/research/SINE_COORDINATES_20261010.md": "f8d780eeaf91bc664c753adfbae4a8f58493dfd1c18925e088f1a7d05bbac267",
+    "spectral-krylov-jepa/scripts/demo_sine_translation.py": "b73b77015f0ef1506331ce6e41f3fa1630fe10fe42a8b075bf6139ffe2800e33",
+    "spectral-krylov-jepa/src/spectral_krylov_jepa/evaluation/hybrid_spectral.py": "ad5709b3ce7193c80cbc5ac72140a7d902c81ebfa5a44b4b13f4e5b2d19dc06d",
+    "spectral-krylov-jepa/tests/test_sine_translation.py": "de2a2ec2fe61a065ca8f148859072aaef6a07f98408d43349c25393eec75400e"
+  },
+  "independent_review": {
+    "additional_execution": false,
+    "findings": [
+      "Direct interior index coordinates match independent Kronecker sine and finite-difference oracles.",
+      "Mode ordering, normalization, cache identity and read-only arrays remain unchanged.",
+      "Potential-generation coordinate precision and learned efficacy are outside scope."
+    ],
+    "reviewer": "independent source review by atg_ngmt_olympus",
+    "status": "PASS_SOURCE_REVIEW"
+  },
+  "integration": {
+    "additional_parent": "9d5b456f99512771ca8c3fa41ec99ce8bfb35914",
+    "scope": "Two independently added root evidence-validator/test files copied byte-for-byte from refreshed main; no overlapping spectral source changes. Existing baseline remains bound to original PR23 source."
+  },
+  "parent_commit": "85d8757ce31ec280d50bb54c7f655025b38f076c",
+  "prior_budgets_reopened": false,
+  "protected_boundary_unchanged": true,
+  "publication_policy": {
+    "commit_skip_ci": true,
+    "draft": true,
+    "merge": false,
+    "reason": "No inherited broad engineering or scientific campaigns added to this bounded local execution budget. Wider release gates remain pending."
+  },
+  "remaining_scientific_work": "Read the preserved canonical scientific status and frozen protocols; this engineering closure is not research completion.",
+  "retained_test_attempts": {
+    "baseline": {
+      "record": "baseline.json",
+      "returncode": 1,
+      "wall_seconds": 1.346388386999024
+    },
+    "candidate": {
+      "record": "candidate.json",
+      "returncode": 0,
+      "wall_seconds": 2.717592679997324
+    },
+    "final": {
+      "record": "final.json",
+      "returncode": 0,
+      "wall_seconds": 4.549998429996776
+    }
+  },
+  "schema": "bounded-engineering-closure-v1",
+  "scientific_checkpoint_advanced": false,
+  "status": "CLOSED"
+}

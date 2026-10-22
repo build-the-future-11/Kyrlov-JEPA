@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-10",
+  "scope": "Bounded local engineering verification; no scientific result",
+  "repository": "build-the-future-11/Kyrlov-JEPA",
+  "parent_commit": "be5aea5c658a0fb2da4d0f7cea34560ef62c0c88",
+  "parent_tree": "616f982e8b812aa9bedb3e8bc3724b4c1a32b66b",
+  "dependent_pr": 21,
+  "development_branch": "codex/wavefunction-metric-scale-20261010",
+  "baseline": {
+    "source_sha256": "c1e31cee4e09274b9e99ff2ee7345d780c93fcb6492305ab1eefaa2b7fbf17d1",
+    "new_regression_cases": 33,
+    "failed": 23,
+    "passed": 10,
+    "exit_code": 1,
+    "log": "spectral-krylov-jepa/research/verification/wavefunction_metric_scale_20261010/base_regressions.log"
+  },
+  "fixed": {
+    "test_targets": [
+      "tests/test_wavefunction_metric_scale.py",
+      "tests/test_metrics.py",
+      "-q",
+      "-o",
+      "addopts="
+    ],
+    "working_directory": "spectral-krylov-jepa/",
+    "passed": 37,
+    "failed": 0,
+    "skipped": 0,
+    "exit_code": 0,
+    "log": "spectral-krylov-jepa/research/verification/wavefunction_metric_scale_20261010/pytest.log"
+  },
+  "environment": {
+    "versions": {
+      "python": "3.12.14",
+      "numpy": "2.3.5",
+      "scipy": "1.17.0",
+      "torch": "2.14.1+cpu",
+      "pytest": "9.1.1"
+    },
+    "device": "CPU",
+    "numeric_thread_limit": 1
+  },
+  "artifacts": {
+    "spectral-krylov-jepa/src/spectral_krylov_jepa/evaluation/metrics.py": {
+      "sha256": "a23482243a40fc370420a2c83d505a6cec37da2345beb449f0224e715eecd182",
+      "bytes": 6076
+    },
+    "spectral-krylov-jepa/tests/test_wavefunction_metric_scale.py": {
+      "sha256": "08db75584fef81ff9d3cd7eb20ccf0e3072fe7c0663028ac42e7a08f9f065502",
+      "bytes": 4133
+    },
+    "spectral-krylov-jepa/research/DEVELOPMENT_WAVEFUNCTION_METRIC_SCALE_20261010.md": {
+      "sha256": "8382a8c19f3102fed5ca5f24e3fc48e9452512296b89e8787d0612cc383e5e77",
+      "bytes": 3057
+    },
+    "spectral-krylov-jepa/research/verification/wavefunction_metric_scale_20261010/base_regressions.log": {
+      "sha256": "4a0ba7d1c1f9052e84ffeed843bea75b08699531dacc5d625ce69efdd80b2f0a",
+      "bytes": 23548
+    },
+    "spectral-krylov-jepa/research/verification/wavefunction_metric_scale_20261010/pytest.log": {
+      "sha256": "efe4b9946197e37bdecb2a3a9c5b3e383b503dd3625643e0380a7fb03cc1581e",
+      "bytes": 99
+    },
+    "spectral-krylov-jepa/research/verification/wavefunction_metric_scale_20261010/static_checks.json": {
+      "sha256": "ff3c5e939ab19700a1feba436fb443b351001ee4b7525ec18cda08d5c65ecfda",
+      "bytes": 982
+    }
+  },
+  "scope_limits": {
+    "new_training_runs": 0,
+    "protected_runs": 0,
+    "protected_outcome_accesses": 0,
+    "paid_compute": 0,
+    "independent_review": "Not claimed for this revision",
+    "hosted_ci": "Not executed for this revision; publishing commit will skip automatic CI"
+  }
+}

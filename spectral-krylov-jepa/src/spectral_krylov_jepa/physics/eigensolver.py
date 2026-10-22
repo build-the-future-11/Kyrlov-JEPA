@@ -43,13 +43,37 @@ class EigenpairResult:
 
 
 def normalize_wavefunction(psi: np.ndarray, grid: GridSpec) -> np.ndarray:
-    """Normalize ψ so that ∑ |ψ|² * hx * hy = 1."""
+    """Normalize a finite nonzero real field in the grid-weighted L2 norm.
+
+    Preserve ordinary arithmetic when component squares are normal, with scaled
+    normalization if a nonzero square is subnormal, erased, or overflows. A
+    finite final norm alone cannot detect inaccurate component-square underflow.
+    Global amplitude is arbitrary: a small nonzero field is not a zero field.
+    """
     area = cell_area(grid)
-    flat = np.asarray(psi, dtype=np.float64).reshape(-1)
-    norm = np.sqrt(np.sum(flat * flat) * area)
-    if norm < 1e-15:
-        raise ValueError("Cannot normalize near-zero wavefunction")
-    return (flat / norm).reshape(psi.shape)
+    if not np.isfinite(area) or area <= 0:
+        raise ValueError("Grid cell area must be finite and positive")
+    if np.iscomplexobj(psi):
+        raise ValueError("Wavefunction must be real")
+    arr = np.asarray(psi, dtype=np.float64)
+    flat = arr.reshape(-1)
+    if flat.size != grid.n_dof or not np.isfinite(flat).all():
+        raise ValueError(f"Wavefunction must contain {grid.n_dof} finite values")
+    scale = float(np.max(np.abs(flat)))
+    if scale == 0:
+        raise ValueError("Cannot normalize zero wavefunction")
+    with np.errstate(over="ignore", under="ignore", invalid="ignore"):
+        squares = flat * flat
+        norm = np.sqrt(np.sum(squares) * area)
+    ordinary_squares = np.all((flat == 0.0) | (squares >= np.finfo(np.float64).tiny))
+    if ordinary_squares and np.isfinite(norm) and norm >= 1e-15:
+        result = flat / norm
+    else:
+        scaled = flat / scale
+        result = (scaled / np.linalg.norm(scaled)) / np.sqrt(area)
+    if not np.isfinite(result).all():
+        raise ValueError("Normalized wavefunction exceeds finite float64 range")
+    return result.reshape(arr.shape)
 
 
 def discrete_inner(a: np.ndarray, b: np.ndarray, grid: GridSpec) -> float:

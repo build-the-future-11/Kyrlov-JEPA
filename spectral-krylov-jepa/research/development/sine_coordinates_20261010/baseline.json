@@ -1,0 +1,38 @@
+{
+  "schema": "bounded-engineering-command-v1",
+  "started_utc": "2026-10-10T09:54:26.304215+00:00",
+  "cwd": "/workspace/scratch/2a0c1e6ddd92/development-0945/Kyrlov-JEPA",
+  "command": [
+    "python",
+    "-m",
+    "pytest",
+    "-q",
+    "-o",
+    "addopts=",
+    "spectral-krylov-jepa/tests/test_sine_translation.py"
+  ],
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "platform": "Linux-6.18.44-x86_64-with-glibc2.39",
+  "environment": {
+    "PYTHONPATH": "spectral-krylov-jepa/src:.",
+    "PYTEST_DISABLE_PLUGIN_AUTOLOAD": "1",
+    "OMP_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1",
+    "MPLBACKEND": "Agg",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "parent_commit": "85d8757ce31ec280d50bb54c7f655025b38f076c",
+  "source_sha256": {
+    "spectral-krylov-jepa/src/spectral_krylov_jepa/evaluation/hybrid_spectral.py": "184af0090d727ecbd3e9922a29888119cf94e4b5271b1f77cce736d0280e5e38",
+    "spectral-krylov-jepa/tests/test_sine_translation.py": "119af64cccca5299fd9135a833d36463dc262fd734cff1f6b46cac798369b3ed"
+  },
+  "timeout_seconds": 60,
+  "wall_seconds": 1.346388386999024,
+  "returncode": 1,
+  "peak_child_rss_kib": 59472,
+  "logs": {
+    "baseline.stdout.log": "e30b6c61feb216c2bd13b551165fac533c3e616d36c7a34a7bcaf8b5a4fed52f",
+    "baseline.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

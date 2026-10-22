@@ -1,0 +1,15 @@
+{
+  "command": [
+    "python",
+    "-m",
+    "pytest",
+    "tests/test_wavefunction_cell_area.py",
+    "-q",
+    "-W",
+    "error"
+  ],
+  "returncode": 1,
+  "duration_seconds": 0.5856721580057638,
+  "source_head": "f2f22d0a1eedf213c5dfc1bd425de7dc433cf3ce",
+  "scientific_runs": 0
+}

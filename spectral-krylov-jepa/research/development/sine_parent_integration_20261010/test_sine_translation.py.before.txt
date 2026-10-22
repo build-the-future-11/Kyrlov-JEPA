@@ -1,0 +1,62 @@
+"""Index-grid sine modes must not depend on cancellation in physical coordinates."""
+
+import numpy as np
+import pytest
+
+from spectral_krylov_jepa.evaluation.hybrid_spectral import (
+    adaptive_ritz,
+    box_energies,
+    projected_ritz,
+    sine_basis,
+)
+from spectral_krylov_jepa.physics.grid import GridSpec
+from spectral_krylov_jepa.physics.hamiltonian import build_hamiltonian
+
+
+@pytest.mark.parametrize("n,side", [(2, 2), (4, 3), (8, 5), (16, 7)])
+@pytest.mark.parametrize("origin", [0.0, 1e12, -1e16, 1e16])
+def test_modes_match_independent_kronecker_definition(n, side, origin):
+    grid = GridSpec(n, origin, origin + 4.0, -origin, -origin + 8.0)
+    basis, labels = sine_basis(grid, side)
+    one_d = np.sqrt(2.0 / (n + 1)) * np.sin(np.pi * np.outer(np.arange(1, n + 1), np.arange(1, side + 1)) / (n + 1))
+    expected = np.column_stack([np.kron(one_d[:, my - 1], one_d[:, mx - 1]) for mx, my in labels])
+    np.testing.assert_allclose(basis, expected, atol=2e-13, rtol=0)
+    np.testing.assert_allclose(basis.T @ basis, np.eye(side * side), atol=2e-13, rtol=0)
+    np.testing.assert_array_equal(labels, [(mx, my) for my in range(1, side + 1) for mx in range(1, side + 1)])
+
+
+def test_basis_is_identical_under_translation_and_rectangular_rescaling():
+    reference, labels = sine_basis(GridSpec(8), 5)
+    for grid in [GridSpec(8, 1e16, 1e16 + 4, -1e16, -1e16 + 8), GridSpec(8, -1e12, -1e12 + 0.5, 1e12, 1e12 + 4), GridSpec(8, -7, -3, 19, 27)]:
+        actual, actual_labels = sine_basis(grid, 5)
+        np.testing.assert_array_equal(actual, reference)
+        np.testing.assert_array_equal(actual_labels, labels)
+
+
+def test_translated_modes_diagonalize_the_actual_finite_difference_operator():
+    grid = GridSpec(8, 1e16, 1e16 + 4, -1e16, -1e16 + 8)
+    potential = np.zeros((grid.ny, grid.nx))
+    basis, _ = sine_basis(grid, 5)
+    energies = box_energies(grid, 5)
+    matrix = build_hamiltonian(grid, potential).matrix
+    np.testing.assert_allclose(matrix @ basis, basis * energies, rtol=2e-12, atol=2e-12)
+
+
+def test_translated_fast_path_and_adaptive_ritz_match_centered_operator():
+    centered = GridSpec(8, 0, 4, 0, 8)
+    translated = GridSpec(8, 1e16, 1e16 + 4, -1e16, -1e16 + 8)
+    potential = np.zeros((8, 8))
+    q, _ = sine_basis(centered, 3)
+    expected = projected_ritz(potential, centered, q, assume_orthonormal=True)
+    actual = adaptive_ritz(potential, translated, low_side=3)
+    assert actual.basis_dim == 9 and actual.proposal_rank == 0
+    assert actual.energy == pytest.approx(expected.energy, rel=2e-13, abs=2e-13)
+    np.testing.assert_allclose(actual.wavefunction, expected.wavefunction, rtol=2e-13, atol=2e-13)
+
+
+def test_cached_outputs_keep_the_existing_readonly_contract():
+    grid = GridSpec(4, 1e16, 1e16 + 4, 0, 4)
+    first, labels = sine_basis(grid, 3)
+    second, second_labels = sine_basis(grid, 3)
+    assert first is second and labels is second_labels
+    assert not first.flags.writeable and not labels.flags.writeable

@@ -1,0 +1,149 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-10",
+  "contract": "spectral-metrics-v2",
+  "scope": "Generated development implementation checks; no scientific efficacy claim",
+  "repository": "build-the-future-11/Kyrlov-JEPA",
+  "parent_commit": "0520827ad4d2e0e2063b48b21012bebb167a8485",
+  "dependent_pr": 22,
+  "development_branch": "codex/strict-spectral-cohort-20261010",
+  "scientific_disposition": "Prior methods/reproducibility plus bounded negative/inconclusive status retained; learning advantage unestablished",
+  "tests": {
+    "passed": 134,
+    "new_cases": 53,
+    "inherited_cases": 81,
+    "failed": 0,
+    "skipped": 0,
+    "command_record": "spectral-krylov-jepa/research/verification/strict_metrics_v2_20261010/pytest_command.json",
+    "raw_log": "spectral-krylov-jepa/research/verification/strict_metrics_v2_20261010/pytest.log"
+  },
+  "cli": {
+    "valid_exit_code": 0,
+    "valid_case_count": 2,
+    "invalid_exit_code": 2,
+    "invalid_cohort_size": 3,
+    "invalid_cases_preserved": 1,
+    "invalid_cohort_summary": null
+  },
+  "original_failures": {
+    "historical_zero_state_false_perfect_residual": 0.0,
+    "dependency_doubled_state_fidelity": 4.0,
+    "dependency_nan_summary_nominal_n": 2,
+    "dependency_nan_summary_actual_residual_values": 1
+  },
+  "review_corrections": [
+    "Retained independent-review discovery: population standard deviation centered on rounded mean mismeasured adjacent-float spread; exact represented-value mean and variance now precede scaled square root.",
+    "Retained independent-review discovery: mixed Python list dtype coercion erased booleans and integers; original scalars now admitted before conversion."
+  ],
+  "concurrent_work_preservation": "Reuses PR22 residual/Rayleigh code unchanged; credits PR21/22 inherited work separately",
+  "environment": {
+    "python": "3.12.14",
+    "numpy": "2.3.5",
+    "scipy": "1.17.0",
+    "pytest": "9.1.1",
+    "device": "CPU",
+    "numeric_threads": 1
+  },
+  "budget": {
+    "new_training_runs": 0,
+    "protected_runs": 0,
+    "protected_outcome_accesses": 0,
+    "paid_compute": 0
+  },
+  "hosted_ci": "Publication uses [skip ci] because inherited broad spectral-path workflows launch research execution; bounded local verification retained; no hosted success claimed.",
+  "artifacts": {
+    "spectral-krylov-jepa/src/spectral_krylov_jepa/evaluation/metrics_v2.py": {
+      "sha256": "3b5b8c6e2178f71d81a7e201bb66987b3c9f35429c33ad86e241695ca0b4e18a",
+      "bytes": 13173
+    },
+    "spectral-krylov-jepa/tests/test_metrics_v2.py": {
+      "sha256": "1d320879fe157fb894900884f036b88d25297ff75fb24fcedc8e8a51e2931d63",
+      "bytes": 13065
+    },
+    "spectral-krylov-jepa/src/spectral_krylov_jepa/evaluation/metrics.py": {
+      "sha256": "a23482243a40fc370420a2c83d505a6cec37da2345beb449f0224e715eecd182",
+      "bytes": 6076
+    },
+    "spectral-krylov-jepa/src/spectral_krylov_jepa/physics/grid.py": {
+      "sha256": "9edd41841fc011a32a9e8b1d6f45c2882d23f990c29b280be5b0860bcd010120",
+      "bytes": 3302
+    },
+    "spectral-krylov-jepa/src/spectral_krylov_jepa/physics/hamiltonian.py": {
+      "sha256": "222f83fa7c5156f236b9c455f7e431e6b96019a5dddd3fa726bb14ea2232b270",
+      "bytes": 2230
+    },
+    "spectral-krylov-jepa/src/spectral_krylov_jepa/physics/laplacian.py": {
+      "sha256": "7ef52316d3943451d9f43c1b1bad6a895531a7b56f726640d449915b222a6083",
+      "bytes": 1656
+    },
+    "spectral-krylov-jepa/research/verification/strict_metrics_v2_20261010/baseline_witness.json": {
+      "sha256": "5e4bb925a78d7619918a0873445e26b99279db9006fc2b53f21776a4912cf2a6",
+      "bytes": 2655
+    },
+    "spectral-krylov-jepa/research/verification/strict_metrics_v2_20261010/cli_commands.json": {
+      "sha256": "22f7c6f55467b47233d360e67a4338d94429bc073d7ee546254ed13ab198d40a",
+      "bytes": 970
+    },
+    "spectral-krylov-jepa/research/verification/strict_metrics_v2_20261010/invalid_input.json": {
+      "sha256": "f2cfc00a501ee73d5a261fa39ae149e33ce59295362cfd203426425cab5c55fd",
+      "bytes": 1595
+    },
+    "spectral-krylov-jepa/research/verification/strict_metrics_v2_20261010/invalid_receipt.json": {
+      "sha256": "344bc63b547557de8dbe250641fd60ce1b8a0a32fa844edfd73637950a70b06d",
+      "bytes": 4003
+    },
+    "spectral-krylov-jepa/research/verification/strict_metrics_v2_20261010/pytest.log": {
+      "sha256": "fe602e78c5d33625ea130e4484137346dad214b80f4eb53fbcffb9a9fdfd81a8",
+      "bytes": 181
+    },
+    "spectral-krylov-jepa/research/verification/strict_metrics_v2_20261010/pytest_command.json": {
+      "sha256": "b452bde9c311e6d2fc54b9106085f1cfeb1a576a809f57e0b3552bdd2fcb4cfb",
+      "bytes": 634
+    },
+    "spectral-krylov-jepa/research/verification/strict_metrics_v2_20261010/static_checks.json": {
+      "sha256": "2ec8d2e58928f6748f655b9d929eaafe3149b9b37c1e4bea39376dbc0ce9e9e4",
+      "bytes": 608
+    },
+    "spectral-krylov-jepa/research/verification/strict_metrics_v2_20261010/valid_input.json": {
+      "sha256": "ab4f608952448d92b9f534fc6de0ce4b102673f42fc7d332b8b52458c7b4412c",
+      "bytes": 1122
+    },
+    "spectral-krylov-jepa/research/verification/strict_metrics_v2_20261010/valid_receipt.json": {
+      "sha256": "f69b37d8f00bdb2d02d7a9fe05b9d7099e67d4be15ba50ade3f34765aee1cbcb",
+      "bytes": 4443
+    }
+  },
+  "independent_review": {
+    "status": "COMPLETED",
+    "reviewer": "space_research agent",
+    "scope": "Engineering source, independent arithmetic witnesses and regression review; no human or scientific peer review claim",
+    "focused_tests_passed": 53,
+    "independent_witnesses_passed": 11,
+    "findings": "All corrected adjacency, extreme/tiny statistics and mixed-list admission witnesses passed; no remaining blocker; source/tests unchanged during final review."
+  },
+  "review_discoveries_retained": [
+    {
+      "case": "[1.0, nextafter(1.0,+inf)] population std",
+      "initial_candidate": 1.5700924586837752e-16,
+      "independent_oracle": 1.1102230246251565e-16,
+      "resolution": "Exact represented-value mean/variance before scaled square root; regression passes."
+    },
+    {
+      "case": "[1e308, nextafter(1e308,+inf)] population std",
+      "initial_candidate_approx": 1.57009e+292,
+      "independent_oracle_approx": 9.9792e+291,
+      "resolution": "Exact centered variance; regression passes."
+    },
+    {
+      "case": "[5e-324,1e-323] population std",
+      "initial_candidate": 5e-324,
+      "exact_std": "2**-1075, unrepresentable as a nonzero float64",
+      "resolution": "Explicit refusal; regression passes."
+    },
+    {
+      "case": "Mixed JSON lists with Boolean or 2**53+1 next to floats",
+      "initial_candidate": "Coercion admitted Boolean and erased integer distinction",
+      "resolution": "Validate original object values before dtype conversion; regressions pass."
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "schema": "bounded-engineering-maintenance-contract-v1",
+  "id": "github_completion_20261022",
+  "specified_before_execution": true,
+  "scope": "Review and integrate PR21–24 while retaining all historical evidence; correct the previously documented component-square underflow in wavefunction normalization and make automatic CI engineering-only.",
+  "source_head": "f2f22d0a1eedf213c5dfc1bd425de7dc433cf3ce",
+  "current_main": "9d5b456f99512771ca8c3fa41ec99ce8bfb35914",
+  "prior_budgets_reopened": false,
+  "observation": "Prior source-only review retained an analytic unexecuted witness: a 2x2 field with 1.5*2^-537 entries and cell area2^1000 has a finite native norm but weighted normalized norm squared approximately9/8 because individual squares are subnormal.",
+  "predicted_correction": "Use scaled normalization when a nonzero component square is subnormal or rounds to zero; retain exact ordinary arithmetic when all nonzero component squares and native norm remain safe.",
+  "independent_oracle": "Decimal arithmetic at 200 digits on the exact represented input floats and grid cell area; analytic fields only, no solver outcomes or datasets.",
+  "budget": {
+    "maximum_test_commands": 3,
+    "maximum_seconds_per_command": 60,
+    "maximum_total_test_seconds": 120,
+    "maximum_new_test_cases": 12,
+    "maximum_combined_cases": 250,
+    "maximum_repair_cycles": 1,
+    "numeric_threads": 1,
+    "training_runs": 0,
+    "scientific_campaigns": 0,
+    "protected_outcome_accesses": 0,
+    "paid_compute": 0
+  },
+  "ci_contract": "Keep engineering unit tests and lint active. Explicit workflow_dispatch-only conditions guard trained calibration and scientific-study execution. No workflow is dispatched in this maintenance session. Engineering checkout binds exact PR head.",
+  "stop_rules": [
+    "Any failed verification after one numerical repair cycle is retained and reported without another cycle.",
+    "No protected outcomes, study protocols or frozen historical artifacts may change.",
+    "Unrepresentable domain behavior beyond this documented component-square issue remains outside scope."
+  ],
+  "historical_scientific_status": "Methods/reproducibility package complete; efficacy not established. Original retained package is bounded negative/inconclusive.",
+  "publication": "Prepare-only; root independently reviews payload and new actual engineering CI before merging; no claim of efficacy."
+}

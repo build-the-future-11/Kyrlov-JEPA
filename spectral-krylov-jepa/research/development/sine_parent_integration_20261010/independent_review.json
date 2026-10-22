@@ -1,0 +1,18 @@
+{
+  "reviewer": "atg_ngmt_olympus independent source-only review",
+  "status": "PASS_WITH_RETAINED_INHERITED_LIMIT",
+  "execution_commands": 0,
+  "findings": [
+    "Scaled normalization branch is algebraically correct and coexists with direct-index sine bases.",
+    "Ordinary normalization arithmetic and sine basis/cache remain unchanged."
+  ],
+  "inherited_limit": "Finite norms >=1e-15 may retain partially underflowed component-square inaccuracies at extreme grid cell areas. This exact-donor integration does not claim arbitrary finite grid-area normalization accuracy.",
+  "analytic_unexecuted_witness": "For a 2 by 2 grid with hx = hy = 2^500 and four entries each 1.5 * 2^-537, component squares round from 2.25 to 2 minimum-subnormal units. The native norm is finite and above 1e-15, and weighted norm squared after normalization is approximately 9/8. This was reasoned about, not executed; it does not invalidate ordinary-grid amplitude fixtures.",
+  "scope": "Tested incoming amplitude/direction cases plus unchanged sine-coordinate implementation; no scientific efficacy.",
+  "reviewed_source_sha256": {
+    "normalizer": "4f943a9a8da15d8e6981cf86d468d450f00d243e2d443abc7c2e30101a39f44b",
+    "donor_tests": "a1ad454f0b1d50791d288323c39da1bffbb8a94b91b1b7396d73ab51d3753985",
+    "direct_index_sine": "ad5709b3ce7193c80cbc5ac72140a7d902c81ebfa5a44b4b13f4e5b2d19dc06d"
+  },
+  "future_evidence_requirement": "A separately specified correction would need an independent high-precision oracle over amplitude and cell-area scales and an explicit decision about preserving ordinary operation order. No such additional execution or behavior change is included here."
+}

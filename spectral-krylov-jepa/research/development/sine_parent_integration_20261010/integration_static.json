@@ -1,0 +1,90 @@
+{
+  "recorded_utc": "2026-10-10T11:05:02.038220+00:00",
+  "exact_nonstate_donor_imports": [
+    {
+      "path": "spectral-krylov-jepa/research/DEVELOPMENT_RITZ_NUMERICAL_SPAN_20261010.md",
+      "blob": "808b869bc3970af93354826e494c664981c12001",
+      "sha256": "4881614ea43339843672f5d16ba6fdb197cedc20cd664c110814322bb9621840",
+      "bytes": 3501
+    },
+    {
+      "path": "spectral-krylov-jepa/research/ENGINEERING_COHORT_STACK_INTEGRATION_20261010.json",
+      "blob": "248647248637e94c6cf15b10dd8aeec455cfc310",
+      "sha256": "0c777468d423642f029f8f59948467889ca0297e2a5329411eba3602614eb780",
+      "bytes": 7954
+    },
+    {
+      "path": "spectral-krylov-jepa/research/ENGINEERING_STACK_INTEGRATION_20261010.json",
+      "blob": "9f1da80138aa513a2c7ea3ab805af14bfe22ffcd",
+      "sha256": "550ee384461f26dad9c6c992b746d63db84f28e7c3dfb85ad77153c3c3c6e3f7",
+      "bytes": 7317
+    },
+    {
+      "path": "spectral-krylov-jepa/research/verification/cohort_stack_integration_20261010/attempt.json",
+      "blob": "95db4fa9bd9113943d3575befe1531a5d9000e3e",
+      "sha256": "6ada27f52d2e60e66a520eeb2ea91c735c34aba06e61913c7caf8fac7275e605",
+      "bytes": 9831
+    },
+    {
+      "path": "spectral-krylov-jepa/research/verification/cohort_stack_integration_20261010/stderr.txt",
+      "blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "spectral-krylov-jepa/research/verification/cohort_stack_integration_20261010/stdout.txt",
+      "blob": "771aad2550dc7b907e8dbec5b4053e798ad0c040",
+      "sha256": "8697017e72f78499d7318af050bcbd9ec35f8410271e1b438b9f6a9735f4a549",
+      "bytes": 260
+    },
+    {
+      "path": "spectral-krylov-jepa/research/verification/stack_integration_20261010/attempt.json",
+      "blob": "31cbcfec167e90c85c75b8a26aa1dbdf47c6c6a0",
+      "sha256": "a34837c330c59bd37a7987fc6f68b08c884c6d8a9d8a9ab6bccd14fee8b48c98",
+      "bytes": 9517
+    },
+    {
+      "path": "spectral-krylov-jepa/research/verification/stack_integration_20261010/stderr.txt",
+      "blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "spectral-krylov-jepa/research/verification/stack_integration_20261010/stdout.txt",
+      "blob": "a032137e664b395e2d0b2cb5e3a6e86ac3394f13",
+      "sha256": "0a0c1a20c5bf447c3eee771b6cdefeacc5f08a57d6082cf195308c53edeca904",
+      "bytes": 179
+    },
+    {
+      "path": "spectral-krylov-jepa/research/verification/wavefunction_scaling_20261010.json",
+      "blob": "675db51485628ebb55daa7cb526c760404be7028",
+      "sha256": "1f2df0a16d7941ef7933798d109d9d76c54b29740f6b8bcb60a67cd74fc63471",
+      "bytes": 972
+    },
+    {
+      "path": "spectral-krylov-jepa/src/spectral_krylov_jepa/physics/eigensolver.py",
+      "blob": "2853baf07d70933386bd0b7cf13072af4e172a51",
+      "sha256": "4f943a9a8da15d8e6981cf86d468d450f00d243e2d443abc7c2e30101a39f44b",
+      "bytes": 6264
+    },
+    {
+      "path": "spectral-krylov-jepa/tests/test_wavefunction_scaling.py",
+      "blob": "3123e21c2451e9e37d00e3506fabce704b2ac42d",
+      "sha256": "a1ad454f0b1d50791d288323c39da1bffbb8a94b91b1b7396d73ab51d3753985",
+      "bytes": 2558
+    }
+  ],
+  "unchanged_our_source_and_evidence": {
+    "spectral-krylov-jepa/src/spectral_krylov_jepa/evaluation/hybrid_spectral.py": "ad5709b3ce7193c80cbc5ac72140a7d902c81ebfa5a44b4b13f4e5b2d19dc06d",
+    "spectral-krylov-jepa/tests/test_sine_translation.py": "de2a2ec2fe61a065ca8f148859072aaef6a07f98408d43349c25393eec75400e",
+    "spectral-krylov-jepa/scripts/demo_sine_translation.py": "b73b77015f0ef1506331ce6e41f3fa1630fe10fe42a8b075bf6139ffe2800e33",
+    "spectral-krylov-jepa/research/development/sine_coordinates_20261010/closure.json": "7a9ff44d8d43a65c3efd9c06a07059fc3a447d12988a241e8c3034bb89fb0d3d"
+  },
+  "both_parent_histories_preserved": true,
+  "permitted_scalar_pointer_updates": [
+    "latest_engineering_session",
+    "latest_engineering_read_order"
+  ],
+  "canonical_parent_snapshots_retained": true,
+  "source_or_test_algorithms_changed_beyond_exact_donor": false
+}
