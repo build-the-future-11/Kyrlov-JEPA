@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_on": "2026-10-10",
+  "updated_on": "2026-10-22",
   "purpose": "Canonical session entry point. Referenced historical records remain authoritative and are retained in their original versions.",
   "initialization_note": "Reconstructed from existing repository evidence after bounded defect discovery. This is not retrospective preregistration and makes no claim that a new scientific protocol was frozen before exploratory checks.",
   "session_rule": "Read this state and the applicable historical truth/protocol before work. Update actual decisions, evidence, failures and open gates before finishing. Append history; never erase adverse results.",
@@ -386,12 +386,40 @@
       "both_parent_state_histories_preserved": true,
       "inherited_limit": "Finite norms >=1e-15 may retain partially underflowed component-square inaccuracies at extreme grid cell areas. This exact-donor integration does not claim arbitrary finite grid-area normalization accuracy.",
       "new_session_required_before_further_execution": true
+    },
+    {
+      "id": "github_completion_20261022",
+      "contract": "spectral-krylov-jepa/research/development/github_completion_20261022/contract.json",
+      "status": "CLOSED_LOCAL_VERIFICATION_PENDING_INDEPENDENT_REVIEW_AND_HOSTED_ENGINEERING_CI",
+      "prior_budgets_reopened": false,
+      "scientific_checkpoint_advanced": false,
+      "closure": "spectral-krylov-jepa/research/development/github_completion_20261022/closure.json",
+      "verification": {
+        "passed": 183,
+        "failed": 0,
+        "skipped": 0,
+        "new_decimal_oracle_cases": 10,
+        "baseline_failed": 2,
+        "baseline_passed": 8
+      },
+      "budget_use": {
+        "test_commands": 2,
+        "test_command_seconds": 4.047145352000371,
+        "repair_cycles": 1,
+        "new_test_cases": 10,
+        "training_runs": 0,
+        "scientific_campaigns": 0,
+        "protected_outcome_accesses": 0,
+        "paid_compute": 0,
+        "numeric_threads": 1
+      },
+      "retained_scientific_disposition": "Methods/reproducibility package complete; efficacy not established. Original retained package is bounded negative/inconclusive."
     }
   ],
-  "latest_engineering_session": "sine_parent_integration_20261010",
+  "latest_engineering_session": "github_completion_20261022",
   "latest_engineering_read_order": [
-    "spectral-krylov-jepa/research/SINE_PARENT_INTEGRATION_20261010.md",
-    "spectral-krylov-jepa/research/development/sine_parent_integration_20261010/contract.json",
-    "spectral-krylov-jepa/research/development/sine_parent_integration_20261010/closure.json"
+    "spectral-krylov-jepa/research/GITHUB_COMPLETION_20261022.md",
+    "spectral-krylov-jepa/research/development/github_completion_20261022/contract.json",
+    "spectral-krylov-jepa/research/development/github_completion_20261022/closure.json"
   ]
 }

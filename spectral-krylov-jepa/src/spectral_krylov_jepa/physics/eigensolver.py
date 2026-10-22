@@ -45,9 +45,10 @@ class EigenpairResult:
 def normalize_wavefunction(psi: np.ndarray, grid: GridSpec) -> np.ndarray:
     """Normalize a finite nonzero real field in the grid-weighted L2 norm.
 
-    Preserve the ordinary arithmetic path, with scaled normalization when the
-    dimensional square would overflow/underflow. Global amplitude is arbitrary:
-    a small nonzero field is not a zero field.
+    Preserve ordinary arithmetic when component squares are normal, with scaled
+    normalization if a nonzero square is subnormal, erased, or overflows. A
+    finite final norm alone cannot detect inaccurate component-square underflow.
+    Global amplitude is arbitrary: a small nonzero field is not a zero field.
     """
     area = cell_area(grid)
     if not np.isfinite(area) or area <= 0:
@@ -62,8 +63,10 @@ def normalize_wavefunction(psi: np.ndarray, grid: GridSpec) -> np.ndarray:
     if scale == 0:
         raise ValueError("Cannot normalize zero wavefunction")
     with np.errstate(over="ignore", under="ignore", invalid="ignore"):
-        norm = np.sqrt(np.sum(flat * flat) * area)
-    if np.isfinite(norm) and norm >= 1e-15:
+        squares = flat * flat
+        norm = np.sqrt(np.sum(squares) * area)
+    ordinary_squares = np.all((flat == 0.0) | (squares >= np.finfo(np.float64).tiny))
+    if ordinary_squares and np.isfinite(norm) and norm >= 1e-15:
         result = flat / norm
     else:
         scaled = flat / scale

@@ -1,0 +1,53 @@
+{
+  "schema": "bounded-engineering-maintenance-closure-v1",
+  "id": "github_completion_20261022",
+  "status": "CLOSED_LOCAL_VERIFICATION_PENDING_INDEPENDENT_REVIEW_AND_HOSTED_ENGINEERING_CI",
+  "source_parent": "f2f22d0a1eedf213c5dfc1bd425de7dc433cf3ce",
+  "original_normalizer_blob": "2853baf07d70933386bd0b7cf13072af4e172a51",
+  "original_observation": "The previously retained analytic equal-component witness was executed and failed. The independently evaluated Decimal oracle shows the native component-square path misnormalizes when its partial square underflow is amplified by a large cell area.",
+  "new_regressions": {
+    "baseline_failed": 2,
+    "baseline_passed": 8,
+    "final_passed": 10,
+    "oracle": "Decimal at200digits over exact represented float inputs and cell area"
+  },
+  "combined_tests": {
+    "passed": 183,
+    "failed": 0,
+    "skipped": 0,
+    "warnings_as_errors": true,
+    "wall_seconds": 3.461473193994607
+  },
+  "static_checks": "Critical E9/F63/F7/F82 Ruff checks passed for all changed runtime modules and new tests; eight workflow documents parsed as YAML.",
+  "preserved_behavior": "The exact ordinary-range arithmetic path is retained when every nonzero component square is normal. The existing scaled path handles subnormal/erased squares, overflowing/underflowing final norms. Original invalid-input and amplitude/direction behavior remains covered.",
+  "budget_use": {
+    "test_commands": 2,
+    "test_command_seconds": 4.047145352000371,
+    "repair_cycles": 1,
+    "new_test_cases": 10,
+    "training_runs": 0,
+    "scientific_campaigns": 0,
+    "protected_outcome_accesses": 0,
+    "paid_compute": 0,
+    "numeric_threads": 1
+  },
+  "prior_budgets_reopened": false,
+  "historical_evidence": "All previous source-bound receipts, failure logs, claims, limitations and closed sessions are retained unchanged. This prospective repair does not relabel or recompute any scientific outcome.",
+  "scientific_checkpoint_advanced": false,
+  "independent_review": "Required from parent before publication; this closure does not claim that review occurred.",
+  "hosted_engineering_ci": "Required on the eventual published head; not yet run. Scientific workflows must remain explicit manual-dispatch only.",
+  "next_action": "Reconcile with actual merged claim-gate/CI-guard main, independently review the exact tree, publish via expected-head lease, and require genuine engineering CI before merging the stack.",
+  "source_sha256": {
+    "spectral-krylov-jepa/src/spectral_krylov_jepa/physics/eigensolver.py": "0bffa00b76b54efde423c96db483b69ddbe5ef2cf6cce3d4f8df1bbecb09daf4",
+    "spectral-krylov-jepa/tests/test_wavefunction_cell_area.py": "1b8e35dc22c297f9d803528c587a5c1bf2d8542bb0c77232f8f729facaec51aa"
+  },
+  "artifact_sha256": {
+    "baseline.json": "0154be6db2da66a185a277d151fa0baa302b72adcf9bbb29215c67eff2e4e597",
+    "combined.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "combined.json": "7cabbb1e6f68cb142b3686d3454024bf2a6750666b107c56317075023d24eb4e",
+    "baseline.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "contract.json": "b5d55320530701ef10eea95e2dd8dc5c719b76942d525467b4c00c0a832b96af",
+    "baseline.stdout.log": "4b093dacb90b30939607301634993f162054d4652ab62cd8fb135a6407b95700",
+    "combined.stdout.log": "9fb7951d83c33c48f385775d239f7f0361258fc38cdf04111a78eab873efe970"
+  }
+}

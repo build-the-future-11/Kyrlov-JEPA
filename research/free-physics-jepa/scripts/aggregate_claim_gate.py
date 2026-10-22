@@ -6,11 +6,75 @@ from __future__ import annotations
 import csv
 import json
 import math
+from numbers import Real
 from pathlib import Path
 from typing import Any
 
 
 PKG = Path(__file__).resolve().parents[1]
+
+METHODS = ("scratch", "mml_direct", "lmop_jepa")
+DISTRIBUTIONS = ("id", "ood")
+
+
+def validate_matrix(rows: list[dict], *, seeds: list[int], subsets: list[int]) -> dict[str, Any]:
+    """Require exactly one finite primary metric for every frozen cell.
+
+    Row counts cannot prove coverage: duplicates can conceal missing cells, and
+    a complete table from different seeds is not this protocol's matrix.
+    """
+    for name, values, minimum in (("seeds", seeds, 0), ("subsets", subsets, 1)):
+        if not values or any(type(v) is not int or v < minimum for v in values):
+            raise ValueError(f"Protocol {name} must be nonempty integer identities >= {minimum}")
+        if len(values) != len(set(values)):
+            raise ValueError(f"Protocol {name} must not contain duplicate identities")
+    expected = {
+        (method, seed, n, dist)
+        for method in METHODS
+        for seed in seeds
+        for n in subsets
+        for dist in DISTRIBUTIONS
+    }
+    seen = set()
+    errors = []
+    for index, row in enumerate(rows):
+        if not isinstance(row, dict):
+            errors.append(f"Row {index}: expected a mapping")
+            continue
+        method, seed = row.get("method"), row.get("seed")
+        n, dist = row.get("real_label_budget"), row.get("distribution")
+        if (
+            type(method) is not str
+            or type(seed) is not int
+            or type(n) is not int
+            or type(dist) is not str
+        ):
+            errors.append(f"Row {index}: cell identities require string method/distribution and integer seed/budget")
+            continue
+        key = (method, seed, n, dist)
+        if key not in expected:
+            errors.append(f"Row {index}: unexpected protocol cell {key!r}")
+            continue
+        if key in seen:
+            errors.append(f"Row {index}: duplicate protocol cell {key!r}")
+            continue
+        value = row.get("relative_l2")
+        if isinstance(value, bool) or not isinstance(value, Real) or not math.isfinite(value) or value < 0:
+            errors.append(f"Row {index}: relative_l2 must be a finite nonnegative number")
+            continue
+        seen.add(key)
+    missing = [
+        {"method": method, "seed": seed, "real_label_budget": n, "distribution": dist}
+        for method, seed, n, dist in sorted(expected - seen)
+    ]
+    return {
+        "valid": not errors,
+        "complete": not errors and not missing,
+        "expected_cells": len(expected),
+        "observed_unique_cells": len(seen),
+        "missing_cells": missing,
+        "errors": errors,
+    }
 
 
 def _mean(xs: list[float]) -> float:
@@ -25,8 +89,27 @@ def _std(xs: list[float]) -> float:
 
 
 def load_rows_from_csv(path: Path) -> list[dict[str, Any]]:
-    with path.open() as f:
-        rows = list(csv.DictReader(f))
+    # DictReader uses the final value for a repeated header and stores surplus
+    # columns under None. Validate structure before either can erase evidence.
+    with path.open(encoding="utf-8-sig", newline="") as f:
+        reader = csv.DictReader(f, strict=True)
+        fields = reader.fieldnames or []
+        if len(fields) != len(set(fields)):
+            raise ValueError("CSV contains duplicate column headers")
+        if any(not field.strip() for field in fields):
+            raise ValueError("CSV column headers must not be blank")
+        required = {"method", "seed", "real_label_budget", "distribution", "relative_l2"}
+        missing = sorted(required - set(fields))
+        if missing:
+            raise ValueError(f"CSV is missing required columns: {missing}")
+        rows = []
+        try:
+            for row in reader:
+                if None in row or any(value is None for value in row.values()):
+                    raise ValueError(f"CSV line {reader.line_num} differs from the declared column count")
+                rows.append(row)
+        except csv.Error as exc:
+            raise ValueError(f"CSV is malformed near line {reader.line_num}: {exc}") from exc
     for r in rows:
         r["seed"] = int(r["seed"])
         r["real_label_budget"] = int(r["real_label_budget"])
@@ -42,6 +125,26 @@ def load_rows_from_csv(path: Path) -> list[dict[str, Any]]:
             if k in r and r[k] != "":
                 r[k] = float(r[k])
     return rows
+
+
+def _unique_json_object(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
+    result: dict[str, Any] = {}
+    for key, value in pairs:
+        if key in result:
+            raise ValueError(f"duplicate JSON member {key!r}")
+        result[key] = value
+    return result
+
+
+def _finite_json_float(raw: str) -> float:
+    value = float(raw)
+    if not math.isfinite(value):
+        raise ValueError("non-finite JSON number")
+    return value
+
+
+def _reject_json_constant(raw: str) -> Any:
+    raise ValueError(f"non-standard JSON constant {raw!r}")
 
 
 def seed_means(rows: list[dict], *, method: str, n: int, dist: str) -> list[float]:
@@ -127,10 +230,12 @@ def write_claim_artifacts(
 ) -> dict[str, Any]:
     seeds = list(proto["seeds"])
     subsets = list(proto["data_sizes"]["confirmatory"]["subsets"])
+    matrix = validate_matrix(table_rows, seeds=seeds, subsets=subsets)
     comparisons = []
     support_cells = []
-    for n in subsets:
-        for dist in ("id", "ood"):
+    # Incomplete or invalid evidence must never produce a scientific comparison.
+    for n in subsets if matrix["complete"] else []:
+        for dist in DISTRIBUTIONS:
             mml = aggregate_cell(table_rows, method="mml_direct", n=n, dist=dist)
             lmop = aggregate_cell(table_rows, method="lmop_jepa", n=n, dist=dist)
             scratch = aggregate_cell(table_rows, method="scratch", n=n, dist=dist)
@@ -161,16 +266,32 @@ def write_claim_artifacts(
 
     shuffle = None
     mechanism_ok = False
+    shuffle_error = None
     if shuffle_path.exists():
-        shuffle = json.loads(shuffle_path.read_text())
-        mechanism_ok = bool(shuffle.get("mechanism_supported"))
+        try:
+            shuffle = json.loads(
+                shuffle_path.read_text(encoding="utf-8"),
+                object_pairs_hook=_unique_json_object,
+                parse_float=_finite_json_float,
+                parse_constant=_reject_json_constant,
+            )
+        except (ValueError, UnicodeError) as exc:
+            shuffle_error = f"Shuffled-control artifact is not valid unambiguous JSON: {exc}"
+        if shuffle_error is None:
+            if not isinstance(shuffle, dict) or type(shuffle.get("mechanism_supported")) is not bool:
+                shuffle_error = "mechanism_supported must be a JSON boolean"
+            else:
+                mechanism_ok = shuffle["mechanism_supported"]
 
-    expected_rows = len(seeds) * len(subsets) * 3 * 2  # methods × id/ood
-    complete = len(table_rows) >= expected_rows
+    expected_rows = matrix["expected_cells"]
+    complete = matrix["complete"]
 
-    if not complete:
+    if not matrix["valid"]:
+        verdict = "INVALID_MATRIX"
+        summary = f"Invalid frozen evaluation matrix ({len(matrix['errors'])} validation errors); do not claim."
+    elif not complete:
         verdict = "INCOMPLETE_MATRIX"
-        summary = f"Only {len(table_rows)}/{expected_rows} eval rows; do not claim."
+        summary = f"Only {matrix['observed_unique_cells']}/{expected_rows} frozen evaluation cells; do not claim."
     elif comparisons and all(c["seed_variance_degenerate"] for c in comparisons):
         verdict = "NOT_TESTABLE_NO_SEED_VARIANCE"
         summary = (
@@ -206,11 +327,13 @@ def write_claim_artifacts(
         "expected_eval_rows": expected_rows,
         "observed_eval_rows": len(table_rows),
         "matrix_complete": complete,
+        "matrix_validation": matrix,
         "shuffled_control": {
             "path": str(shuffle_path) if shuffle_path.exists() else None,
             "mechanism_supported": mechanism_ok,
-            "correct_final_loss": None if shuffle is None else shuffle.get("correct_final_loss"),
-            "shuffled_final_loss": None if shuffle is None else shuffle.get("shuffled_final_loss"),
+            "validation_error": shuffle_error,
+            "correct_final_loss": shuffle.get("correct_final_loss") if isinstance(shuffle, dict) else None,
+            "shuffled_final_loss": shuffle.get("shuffled_final_loss") if isinstance(shuffle, dict) else None,
         },
         "comparisons": comparisons,
         "support_cells": support_cells,
@@ -237,7 +360,10 @@ def write_claim_artifacts(
         summary,
         "",
         f"- Matrix complete: {complete} ({len(table_rows)}/{expected_rows} rows)",
+        f"- Missing frozen cells: {len(matrix['missing_cells'])}",
+        f"- Matrix validation errors: {len(matrix['errors'])}",
         f"- Shuffled mechanism supported: {mechanism_ok}",
+        f"- Shuffled-control validation error: {shuffle_error or 'none'}",
         f"- Git SHA: `{git_sha or 'NONE'}`",
         f"- Run: `{run_root}`",
         "",
