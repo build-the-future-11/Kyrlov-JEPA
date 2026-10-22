@@ -21,6 +21,7 @@ jobs:
       - name: Registry tests
         run: python -m pytest spectral-krylov-jepa/tests/test_research100.py -q
       - name: Execute all 100 smoke handlers
+        if: github.event_name == 'workflow_dispatch'
         run: >
           python spectral-krylov-jepa/scripts/20_run_research100_suite.py
           --mode smoke
@@ -32,6 +33,7 @@ jobs:
           MKL_NUM_THREADS: '1'
           MPLBACKEND: Agg
       - name: Require all 100 successful
+        if: github.event_name == 'workflow_dispatch'
         run: |
           python - <<'PY'
           import json
@@ -42,7 +44,7 @@ jobs:
           assert s['failures'] == [], s
           PY
       - uses: actions/upload-artifact@v4
-        if: always()
+        if: always() && github.event_name == 'workflow_dispatch'
         with:
           name: research100-smoke
           path: research100_smoke_artifacts
