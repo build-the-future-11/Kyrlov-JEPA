@@ -1,0 +1,7 @@
+{
+  "visual_review": "PASS: full final page inspected after embedded-font repair; no clipped text or overlapping blocks",
+  "runtime_packages": {
+    "reportlab": "4.4.9",
+    "pypdf": "6.10.0"
+  }
+}

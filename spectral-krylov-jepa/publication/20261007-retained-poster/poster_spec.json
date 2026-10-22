@@ -1,0 +1,22 @@
+{
+  "project": "krylov",
+  "title": "Simple subspaces expose weak evidence for Krylov transfer",
+  "question": [
+    "Does learning from Lanczos trajectories improve label efficiency for quantum ground states beyond credible simple baselines?"
+  ],
+  "method": [
+    "Retained synthetic development study: 16 by 16 interior grid, one training seed, twelve in distribution test potentials, and 20 labeled examples.",
+    "A joint embedding model predicts trajectory representations; the potential encoder transfers to energy and wavefunction regression. Neural values come from retained aggregates; classical means are rechecked from per-example records."
+  ],
+  "lesson": [
+    "A fixed free-box state and a nine-mode Rayleigh Ritz model reveal that high overlap can be easy on a smooth distribution. Physical residuals expose errors hidden by fidelity."
+  ],
+  "result": [
+    "The retained Krylov model does not establish useful transfer. Its paired fidelity interval against free box includes zero; the nine-mode comparison favors the classical baseline within this corpus.",
+    "Ritz uses the query Hamiltonian and has a different inference cost. These comparisons do not establish equal compute dominance."
+  ],
+  "limits": [
+    "One training seed. Exploratory intervals exclude training seed uncertainty. The larger confirmatory experiment has not run."
+  ],
+  "source_line": "Evidence: retained smoke summary and classical baseline audit. Presentation input commit 24e871d27215. Per-example baseline arithmetic is checked; no model replay or new scientific outcome is claimed."
+}

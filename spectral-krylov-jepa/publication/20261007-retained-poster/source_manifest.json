@@ -1,0 +1,18 @@
+{
+  "input_commit": "24e871d27215020618b0febc857f6fc99dfa4e30",
+  "sources": [
+    {
+      "path": "experiments/summaries/smoke_latest.json",
+      "sha256": "e22cd03f5f6a778d0079817bf37e4f89d55d423a7138c2b0284181b35640194c"
+    },
+    {
+      "path": "results/astra_baselines_20260927/baseline_audit.json",
+      "sha256": "46fef9f69077c2f413646124e95a5cb29fee5feb46a59f41b874bb950397ae3a"
+    },
+    {
+      "path": "paper/submission/CJSJ_DRAFT.md",
+      "sha256": "37f08c6bd5d69c6368f8c74bbe94233a35a80ae854e6b9ee2d552e2779abcbdc"
+    }
+  ],
+  "scientific_source_replayed": false
+}

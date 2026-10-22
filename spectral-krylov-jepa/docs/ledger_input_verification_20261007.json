@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "base_commit": "d61c26ba40fa0a6e8ee0bc39287c17faa7367bef",
+  "base_tree": "a3221e69e471fb7b5e66aa8b56c1f2e2005375fb",
+  "verification_date": "2026-10-07",
+  "changed_existing_files": [
+    "spectral-krylov-jepa/src/spectral_krylov_jepa/evaluation/recycled_policy.py",
+    "spectral-krylov-jepa/scripts/18_freeze_recycled_ritz_policy.py"
+  ],
+  "unchanged_baseline_file_count": 1030,
+  "new_outcome_runs": 0,
+  "scientific_claims_upgraded": false,
+  "submitted_or_retained_manuscripts_modified": false,
+  "tests": {
+    "offline_ledger_and_cli_tests": 10,
+    "failed": 0
+  },
+  "limitations": [
+    "Input declarations and hashes are necessary provenance checks; they do not independently prove a ledger was generated without protected data.",
+    "The retained 2026-10-05 policy and all historical manuscripts/results are unchanged.",
+    "No original full trained comparison matrix or new eigensolver/benchmark outcome was executed."
+  ]
+}
