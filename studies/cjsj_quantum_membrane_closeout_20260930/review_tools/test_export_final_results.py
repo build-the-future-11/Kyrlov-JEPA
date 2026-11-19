@@ -264,3 +264,37 @@ def test_unpaired_observations_rejected(study):
     data.iloc[1:].to_csv(path, index=False)
     with pytest.raises(ValueError, match="Unpaired"):
         exporter.build(study)
+
+
+@pytest.mark.parametrize("candidate,reference,dtype,expected_ms", [
+    ([2**53, 2**53], [2**53 + 1, 2**53 + 1], "i", -1000.0),
+    ([2**53 + 1, 2**53 + 1], [2**53, 2**53], "i", 1000.0),
+    ([2**63, 2**63], [2**63 + 1, 2**63 + 1], "u", -1000.0),
+    ([2**63 + 1, 2**63 + 1], [2**63, 2**63], "u", 1000.0),
+    ([2**60, 1], [1, 2**60 - 2], "i", 1000.0),
+])
+def test_integer_paired_differences_survive_float_precision(
+    study, candidate, reference, dtype, expected_ms,
+):
+    path = study / "results" / "quantum_test.csv"
+    data = pd.read_csv(path)
+    times = {
+        (method, seed): values[index]
+        for method, values in (("candidate", candidate), ("reference", reference))
+        for index, seed in enumerate((11, 23))
+    }
+    data["capped_seconds"] = [
+        times[(row.method, row.potential_seed)] for row in data.itertuples()
+    ]
+    data.to_csv(path, index=False)
+    assert pd.read_csv(path).capped_seconds.dtype.kind == dtype
+    ratio = sum(candidate) / sum(reference)
+    change_comparisons(study, "initial", lambda rows: [
+        {**row, "ratio": ratio} if row["domain"] == "quantum" else row
+        for row in rows
+    ])
+    before = result_bytes(study)
+    table = exporter.build(study)
+    assert len(table) == 64
+    assert (table[table.domain == "quantum"].absolute_difference_ms == expected_ms).all()
+    assert result_bytes(study) == before

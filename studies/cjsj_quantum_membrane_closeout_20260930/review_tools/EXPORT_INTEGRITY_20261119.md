@@ -82,3 +82,55 @@ the float64 correction and that final 28-case pass; both conditions are met.
 The review does not authorize parent/main merge, archive replay, CI dispatch
 or research release. Remaining work is author review of the draft and the
 already documented private-archive and publication gates.
+
+
+## Independent premerge engineering review — 19 November 2026
+
+The current maintenance task authorizes a bounded source review and correction
+on the existing review branch. It does not adopt scientific claims, publish the
+private archive, merge the parent study to main, or satisfy author and release
+requirements. The historical scope and test receipts above are retained.
+
+At source `a39b41d9c696b63fce815643ad6ee6d6a75eccdf`, all 28 existing synthetic
+tests passed in 16.74 seconds with warnings as errors. A separate constructed
+counterexample then showed that admitted int64 timings `2**53` and `2**53 + 1`
+produced a 64-row table with a zero paired difference instead of -1000 ms.
+Both observations rounded to the same float64 value before subtraction.
+
+The correction computes each integer paired difference and its sum with Python
+integers, then divides once by the paired count. This preserves signed small
+differences and cancellation across pairs before scaling. The existing numeric
+admission, float-observation path, ratio tolerance (`rtol=1e-12`, `atol=0`),
+interval requirements, comparison identities and output protections are
+unchanged. No scientific threshold or archived numerical value is changed.
+
+Five added synthetic cases cover positive and negative adjacent int64/uint64
+observations and cancellation between large opposing differences. They also
+check 64-row completeness and input byte preservation. The final proposed
+source passed **33 tests, zero failures or skips**, with warnings as errors,
+in **15.26 seconds** on Python 3.12.14, NumPy 2.3.5, pandas 2.2.3 and pytest
+9.1.1, using one numeric thread. The original 28 tests remain unchanged.
+
+Only the exporter, its synthetic test file and this appended note change. No
+private archive, frozen study source, historical receipt, protected outcome or
+checkpoint was accessed or changed; no scientific run, workflow dispatch,
+submission or release was performed by this review. Exact canonical archive
+membership and the existing author, disclosure and publication gates remain
+separate from this engineering qualification.
+
+
+### Coordinator integration and continuous verification
+
+The coordinator independently reviewed the complete exporter, all 33 synthetic
+cases and the exact precision delta. A separate five-minute job is appended to
+the existing engineering workflow so the nested suite is continuously checked.
+It uses Python 3.12 and the tested NumPy 2.3.5, pandas 2.2.3 and pytest 9.1.1
+versions, with one numeric thread and warnings as errors. Existing workflow
+triggers and the original engineering job remain unchanged. The new job reads
+only generated temporary fixtures, never the private archive or retained study
+results. The exact published successor must pass this and all existing normal
+checks before source integration into the current CJSJ review branch.
+
+The final repair spans the same three maintenance files plus that ordinary
+engineering workflow. This does not merge the parent study to main or grant
+scientific, authorship, disclosure, archive-access or publication approval.

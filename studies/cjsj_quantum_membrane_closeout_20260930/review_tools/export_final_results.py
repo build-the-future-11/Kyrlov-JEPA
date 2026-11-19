@@ -88,6 +88,14 @@ def build(root):
             or np.issubdtype(values.dtype, np.floating)
         ) for values in (av, bv)):
             raise ValueError("Timing observations must be real numeric values")
+        # Preserve small signed differences between large integer observations.
+        # Sum with Python integers before the single division, so conversion
+        # cannot erase individual differences or cancellation across pairs.
+        integer_difference_mean = None
+        if all(np.issubdtype(values.dtype, np.integer) for values in (av, bv)):
+            integer_difference_mean = sum(
+                int(left) - int(right) for left, right in zip(av, bv)
+            ) / len(av)
         av = av.astype(np.float64, copy=False)
         bv = bv.astype(np.float64, copy=False)
         if any(not np.isfinite(values).all() or (values < 0).any() for values in (av, bv)):
@@ -95,7 +103,11 @@ def build(root):
         with np.errstate(over="ignore", invalid="ignore"):
             numerator_mean = float(av.mean())
             baseline_mean = float(bv.mean())
-            difference_mean = float((av - bv).mean())
+            difference_mean = (
+                integer_difference_mean
+                if integer_difference_mean is not None
+                else float((av - bv).mean())
+            )
         if not all(math.isfinite(value) for value in (numerator_mean, baseline_mean, difference_mean)):
             raise ValueError("Aggregate timing observations must be finite")
         if baseline_mean <= 0:
