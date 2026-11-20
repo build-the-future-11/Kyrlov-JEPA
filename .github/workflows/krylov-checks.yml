@@ -23,3 +23,20 @@ jobs:
           OMP_NUM_THREADS: '1'
           MPLBACKEND: Agg
       - run: ruff check spectral-krylov-jepa/src spectral-krylov-jepa/scripts --select E9,F63,F7,F82
+
+  exporter-synthetic:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install tested synthetic exporter dependencies
+        run: python -m pip install numpy==2.3.5 pandas==2.2.3 pytest==9.1.1
+      - name: Verify exporter contracts using constructed inputs only
+        run: python -m pytest studies/cjsj_quantum_membrane_closeout_20260930/review_tools/test_export_final_results.py -q -W error
+        env:
+          OMP_NUM_THREADS: '1'
+          OPENBLAS_NUM_THREADS: '1'
+          MKL_NUM_THREADS: '1'
