@@ -134,3 +134,42 @@ checks before source integration into the current CJSJ review branch.
 The final repair spans the same three maintenance files plus that ordinary
 engineering workflow. This does not merge the parent study to main or grant
 scientific, authorship, disclosure, archive-access or publication approval.
+
+## Input snapshot correction — 20 November 2026
+
+Base: consolidated CJSJ review head
+`a89d89532267cd01e75e1418dd0f67d647553a4c`.
+
+The exporter parsed each CSV from a path, then reopened the path to calculate
+its SHA-256. It also parsed the same file again for each comparison. A path
+replacement between these operations could attach the replacement's digest
+to values computed from the earlier bytes and combine multiple snapshots
+in one table. This is an engineering provenance defect, not a finding about
+the retained scientific measurements.
+
+The exporter now reads each timing CSV once, parses those bytes through an
+in-memory stream and hashes that same byte snapshot. Every comparison that
+uses the file reuses the parsed snapshot and digest. The table schema,
+comparison calculations, admission checks and protected-output restrictions
+remain unchanged. This does not establish canonical archive membership or
+an atomic snapshot across different files.
+
+Two synthetic regression cases replace or remove the input path immediately
+after its first parse. Both fail on the original exporter: replacement
+produces the wrong source digest; removal raises FileNotFoundError during
+the later hash read. After the repair, all 35 synthetic cases pass with
+warnings treated as errors in 9.69 seconds. The cases check all 64 output
+rows and require every affected comparison to retain the original digest,
+mean times and paired difference. The earlier 33 cases are retained.
+
+Environment: Python 3.12.14, NumPy 2.3.5, pandas 2.2.3 and pytest 9.2.0;
+one numeric thread. Automatic loading of unrelated third-party pytest
+plugins was disabled after the environment's AnyIO plugin emitted a pytest
+deprecation during startup. No test was skipped or warning suppressed in
+the executed suite. Git whitespace checks passed.
+
+Only this note, the exporter and its synthetic tests change. No private
+archive, scientific result, checkpoint or frozen study source was accessed.
+The correction is a draft stacked on the existing review branch; its commit
+retains `[skip ci]` and `skip-checks: true`. No paid workflow, main merge,
+study run, submission or scientific release is authorized by this receipt.

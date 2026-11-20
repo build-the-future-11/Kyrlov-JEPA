@@ -5,6 +5,7 @@ Archived timing observations, not verification-replay timings, are claim bearing
 """
 import argparse
 import hashlib
+import io
 import json
 import math
 import os
@@ -68,9 +69,17 @@ def comparison_specs(root):
 
 def build(root):
     rows = []
+    sources = {}
     for phase, folder, domain, c in comparison_specs(root):
         f = folder / ("test.csv" if phase != "initial" else f"{domain}_test.csv")
-        d = pd.read_csv(f)
+        if f not in sources:
+            # Bind every comparison and its digest to the bytes actually parsed.
+            # A concurrent path replacement must not mix input snapshots.
+            source = f.read_bytes()
+            sources[f] = (
+                pd.read_csv(io.BytesIO(source)), hashlib.sha256(source).hexdigest(),
+            )
+        d, source_sha256 = sources[f]
         d = d[(d.n == c["n"]) & (d.family == c["family"])]
         a = d[d.method == c["numerator"]].copy()
         b = d[d.method == c["denominator"]].copy()
@@ -137,7 +146,7 @@ def build(root):
             absolute_difference_ms=derived["absolute_difference_ms"], time_ratio=ratio,
             relative_difference_pct=derived["relative_difference_pct"], ci_coverage=c["coverage"],
             ci_low=c["ci"][0], ci_high=c["ci"][1], bootstrap_draws=c["draws"],
-            source=str(f.relative_to(root)), source_sha256=hashlib.sha256(f.read_bytes()).hexdigest(),
+            source=str(f.relative_to(root)), source_sha256=source_sha256,
         ))
     return pd.DataFrame(rows)
 
