@@ -1,5 +1,6 @@
 """Synthetic exporter regressions; no archived study inputs are accessed."""
 import importlib.util
+import hashlib
 import json
 from pathlib import Path
 import subprocess
@@ -298,3 +299,36 @@ def test_integer_paired_differences_survive_float_precision(
     assert len(table) == 64
     assert (table[table.domain == "quantum"].absolute_difference_ms == expected_ms).all()
     assert result_bytes(study) == before
+
+
+@pytest.mark.parametrize("change", ["replace", "remove"])
+def test_source_hash_and_comparisons_use_the_same_csv_snapshot(study, monkeypatch, change):
+    path = study / "results" / "quantum_test.csv"
+    original = path.read_bytes()
+    original_hash = hashlib.sha256(original).hexdigest()
+    replacement = pd.read_csv(path)
+    replacement["capped_seconds"] *= 2
+    replacement_bytes = replacement.to_csv(index=False).encode()
+    real_read_csv = pd.read_csv
+    changed = False
+
+    def read_then_change_source(*args, **kwargs):
+        nonlocal changed
+        frame = real_read_csv(*args, **kwargs)
+        if not changed:
+            changed = True
+            if change == "replace":
+                path.write_bytes(replacement_bytes)
+            else:
+                path.unlink()
+        return frame
+
+    monkeypatch.setattr(exporter.pd, "read_csv", read_then_change_source)
+    table = exporter.build(study)
+    quantum = table[table.domain == "quantum"]
+    assert len(table) == 64
+    assert len(quantum) == 16
+    assert (quantum.source_sha256 == original_hash).all()
+    assert (quantum.numerator_mean_ms == 1000).all()
+    assert (quantum.baseline_mean_ms == 2000).all()
+    assert (quantum.absolute_difference_ms == -1000).all()
