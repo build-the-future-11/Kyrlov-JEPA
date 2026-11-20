@@ -40,3 +40,17 @@ The original ZIP SHA-256 is `b0f84e91e20998b0bf5b16c029504daee9fcd28095052c8219e
 This review commit carries `[skip ci]` and `skip-checks: true`. No paid GitHub Actions run is authorized. Do not remove the skip instructions or launch workflows without an approved budget. No main-branch merge, public release or journal submission is authorized by this PR.
 
 The manuscript is a candidate requiring author review, a signed official permission form and resolution of full AI-prompt Methods disclosure. No signature, mentor consent, submission receipt or acceptance is asserted.
+
+## Additional complete reproduction on September 30
+
+A later pass recovered the complete private archive, independently recomputed all 64 original comparisons and retrained all 24 models by running the finite reproduction wrapper. It reproduced all 36,096 final timing observations with every expected seed/key. The qualitative conclusions persisted; timing-based validation choices changed. Exact scoped results and runtime are recorded in `verification/REPLAY_20260930.json`. Historical results and the earlier receipt remain unchanged.
+
+Three reporting corrections were made in the private manuscript: sensitivity selection uses mean raw validation repetitions, while test summaries use casewise medians; all quantum training used grid32; reference solutions are separately computed but not universally algorithmically independent of every comparator.
+
+The new standalone export tool produces a source-hashed canonical 64-comparison table from the supplied archive:
+
+```sh
+python review_tools/export_final_results.py --root /path/to/cjsj_pivot --output /path/to/NEW-tables
+```
+
+The complete source/raw archive and personal submission material remain private pending release approval. This repository addition is verification tooling and a sanitized receipt, not a claim that the full private archive was published. The private package has an executed `reproduce.py` entrypoint, verified manuscript and legacy PowerPoint, plus the unsigned official form and disclosure record.
